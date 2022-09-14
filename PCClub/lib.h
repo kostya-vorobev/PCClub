@@ -34,6 +34,7 @@ struct PC
 
 struct DataCenter
 {
+	int dataCenterId;
 	PC pcData;
 	struct tm* rentalDataTime;
 	struct tm* durationRentalDataTime;
@@ -118,3 +119,84 @@ int CountFillFile(const char* s)
 	fclose(f);
 	return i - 1;
 }
+
+void writeFileManager(Manager dataInFileManager, const char* fileName, const char* endString)
+{
+	FILE* f;
+	if (!CheckFile(fileName)) {
+		CreateFileS(fileName);
+	}
+	if (CheckFile(fileName) && dataInFileManager.managerId != 0) {
+		f = fopen(fileName, "a");
+		fprintf(f, "%d/", dataInFileManager.managerId);
+		fprintf(f, "%s/", dataInFileManager.FIO);
+		fprintf(f, "%s/", dataInFileManager.adress);
+		fprintf(f, "%f%s", dataInFileManager.salary, endString);
+		fclose(f);
+	}
+}
+
+void writeFileClient(Client dataInFileClient, const char* fileName, const char* endString)
+{
+	FILE* f;
+	if (!CheckFile(fileName)) {
+		CreateFileS(fileName);
+	}
+	if (CheckFile(fileName) && dataInFileClient.clientId != 0) {
+		f = fopen(fileName, "a");
+		fprintf(f, "%d/", dataInFileClient.clientId);
+		fprintf(f, "%s/", dataInFileClient.FIO);
+		fprintf(f, "%s%s", dataInFileClient.adress, endString);
+		fclose(f);
+	}
+}
+
+void writeFileServices(Services dataInFileServices, const char* fileName, const char* endString)
+{
+	FILE* f;
+	if (!CheckFile(fileName)) {
+		CreateFileS(fileName);
+	}
+	if (CheckFile(fileName) && dataInFileServices.servicesId != 0) {
+		f = fopen(fileName, "a");
+		fprintf(f, "%d/", dataInFileServices.servicesId);
+		fprintf(f, "%s/", dataInFileServices.name);
+		fprintf(f, "%f%s", dataInFileServices.tariff, endString);
+		fclose(f);
+	}
+}
+
+void writeFilePC(PC dataInFilePC, const char* fileName, const char* endString)
+{
+	FILE* f;
+	if (!CheckFile(fileName)) {
+		CreateFileS(fileName);
+	}
+	if (CheckFile(fileName) && dataInFilePC.PCId != 0) {
+		f = fopen(fileName, "a");
+		fprintf(f, "%d/", dataInFilePC.PCId);
+		fprintf(f, "%s%s", dataInFilePC.typePC, endString);
+		fclose(f);
+	}
+}
+
+void writeFileDataCenter(DataCenter dataInFileDataCenter, const char* s)
+{
+	FILE* f;
+	if (!CheckFile(s)) { 
+		CreateFileS(s);
+	}
+	if (CheckFile(s) && dataInFileDataCenter.dataCenterId != 0) {
+		f = fopen(s, "a");
+		fprintf(f, "%d/", dataInFileDataCenter.dataCenterId);
+		writeFilePC(dataInFileDataCenter.pcData, "DataCenter.txt", "/");
+		fprintf(f, "%s/", dataInFileDataCenter.rentalDataTime);
+		fprintf(f, "%s/", dataInFileDataCenter.durationRentalDataTime);
+		writeFileServices(dataInFileDataCenter.servicesData, "DataCenter.txt", "/");
+		writeFileClient(dataInFileDataCenter.clientData, "DataCenter.txt", "/");
+		fprintf(f, "%f/", dataInFileDataCenter.cost);
+		writeFileManager(dataInFileDataCenter.managerData, "DataCenter.txt", "\n");
+		fclose(f);
+	}
+}
+
