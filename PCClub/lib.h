@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <string.h>
 #include <conio.h>
+#define m 100 // Длина массива для исходной строки
 void CreateFileS(const char* s);
 
 struct Manager
@@ -145,8 +146,7 @@ void writeFileClient(Client dataInFileClient, const char* fileName, const char* 
 	if (CheckFile(fileName) && dataInFileClient.clientId != 0) {
 		f = fopen(fileName, "a");
 		fprintf(f, "%d/", dataInFileClient.clientId);
-		fprintf(f, "%s/", dataInFileClient.FIO);
-		fprintf(f, "%s%s", dataInFileClient.adress, endString);
+		fprintf(f, "%s%s", dataInFileClient.FIO, endString);
 		fclose(f);
 	}
 }
@@ -348,3 +348,134 @@ Services ServiceWriteUser() {
 	return writingData;
 }
 
+Manager FileDataManager(FILE* f)
+{
+	Manager fileDataManager{};
+	fscanf(f, "%d/", &fileDataManager.managerId);
+	fscanf(f, "%s/", fileDataManager.FIO);
+	fscanf(f, "%s/", fileDataManager.adress);
+	fscanf(f, "%f\n", fileDataManager.salary);
+	return fileDataManager;
+}
+
+bool CheckFillFile(const char* s)
+{
+	FILE* f;
+	f = fopen(s, "r");
+	int i = 0;
+	while (!feof(f))
+	{
+		fscanf(f, "%*[^\n]%*c");
+		i++;
+	}
+	if (i <= 1) {
+		//printf("Файл пустой\n");
+		fclose(f);
+		return false;
+	}
+	fclose(f);
+	return true;
+}
+
+void outputLineRecotrds(int index) {
+	for (int i = 0; i < index; i++)
+		printf("-");
+	printf("\n");
+}
+
+void outputUPSRecotrds() {
+	outputLineRecotrds(165);
+	printf("|%3s|%25s|%25s|%10s|\n", " № ", "ФИО", "Адрес", "Ставка");
+	outputLineRecotrds(165);
+}
+
+void outputOSRecotrds(Manager objManager)//вывод всех записей
+{
+	if (objManager.managerId != 0) {
+		printf("|%3d", objManager.managerId);
+		printf("|%25s", objManager.FIO);
+		printf("|%25s", objManager.adress);
+		printf("|%10d|", objManager.salary);
+		printf("\n");
+	}
+	else {
+		outputLineRecotrds(165);
+		printf("|%163s|\n", "Записей не найдено, повторите запрос заново");
+		outputLineRecotrds(165);
+	}
+	return;
+}
+
+void outputNullSRecotrds() {
+	outputLineRecotrds(165);
+	outputUPSRecotrds();
+	outputLineRecotrds(165);
+	printf("|%163s|\n", "Записей не найдено, повторите запрос заново");
+	outputLineRecotrds(165);
+}
+
+void ShowDataFile(const char* s)
+{
+	FILE* f;
+	Manager objManager{};
+	int i = 0;
+	if (CheckFile(s)) {
+		f = fopen(s, "r");
+
+
+		if (CheckFillFile(s)) {
+			fseek(f, 0, SEEK_SET);
+			outputUPSRecotrds();
+			while (!feof(f)) {
+				i++;
+				objManager = FileDataManager(f);
+				outputOSRecotrds(objManager, i);
+			}
+			outputLineRecotrds(165);
+		}
+		else outputNullSRecotrds();
+
+		fclose(f);
+	}
+}
+
+bool checkStringInFile(char s[m / 2][m / 2]) {
+	FILE* f;
+	f = fopen("Manager.txt", "r");
+	int flag = 0;
+	Manager objManager{};
+	CreateFileS("tempSearch.txt");
+	while (!feof(f))
+	{
+		objManager = FileDataManager(f);
+		int i = 0;
+		for (i = 0; s[i][0] != NULL; i++) {
+			if (strstr(objManager.FIO, s[i]))
+				flag++;
+			if (strstr(objManager.adress, s[i]))
+				flag++;
+		}
+		if (flag >= i)
+			writeFileManager(objManager, "tempSearch.txt", "\n");
+		flag = 0;
+	}
+	fclose(f);
+	ShowDataFile("tempSearch.txt");
+	return 0;
+}
+
+
+
+DataCenter DataCenterWriteUser() {
+
+	DataCenter writingData;
+	writingData.dataCenterId = CountFillFile("DataCenter.txt");
+
+	do {
+		inputStringData(writingData.name, "Введите название услуги: ", 49);
+	} while (!checkName(writingData.name));
+	do {
+		writingData.tariff = get_int("Введите тариф услуги: ");
+	} while (writingData.tariff <= 1);
+	return writingData;
+}
