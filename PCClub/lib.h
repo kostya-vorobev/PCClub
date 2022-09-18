@@ -1,17 +1,26 @@
 #pragma once
-#include <time.h>
-#include <cstdio>
+
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <Windows.h>
 #include <conio.h>
+#include <time.h> 
+#include <clocale>
+#include <Windows.h>
+#include <string.h>
+#include <stdint.h>
+#include <stdbool.h>
 #define m 100 // Длина массива для исходной строки
 void CreateFileS(const char* s);
+void replace(char* str, char findSymb, char rezSymb);
 
 struct Manager
 {
 	int managerId;
 	char FIO[50];
 	char adress[50];
-	double salary;
+	int salary;
 };
 
 struct Client
@@ -24,7 +33,7 @@ struct Services
 {
 	int servicesId;
 	char name[50];
-	double tariff;
+	int tariff;
 };
 
 struct PC
@@ -41,7 +50,7 @@ struct DataCenter
 	struct tm* durationRentalDataTime;
 	Services servicesData;
 	Client clientData;
-	double cost;
+	int cost;
 	Manager managerData;
 };
 
@@ -105,20 +114,23 @@ bool CheckDate(int day, int month, int year)
 
 int CountFillFile(const char* s)
 {
-	FILE* f;
-	f = fopen(s, "r");
-	int i = 0;
-	while (!feof(f))
-	{
-		fscanf(f, "%*[^\n]%*c");
-		i++;
-	}
-	if (i <= 1) {
+	if (CheckFile(s)) {
+		FILE* f;
+		f = fopen(s, "r");
+		int i = 0;
+		while (!feof(f))
+		{
+			fscanf(f, "%*[^\n]%*c");
+			i++;
+		}
+		if (i <= 1) {
+			fclose(f);
+			return 1;
+		}
 		fclose(f);
-		return 0;
-	}
-	fclose(f);
-	return i - 1;
+		return i - 1;
+	} return 1;
+
 }
 
 void writeFileManager(Manager dataInFileManager, const char* fileName, const char* endString)
@@ -129,9 +141,9 @@ void writeFileManager(Manager dataInFileManager, const char* fileName, const cha
 	}
 	if (CheckFile(fileName) && dataInFileManager.managerId != 0) {
 		f = fopen(fileName, "a");
-		fprintf(f, "%d/", dataInFileManager.managerId);
-		fprintf(f, "%s/", dataInFileManager.FIO);
-		fprintf(f, "%s/", dataInFileManager.adress);
+		fprintf(f, "%d|", dataInFileManager.managerId);
+		fprintf(f, "%s|", dataInFileManager.FIO);
+		fprintf(f, "%s|", dataInFileManager.adress);
 		fprintf(f, "%f%s", dataInFileManager.salary, endString);
 		fclose(f);
 	}
@@ -145,7 +157,7 @@ void writeFileClient(Client dataInFileClient, const char* fileName, const char* 
 	}
 	if (CheckFile(fileName) && dataInFileClient.clientId != 0) {
 		f = fopen(fileName, "a");
-		fprintf(f, "%d/", dataInFileClient.clientId);
+		fprintf(f, "%d|", dataInFileClient.clientId);
 		fprintf(f, "%s%s", dataInFileClient.FIO, endString);
 		fclose(f);
 	}
@@ -159,8 +171,8 @@ void writeFileServices(Services dataInFileServices, const char* fileName, const 
 	}
 	if (CheckFile(fileName) && dataInFileServices.servicesId != 0) {
 		f = fopen(fileName, "a");
-		fprintf(f, "%d/", dataInFileServices.servicesId);
-		fprintf(f, "%s/", dataInFileServices.name);
+		fprintf(f, "%d|", dataInFileServices.servicesId);
+		fprintf(f, "%s|", dataInFileServices.name);
 		fprintf(f, "%f%s", dataInFileServices.tariff, endString);
 		fclose(f);
 	}
@@ -174,7 +186,7 @@ void writeFilePC(PC dataInFilePC, const char* fileName, const char* endString)
 	}
 	if (CheckFile(fileName) && dataInFilePC.PCId != 0) {
 		f = fopen(fileName, "a");
-		fprintf(f, "%d/", dataInFilePC.PCId);
+		fprintf(f, "%d|", dataInFilePC.PCId);
 		fprintf(f, "%s%s", dataInFilePC.typePC, endString);
 		fclose(f);
 	}
@@ -188,13 +200,13 @@ void writeFileDataCenter(DataCenter dataInFileDataCenter, const char* s)
 	}
 	if (CheckFile(s) && dataInFileDataCenter.dataCenterId != 0) {
 		f = fopen(s, "a");
-		fprintf(f, "%d/", dataInFileDataCenter.dataCenterId);
-		writeFilePC(dataInFileDataCenter.pcData, "DataCenter.txt", "/");
-		fprintf(f, "%s/", dataInFileDataCenter.rentalDataTime);
-		fprintf(f, "%s/", dataInFileDataCenter.durationRentalDataTime);
-		writeFileServices(dataInFileDataCenter.servicesData, "DataCenter.txt", "/");
-		writeFileClient(dataInFileDataCenter.clientData, "DataCenter.txt", "/");
-		fprintf(f, "%f/", dataInFileDataCenter.cost);
+		fprintf(f, "%d |", dataInFileDataCenter.dataCenterId);
+		writeFilePC(dataInFileDataCenter.pcData, "DataCenter.txt", " |");
+		fprintf(f, "%s |", dataInFileDataCenter.rentalDataTime);
+		fprintf(f, "%s |", dataInFileDataCenter.durationRentalDataTime);
+		writeFileServices(dataInFileDataCenter.servicesData, "DataCenter.txt", " |");
+		writeFileClient(dataInFileDataCenter.clientData, "DataCenter.txt", " |");
+		fprintf(f, "%.0f |", dataInFileDataCenter.cost);
 		writeFileManager(dataInFileDataCenter.managerData, "DataCenter.txt", "\n");
 		fclose(f);
 	}
@@ -280,23 +292,17 @@ int get_int(const char* msg) {
 	return n; // возвращаем корректное целое число
 }
 
-int CountFillFile(const char* s)
-{
-	FILE* f;
-	f = fopen(s, "r");
-	int i = 0;
-	while (!feof(f))
+bool checkLect(char* s) {
+	for (int i = 0; i < strlen(s); i++)
 	{
-		fscanf(f, "%*[^\n]%*c");
-		i++;
+		if (s[i] != '.' && s[i] != ' ')
+			if (!(s[i] < 'А' || s[i] > 'Я')) {}
+			else if ((s[i] < 'а' || s[i] > 'я')) {
+				printf("Ошибка ввода, попробуйте еще раз...\n"); // выводим сообщение об ошибке
+				return false;
+			}
 	}
-	if (i <= 1) {
-		//printf("Файл пустой");
-		fclose(f);
-		return 0;
-	}
-	fclose(f);
-	return i - 1;
+	return true;
 }
 
 Manager ManagerWriteUser()
@@ -306,9 +312,11 @@ Manager ManagerWriteUser()
 	do{
 	inputStringData(writingData.FIO, "Введите ФИО менеджера: ", 49);
 	} while (!checkName(writingData.FIO));
+	replace(&writingData.FIO[0], ' ', '_');
 	do {
 		inputStringData(writingData.adress, "Введите адрес менеджера: ", 49);
-	} while (!checkName(writingData.adress));
+	} while (!checkLect(writingData.adress));
+	replace(&writingData.adress[0], ' ', '_');
 	do {
 		writingData.salary = get_int("Введите ставку мененджера: ");
 	} while (writingData.salary <= 1);
@@ -321,7 +329,8 @@ PC PCWriteUser()
 	writingData.PCId = CountFillFile("PC.txt");
 	do {
 		inputStringData(writingData.typePC, "Введите тип ПК: ", 49);
-	} while (!checkName(writingData.typePC));
+	} while (!checkLect(writingData.typePC));
+	replace(&writingData.typePC[0], ' ', '_');
 	return writingData;
 }
 
@@ -332,6 +341,8 @@ Client ClientWriteUser()
 	do {
 		inputStringData(writingData.FIO, "Введите ФИО клиента: ", 49);
 	} while (!checkName(writingData.FIO));
+	replace(&writingData.FIO[0], ' ', '_');
+
 	return writingData;
 }
 
@@ -341,22 +352,77 @@ Services ServiceWriteUser() {
 	writingData.servicesId = CountFillFile("Services.txt");
 	do {
 		inputStringData(writingData.name, "Введите название услуги: ", 49);
-	} while (!checkName(writingData.name));
+	} while (!checkLect(writingData.name));
+	replace(&writingData.name[0], ' ', '_');
 	do {
 		writingData.tariff = get_int("Введите тариф услуги: ");
 	} while (writingData.tariff <= 1);
 	return writingData;
 }
-
+void replace(char *str, char findSymb, char rezSymb)
+{
+	int sizeM = strlen(str);
+	for (int i = 0; i < sizeM; i++)
+	{
+		if (*str == findSymb) *str = rezSymb;
+		*str++;
+	}
+}
 Manager FileDataManager(FILE* f)
 {
-	Manager fileDataManager{};
-	fscanf(f, "%d/", &fileDataManager.managerId);
-	fscanf(f, "%s/", fileDataManager.FIO);
-	fscanf(f, "%s/", fileDataManager.adress);
-	fscanf(f, "%f\n", fileDataManager.salary);
-	return fileDataManager;
+	Manager fileDataObj{};
+	fscanf(f, "%d |", &fileDataObj.managerId);
+	fscanf(f, "%s |", fileDataObj.FIO);
+	replace(&fileDataObj.FIO[0], '_', ' ');
+	fscanf(f, "%s |", fileDataObj.adress);
+	replace(&fileDataObj.adress[0], '_', ' ');
+	fscanf(f, "%d\n", &fileDataObj.salary);
+	return fileDataObj;
 }
+
+Client FileDataClient(FILE* f)
+{
+	Client fileDataObj{};
+	fscanf(f, "%d |", &fileDataObj.clientId);
+	fscanf(f, "%s\n", fileDataObj.FIO);
+	replace(&fileDataObj.FIO[0], '_', ' ');
+	return fileDataObj;
+}
+
+PC FileDataPC(FILE* f)
+{
+	PC fileDataObj{};
+	fscanf(f, "%d |", &fileDataObj.PCId);
+	fscanf(f, "%s\n", fileDataObj.typePC);
+	replace(&fileDataObj.typePC[0], '_', ' ');
+	return fileDataObj;
+}
+
+Services FileDataService(FILE* f)
+{
+	Services fileDataObj{};
+	fscanf(f, "%d |", &fileDataObj.servicesId);
+	fscanf(f, "%s |", fileDataObj.name);
+	replace(&fileDataObj.name[0], '_', ' ');
+	fscanf(f, "%d\n", fileDataObj.tariff);
+	return fileDataObj;
+}
+
+DataCenter FileDataCenter(FILE* f)
+{
+	DataCenter fileDataObj{};
+
+	fscanf(f, "%d |", &fileDataObj.dataCenterId);
+	fileDataObj.pcData = FileDataPC(f);
+	fscanf(f, "%s |", fileDataObj.rentalDataTime);
+	fscanf(f, "%s |", fileDataObj.durationRentalDataTime);
+	fileDataObj.servicesData = FileDataService(f);
+	fileDataObj.clientData = FileDataClient(f);
+	fscanf(f, "%d |", fileDataObj.cost);
+	fileDataObj.managerData = FileDataManager(f);
+	return fileDataObj;
+}
+
 
 bool CheckFillFile(const char* s)
 {
@@ -389,7 +455,7 @@ void outputUPSRecotrds() {
 	outputLineRecotrds(165);
 }
 
-void outputOSRecotrds(Manager objManager)//вывод всех записей
+void outputManagerRecotrds(Manager objManager)//вывод всех записей
 {
 	if (objManager.managerId != 0) {
 		printf("|%3d", objManager.managerId);
@@ -400,43 +466,199 @@ void outputOSRecotrds(Manager objManager)//вывод всех записей
 	}
 	else {
 		outputLineRecotrds(165);
-		printf("|%163s|\n", "Записей не найдено, повторите запрос заново");
+		printf("|%163s|\n", "Записей не найдено");
 		outputLineRecotrds(165);
 	}
 	return;
 }
 
+void outputClientRecotrds(Client objClient)//вывод всех записей
+{
+	if (objClient.clientId != 0) {
+		printf("|%3d", objClient.clientId);
+		printf("|%25s|", objClient.FIO);
+		printf("\n");
+	}
+	else {
+		outputLineRecotrds(165);
+		printf("|%163s|\n", "Записей не найдено");
+		outputLineRecotrds(165);
+	}
+	return;
+}
+
+void outputPCRecotrds(PC objPC)//вывод всех записей
+{
+	if (objPC.PCId != 0) {
+		printf("|%3d", objPC.PCId);
+		printf("|%25s|", objPC.typePC);
+		printf("\n");
+	}
+	else {
+		outputLineRecotrds(165);
+		printf("|%163s|\n", "Записей не найдено");
+		outputLineRecotrds(165);
+	}
+	return;
+}
+
+void outputServiceRecotrds(Services objService)//вывод всех записей
+{
+	if (objService.servicesId != 0) {
+		printf("|%3d", objService.servicesId);
+		printf("|%25s", objService.name);
+		printf("|%25s|", objService.tariff);
+		printf("\n");
+	}
+	else {
+		outputLineRecotrds(165);
+		printf("|%163s|\n", "Записей не найдено");
+		outputLineRecotrds(165);
+	}
+	return;
+}
+
+void outputDataCenterRecotrds(DataCenter objDataCenter)//вывод всех записей
+{
+	if (objDataCenter.dataCenterId != 0) {
+		printf("|%3d", objDataCenter.dataCenterId);
+		printf("|%25s", objDataCenter.clientData.FIO);
+		printf("|%25s", objDataCenter.pcData.typePC);
+		printf("|%12s", objDataCenter.rentalDataTime);
+		printf("|%10s", objDataCenter.durationRentalDataTime);
+		printf("|%10d", objDataCenter.cost);
+		printf("|%25s", objDataCenter.servicesData.name);
+		printf("|%25s", objDataCenter.managerData.FIO);
+		printf("\n");
+	}
+	else {
+		outputLineRecotrds(165);
+		printf("|%163s|\n", "Записей не найдено");
+		outputLineRecotrds(165);
+	}
+	return;
+}
 void outputNullSRecotrds() {
 	outputLineRecotrds(165);
 	outputUPSRecotrds();
 	outputLineRecotrds(165);
-	printf("|%163s|\n", "Записей не найдено, повторите запрос заново");
+	printf("|%163s|\n", "Записей не найдено");
 	outputLineRecotrds(165);
 }
 
-void ShowDataFile(const char* s)
+void ShowManagerDataFile(const char* s)
 {
 	FILE* f;
 	Manager objManager{};
 	int i = 0;
 	if (CheckFile(s)) {
 		f = fopen(s, "r");
-
-
 		if (CheckFillFile(s)) {
 			fseek(f, 0, SEEK_SET);
 			outputUPSRecotrds();
 			while (!feof(f)) {
 				i++;
 				objManager = FileDataManager(f);
-				outputOSRecotrds(objManager, i);
+				outputManagerRecotrds(objManager);
 			}
 			outputLineRecotrds(165);
 		}
 		else outputNullSRecotrds();
-
 		fclose(f);
 	}
+	_getch();
+}
+
+void ShowClientDataFile(const char* s)
+{
+	FILE* f;
+	Client objClient{};
+	int i = 0;
+	if (CheckFile(s)) {
+		f = fopen(s, "r");
+		if (CheckFillFile(s)) {
+			fseek(f, 0, SEEK_SET);
+			outputUPSRecotrds();
+			while (!feof(f)) {
+				i++;
+				objClient = FileDataClient(f);
+				outputClientRecotrds(objClient);
+			}
+			outputLineRecotrds(165);
+		}
+		else outputNullSRecotrds();
+		fclose(f);
+	}
+	_getch();
+}
+
+void ShowPCDataFile(const char* s)
+{
+	FILE* f;
+	PC objPC{};
+	int i = 0;
+	if (CheckFile(s)) {
+		f = fopen(s, "r");
+		if (CheckFillFile(s)) {
+			fseek(f, 0, SEEK_SET);
+			outputUPSRecotrds();
+			while (!feof(f)) {
+				i++;
+				objPC = FileDataPC(f);
+				outputPCRecotrds(objPC);
+			}
+			outputLineRecotrds(165);
+		}
+		else outputNullSRecotrds();
+		fclose(f);
+	}
+	_getch();
+}
+
+void ShowServiceDataFile(const char* s)
+{
+	FILE* f;
+	Services objService{};
+	int i = 0;
+	if (CheckFile(s)) {
+		f = fopen(s, "r");
+		if (CheckFillFile(s)) {
+			fseek(f, 0, SEEK_SET);
+			outputUPSRecotrds();
+			while (!feof(f)) {
+				i++;
+				objService = FileDataService(f);
+				outputServiceRecotrds(objService);
+			}
+			outputLineRecotrds(165);
+		}
+		else outputNullSRecotrds();
+		fclose(f);
+	}
+	_getch();
+}
+
+void ShowDataCenterDataFile(const char* s)
+{
+	FILE* f;
+	DataCenter objDataCenter{};
+	int i = 0;
+	if (CheckFile(s)) {
+		f = fopen(s, "r");
+		if (CheckFillFile(s)) {
+			fseek(f, 0, SEEK_SET);
+			outputUPSRecotrds();
+			while (!feof(f)) {
+				i++;
+				objDataCenter = FileDataCenter(f);
+				outputDataCenterRecotrds(objDataCenter);
+			}
+			outputLineRecotrds(165);
+		}
+		else outputNullSRecotrds();
+		fclose(f);
+	}
+	_getch();
 }
 
 bool checkStringInFile(char s[m / 2][m / 2]) {
@@ -460,22 +682,119 @@ bool checkStringInFile(char s[m / 2][m / 2]) {
 		flag = 0;
 	}
 	fclose(f);
-	ShowDataFile("tempSearch.txt");
+	ShowManagerDataFile("tempSearch.txt");
 	return 0;
 }
 
+PC SearchPC()
+{
+	int searchId = 0;
+	PC findPC;
+	do {
+		FILE* findInFile;
+		findInFile = fopen("PC.txt", "r");
+		searchId = get_int("Введите id нужного компьютера: ");
+		while (!feof(findInFile)) //Считывание во временный файл
+		{
+			findPC = FileDataPC(findInFile);
+			if (findPC.PCId == searchId)
+			{
+				return findPC;
+			}
+		}
+	} while (findPC.PCId != searchId);
+};
 
+Services SearchService()
+{
+	int searchId = 0;
+	Services findService;
+	do {
+		FILE* findInFile;
+		findInFile = fopen("Service.txt", "r");
+		searchId = get_int("Введите id нужного компьютера: ");
+		while (!feof(findInFile)) //Считывание во временный файл
+		{
+			findService = FileDataService(findInFile);
+			if (findService.servicesId == searchId)
+			{
+				return findService;
+			}
+		}
+	} while (findService.servicesId != searchId);
+};
+
+Client SearchClient()
+{
+	int searchId = 0;
+	Client findClient;
+	do {
+		FILE* findInFile;
+		findInFile = fopen("Client.txt", "r");
+		searchId = get_int("Введите id нужного компьютера: ");
+		while (!feof(findInFile)) //Считывание во временный файл
+		{
+			findClient = FileDataClient(findInFile);
+			if (findClient.clientId == searchId)
+			{
+				return findClient;
+			}
+		}
+	} while (findClient.clientId != searchId);
+};
+
+Manager SearchManager()
+{
+	int searchId = 0;
+	Manager findManager;
+	do {
+		FILE* findInFile;
+		findInFile = fopen("Client.txt", "r");
+		searchId = get_int("Введите id нужного компьютера: ");
+		while (!feof(findInFile)) //Считывание во временный файл
+		{
+			findManager = FileDataManager(findInFile);
+			if (findManager.managerId == searchId)
+			{
+				return findManager;
+			}
+		}
+	} while (findManager.managerId != searchId);
+};
 
 DataCenter DataCenterWriteUser() {
 
 	DataCenter writingData;
 	writingData.dataCenterId = CountFillFile("DataCenter.txt");
-
-	do {
-		inputStringData(writingData.name, "Введите название услуги: ", 49);
-	} while (!checkName(writingData.name));
-	do {
-		writingData.tariff = get_int("Введите тариф услуги: ");
-	} while (writingData.tariff <= 1);
+	ShowPCDataFile("PC.txt");
+	if (CountFillFile("PC.txt") > 1)
+		writingData.pcData = SearchPC();
+	else {
+		writingData.pcData = PCWriteUser();
+		writeFilePC(writingData.pcData, "PC.txt", "\n");
+	}
+	const time_t timer = time(NULL);
+	writingData.rentalDataTime = localtime(&timer);
+	writingData.durationRentalDataTime = localtime(&timer);
+	writingData.durationRentalDataTime->tm_hour += get_int("Введите количество часов аренды: ");
+	if (CountFillFile("Service.txt") > 1)
+		writingData.servicesData = SearchService();
+	else {
+		writingData.servicesData = ServiceWriteUser();
+		writeFileServices(writingData.servicesData, "Service.txt", "\n");
+	}
+	if (CountFillFile("Client.txt") > 1)
+		writingData.clientData = SearchClient();
+	else {
+		writingData.clientData = ClientWriteUser();
+		writeFileClient(writingData.clientData, "Client.txt", "\n");
+	}
+	writingData.cost = get_int("Введите стоимость аренды: ");
+	if (CountFillFile("Manager.txt") > 1)
+		writingData.managerData = SearchManager();
+	else {
+		writingData.managerData = ManagerWriteUser();
+		writeFileManager(writingData.managerData, "Manager.txt", "\n");
+	}
 	return writingData;
 }
