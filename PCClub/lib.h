@@ -15,13 +15,130 @@
 void CreateFileS(const char* s);
 void replace(char* str, char findSymb, char rezSymb);
 
-struct Manager
+class Manager
 {
+
+
+private:
 	int managerId;
 	char FIO[50];
 	char adress[50];
 	int salary;
+
+public:
+	Manager();
+	~Manager();
+
+	void writeFileManager(const char* fileName)
+	{
+		FILE* f;
+		if (!CheckFile(fileName)) {
+			CreateFileS(fileName);
+		}
+		if (CheckFile(fileName) && managerId != 0) {
+			f = fopen(fileName, "a");
+			fprintf(f, "%d |", managerId);
+			replace(&FIO[0], ' ', '_');
+			fprintf(f, "%s |", FIO);
+			replace(&adress[0], ' ', '_');
+			fprintf(f, "%s |", adress);
+			fprintf(f, "%d\n", salary);
+			fclose(f);
+		}
+	}
+
+	void ManagerWriteUser()
+	{
+		managerId = CountFillFile("Manager.txt");
+		do {
+			inputStringData(FIO, "Введите ФИО менеджера: ", 49);
+		} while (!checkName(FIO));
+		replace(&FIO[0], ' ', '_');
+		do {
+			inputStringData(adress, "Введите адрес менеджера: ", 49);
+		} while (!checkLect(adress));
+		replace(&adress[0], ' ', '_');
+		do {
+			salary = get_int("Введите ставку мененджера: ");
+		} while (salary <= 1);
+	}
+
+	void FileDataManager(FILE* f)
+	{
+		fscanf(f, "%d |", &managerId);
+		fscanf(f, "%s |", FIO);
+		replace(&FIO[0], '_', ' ');
+		fscanf(f, "%s |", adress);
+		replace(&adress[0], '_', ' ');
+		fscanf(f, "%d\n", &salary);
+	}
+
+	void outputManagerRecotrds()//вывод всех записей
+	{
+		if (managerId != 0) {
+			printf("|%3d", managerId);
+			printf("|%25s", FIO);
+			printf("|%25s", adress);
+			printf("|%10d|", salary);
+			printf("\n");
+		}
+		else {
+			outputLineRecotrds(165);
+			printf("|%163s|\n", "Записей не найдено");
+			outputLineRecotrds(165);
+		}
+	}
+
+	void ShowManagerDataFile(const char* s)
+	{
+		FILE* f;
+		int i = 0;
+		if (CheckFile(s)) {
+			f = fopen(s, "r");
+			if (CheckFillFile(s)) {
+				fseek(f, 0, SEEK_SET);
+				outputTitleManagerRecotrds();
+				while (!feof(f)) {
+					i++;
+					FileDataManager(f);
+					outputManagerRecotrds();
+				}
+				outputLineRecotrds(165);
+			}
+			else outputNullSRecotrds();
+			fclose(f);
+		}
+		_getch();
+	}
+
+	void SearchManager()
+	{
+		int searchId = 0;
+		do {
+			FILE* findInFile;
+			findInFile = fopen("Manager.txt", "r");
+			searchId = get_int("Введите id менеджера: ");
+			while (!feof(findInFile)) //Считывание во временный файл
+			{
+				FileDataManager(findInFile);
+				if (managerId == searchId)
+				{
+					return;
+				}
+			}
+		} while (managerId != searchId);
+	};
+
 };
+
+Manager::Manager()
+{
+}
+
+Manager::~Manager()
+{
+} 
+
 
 struct Client
 {
@@ -133,23 +250,7 @@ int CountFillFile(const char* s)
 
 }
 
-void writeFileManager(Manager dataInFileManager, const char* fileName, const char* endString)
-{
-	FILE* f;
-	if (!CheckFile(fileName)) {
-		CreateFileS(fileName);
-	}
-	if (CheckFile(fileName) && dataInFileManager.managerId != 0) {
-		f = fopen(fileName, "a");
-		fprintf(f, "%d |", dataInFileManager.managerId);
-		replace(&dataInFileManager.FIO[0], ' ', '_');
-		fprintf(f, "%s |", dataInFileManager.FIO);
-		replace(&dataInFileManager.adress[0], ' ', '_');
-		fprintf(f, "%s |", dataInFileManager.adress);
-		fprintf(f, "%d%s", dataInFileManager.salary, endString);
-		fclose(f);
-	}
-}
+
 
 void writeFileClient(Client dataInFileClient, const char* fileName, const char* endString)
 {
@@ -325,23 +426,7 @@ bool checkLect(char* s) {
 	return true;
 }
 
-Manager ManagerWriteUser()
-{
-	Manager writingData;
-	writingData.managerId = CountFillFile("Manager.txt");
-	do{
-	inputStringData(writingData.FIO, "Введите ФИО менеджера: ", 49);
-	} while (!checkName(writingData.FIO));
-	replace(&writingData.FIO[0], ' ', '_');
-	do {
-		inputStringData(writingData.adress, "Введите адрес менеджера: ", 49);
-	} while (!checkLect(writingData.adress));
-	replace(&writingData.adress[0], ' ', '_');
-	do {
-		writingData.salary = get_int("Введите ставку мененджера: ");
-	} while (writingData.salary <= 1);
-	return writingData;
-}
+
 
 PC PCWriteUser()
 {
@@ -387,17 +472,6 @@ void replace(char *str, char findSymb, char rezSymb)
 		if (*str == findSymb) *str = rezSymb;
 		*str++;
 	}
-}
-Manager FileDataManager(FILE* f)
-{
-	Manager fileDataObj{};
-	fscanf(f, "%d |", &fileDataObj.managerId);
-	fscanf(f, "%s |", fileDataObj.FIO);
-	replace(&fileDataObj.FIO[0], '_', ' ');
-	fscanf(f, "%s |", fileDataObj.adress);
-	replace(&fileDataObj.adress[0], '_', ' ');
-	fscanf(f, "%d\n", &fileDataObj.salary);
-	return fileDataObj;
 }
 
 Client FileDataClient(FILE* f)
@@ -507,22 +581,7 @@ void outputTitleDataCenterRecotrds() {
 	outputLineRecotrds(165);
 }
 
-void outputManagerRecotrds(Manager objManager)//вывод всех записей
-{
-	if (objManager.managerId != 0) {
-		printf("|%3d", objManager.managerId);
-		printf("|%25s", objManager.FIO);
-		printf("|%25s", objManager.adress);
-		printf("|%10d|", objManager.salary);
-		printf("\n");
-	}
-	else {
-		outputLineRecotrds(165);
-		printf("|%163s|\n", "Записей не найдено");
-		outputLineRecotrds(165);
-	}
-	return;
-}
+
 
 void outputClientRecotrds(Client objClient)//вывод всех записей
 {
@@ -598,28 +657,7 @@ void outputNullSRecotrds() {
 	outputLineRecotrds(165);
 }
 
-void ShowManagerDataFile(const char* s)
-{
-	FILE* f;
-	Manager objManager{};
-	int i = 0;
-	if (CheckFile(s)) {
-		f = fopen(s, "r");
-		if (CheckFillFile(s)) {
-			fseek(f, 0, SEEK_SET);
-			outputTitleManagerRecotrds();
-			while (!feof(f)) {
-				i++;
-				objManager = FileDataManager(f);
-				outputManagerRecotrds(objManager);
-			}
-			outputLineRecotrds(165);
-		}
-		else outputNullSRecotrds();
-		fclose(f);
-	}
-	_getch();
-}
+
 
 void ShowClientDataFile(const char* s)
 {
@@ -795,24 +833,7 @@ Client SearchClient()
 	} while (findClient.clientId != searchId);
 };
 
-Manager SearchManager()
-{
-	int searchId = 0;
-	Manager findManager;
-	do {
-		FILE* findInFile;
-		findInFile = fopen("Manager.txt", "r");
-		searchId = get_int("Введите id менеджера: ");
-		while (!feof(findInFile)) //Считывание во временный файл
-		{
-			findManager = FileDataManager(findInFile);
-			if (findManager.managerId == searchId)
-			{
-				return findManager;
-			}
-		}
-	} while (findManager.managerId != searchId);
-};
+
 
 DataCenter DataCenterWriteUser() {
 
