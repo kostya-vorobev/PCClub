@@ -1,6 +1,19 @@
 #include "lib.h"
 #include "Manager.h"
 
+Manager::Manager(int newID,char newFIO[50], char newAdress[50], int newSalary)
+{
+	this->managerId = newID;
+	strcat(this->FIO, newFIO);
+	strcat(this->adress, newAdress);
+	this->salary = newSalary;
+
+}
+
+Manager::Manager(int newID)
+{
+	this->managerId = newID;
+}
 
 Manager::Manager()
 {
@@ -83,6 +96,16 @@ void Manager::ManagerWriteUser()
 	} while (salary <= 1);
 }
 
+void Manager::FileDataManagerDC(FILE* f)
+{
+	fscanf(f, "%d |", &managerId);
+	fscanf(f, "%s |", FIO);
+	replace(&FIO[0], '_', ' ');
+	fscanf(f, "%s |", adress);
+	replace(&adress[0], '_', ' ');
+	fscanf(f, "%d |", &salary);
+}
+
 void Manager::FileDataManager(FILE* f)
 {
 	fscanf(f, "%d |", &managerId);
@@ -104,7 +127,7 @@ void Manager::outputManagerRecotrds()//вывод всех записей
 	}
 	else {
 		outputLineRecotrds(165);
-		printf("|%163s|\n", "Записей не найдено");
+		printf("|%66s|\n", "Записей не найдено");
 		outputLineRecotrds(165);
 	}
 }
@@ -123,7 +146,7 @@ void Manager::ShowManagerDataFile(const char* s)
 				FileDataManager(f);
 				outputManagerRecotrds();
 			}
-			outputLineRecotrds(165);
+			outputLineRecotrds(65);
 		}
 		else outputNullSRecotrds();
 		fclose(f);

@@ -9,6 +9,8 @@ private:
 	char typePC[50];
 
 public:
+	PC(int newID, char newTypePC[]);
+	PC(int newID);
 	PC();
 	~PC();
 
@@ -31,6 +33,8 @@ public:
 	void SearchPC();
 
 	void FileDataPC(FILE* f);
+
+	void FileDataPCDC(FILE* f);
 
 };
 

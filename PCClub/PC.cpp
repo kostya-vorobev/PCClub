@@ -2,6 +2,16 @@
 #include "PC.h"
 
 
+PC::PC(int newID, char newTypePC[])
+{
+	this->PCId = newID;
+	strcat(this->typePC, newTypePC);
+}
+
+PC::PC(int newID)
+{
+	this->PCId = newID;
+}
 
 PC::PC()
 {
@@ -65,7 +75,7 @@ void PC::outputPCRecotrds()//вывод всех записей
 	}
 	else {
 		outputLineRecotrds(165);
-		printf("|%163s|\n", "Записей не найдено");
+		printf("|%32s|\n", "Записей не найдено");
 		outputLineRecotrds(165);
 	}
 	return;
@@ -85,7 +95,7 @@ void PC::ShowPCDataFile(const char* s)
 				FileDataPC(f);
 				outputPCRecotrds();
 			}
-			outputLineRecotrds(165);
+			outputLineRecotrds(32);
 		}
 		else outputNullSRecotrds();
 		fclose(f);
@@ -115,6 +125,14 @@ void PC::FileDataPC(FILE* f)
 {
 	fscanf(f, "%d |", &PCId);
 	fscanf(f, "%s\n", typePC);
+	replace(&typePC[0], '_', ' ');
+	return;
+}
+
+void PC::FileDataPCDC(FILE* f)
+{
+	fscanf(f, "%d |", &PCId);
+	fscanf(f, "%s |", typePC);
 	replace(&typePC[0], '_', ' ');
 	return;
 }

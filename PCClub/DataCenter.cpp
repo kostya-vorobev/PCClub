@@ -42,31 +42,16 @@ void DataCenter::writeFileDataCenter(const char* s)
 	}
 }
 
+
 void DataCenter::FileDataCenter(FILE* f)
 {
 	fscanf(f, "%d |", &dataCenterId);
-	this->FileDataPC(f);
-	/*fscanf(f, "%d |", pcData.setID());
-	fscanf(f, "%s |", pcData.typePC);
-	replace(&pcData.typePC[0], '_', ' ');*/
+	this->PC::FileDataPCDC(f);
 	fscanf(f, "%s |", rentalDataTime);
 	fscanf(f, "%s |", durationRentalDataTime);
-	/*fscanf(f, "%d |", &servicesData.servicesId);
-	fscanf(f, "%s |", servicesData.name);
-	replace(&servicesData.name[0], '_', ' ');
-	fscanf(f, "%d |", &servicesData.tariff);
-	fscanf(f, "%d |", &clientData.clientId);
-	fscanf(f, "%s |", clientData.FIO);
-	replace(&clientData.FIO[0], '_', ' ');*/
-	this->FileDataService(f);
-	this->FileDataClient(f);
+	this->FileDataServiceDC(f);
+	this->FileDataClientDC(f);
 	fscanf(f, "%d |", &cost);
-	/*fscanf(f, "%d |", &managerData.managerId);
-	fscanf(f, "%s |", managerData.FIO);
-	replace(&managerData.FIO[0], '_', ' ');
-	fscanf(f, "%s |", managerData.adress);
-	replace(&managerData.adress[0], '_', ' ');
-	fscanf(f, "%d\n", &managerData.salary);*/
 	this->FileDataManager(f);
 	return;
 }
@@ -81,12 +66,12 @@ void DataCenter::outputDataCenterRecotrds()//вывод всех записей
 		printf("|%10s", durationRentalDataTime);
 		printf("|%10d", cost);
 		printf("|%25s", DataCenter::Services::getName());
-		printf("|%25s", DataCenter::Manager::getFIO());
+		printf("|%25s|", DataCenter::Manager::getFIO());
 		printf("\n");
 	}
 	else {
 		outputLineRecotrds(165);
-		printf("|%163s|\n", "Записей не найдено");
+		printf("|%143s|\n", "Записей не найдено");
 		outputLineRecotrds(165);
 	}
 	return;
@@ -106,7 +91,7 @@ void DataCenter::ShowDataCenterDataFile(const char* s)
 				FileDataCenter(f);
 				outputDataCenterRecotrds();
 			}
-			outputLineRecotrds(165);
+			outputLineRecotrds(145);
 		}
 		else outputNullSRecotrds();
 		fclose(f);

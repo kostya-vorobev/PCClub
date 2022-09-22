@@ -186,33 +186,33 @@ void outputLineRecotrds(int index) {
 }
 
 void outputTitleManagerRecotrds() {
-	outputLineRecotrds(165);
+	outputLineRecotrds(68);
 	printf("|%3s|%25s|%25s|%10s|\n", " № ", "ФИО", "Адрес", "Ставка");
-	outputLineRecotrds(165);
+	outputLineRecotrds(68);
 }
 
 void outputTitleClientRecotrds() {
-	outputLineRecotrds(165);
+	outputLineRecotrds(32);
 	printf("|%3s|%25s|\n", " № ", "ФИО");
-	outputLineRecotrds(165);
+	outputLineRecotrds(32);
 }
 
 void outputTitleServiceRecotrds() {
-	outputLineRecotrds(165);
+	outputLineRecotrds(42);
 	printf("|%3s|%25s|%10s|\n", " № ", "Название", "Тариф");
-	outputLineRecotrds(165);
+	outputLineRecotrds(42);
 }
 
 void outputTitlePCRecotrds() {
-	outputLineRecotrds(165);
+	outputLineRecotrds(32);
 	printf("|%3s|%25s|\n", " № ", "Платформа");
-	outputLineRecotrds(165);
+	outputLineRecotrds(32);
 }
 
 void outputTitleDataCenterRecotrds() {
-	outputLineRecotrds(165);
-	printf("|%3s|%25s|%25s|%12s|%10s|%10s|%25s|%25s|\n", " № ", "ФИО клиента", "Тип ПК", "Время взятия", "Время сдачи", "Стоимость", "Услуга", "ФИО менеджера");
-	outputLineRecotrds(165);
+	outputLineRecotrds(145);
+	printf("|%3s|%25s|%25s|%12s|%10s|%10s|%25s|%25s|\n", " № ", "ФИО клиента", "Тип ПК", "Время взятия", "Время сдач", "Стоимость", "Услуга", "ФИО менеджера");
+	outputLineRecotrds(145);
 }
 
 void outputNullSRecotrds() {

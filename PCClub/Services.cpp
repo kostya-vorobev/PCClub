@@ -1,7 +1,16 @@
 #include "lib.h"
 #include "Services.h"
 
-
+Services::Services(int newID, char newName[], int newTariff)
+{
+	this->servicesId = newID;
+	this->tariff = newTariff;
+	strcat(this->name, newName);
+}
+Services::Services(int newID)
+{
+	this->servicesId = newID;
+}
 Services::Services()
 {
 }
@@ -30,7 +39,7 @@ void Services::setID(int ID)
 	this->servicesId = ID;
 }
 
-void Services::setID(char newName[])
+void Services::setName(char newName[])
 {
 	strcat(this->name, newName);
 }
@@ -78,9 +87,9 @@ void Services::outputServiceRecotrds()//вывод всех записей
 		printf("\n");
 	}
 	else {
-		outputLineRecotrds(165);
-		printf("|%163s|\n", "Записей не найдено");
-		outputLineRecotrds(165);
+		outputLineRecotrds(42);
+		printf("|%40s|\n", "Записей не найдено");
+		outputLineRecotrds(42);
 	}
 	return;
 }
@@ -99,7 +108,7 @@ void Services::ShowServiceDataFile(const char* s)
 				FileDataService(f);
 				outputServiceRecotrds();
 			}
-			outputLineRecotrds(165);
+			outputLineRecotrds(42);
 		}
 		else outputNullSRecotrds();
 		fclose(f);
@@ -124,6 +133,15 @@ void Services::SearchService()
 		}
 	} while (servicesId != searchId);
 };
+
+void Services::FileDataServiceDC(FILE* f)
+{
+	fscanf(f, "%d |", &servicesId);
+	fscanf(f, "%s |", name);
+	replace(&name[0], '_', ' ');
+	fscanf(f, "%d |", &tariff);
+	return;
+}
 
 void Services::FileDataService(FILE* f)
 {

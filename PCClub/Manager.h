@@ -11,6 +11,8 @@ private:
 	int salary;
 
 public:
+	Manager(int newID, char newFIO[50], char newAdress[50], int newSalary);
+	Manager(int newID);
 	Manager();
 	~Manager();
 
@@ -33,6 +35,8 @@ public:
 	void writeFileManager(const char* fileName);
 
 	void ManagerWriteUser();
+
+	void FileDataManagerDC(FILE* f);
 
 	void FileDataManager(FILE* f);
 

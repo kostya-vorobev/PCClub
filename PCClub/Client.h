@@ -8,6 +8,8 @@ private:
 	char FIO[50];
 
 public:
+	Client(int newID, char newFIO[]);
+	Client(int newID);
 	Client();
 	~Client();
 
@@ -22,6 +24,10 @@ public:
 	void writeFileClient(const char*);
 
 	void ClientWriteUser();
+
+	void FileDataPCDC(FILE* f);
+
+	void FileDataClientDC(FILE* f);
 
 	void FileDataClient(FILE* f);
 

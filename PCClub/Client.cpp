@@ -1,6 +1,15 @@
 #include "lib.h"
 #include "Client.h"
 
+Client::Client(int newID, char newFIO[])
+{
+	this->clientId = newID;
+	strcat(this->FIO, newFIO);
+}
+Client::Client(int newID)
+{
+	this->clientId = newID;
+}
 Client::Client()
 {
 }
@@ -53,6 +62,20 @@ void Client::ClientWriteUser()
 	replace(&FIO[0], ' ', '_');
 }
 
+void Client::FileDataPCDC(FILE* f)
+{
+	fscanf(f, "%d |", &clientId);
+	fscanf(f, "%s |", FIO);
+	replace(&FIO[0], '_', ' ');
+}
+
+void Client::FileDataClientDC(FILE* f)
+{
+	fscanf(f, "%d |", &clientId);
+	fscanf(f, "%s |", FIO);
+	replace(&FIO[0], '_', ' ');
+}
+
 void Client::FileDataClient(FILE* f)
 {
 		fscanf(f, "%d |", &clientId);
@@ -69,7 +92,7 @@ void Client::outputClientRecotrds()//вывод всех записей
 	}
 	else {
 		outputLineRecotrds(165);
-		printf("|%163s|\n", "Записей не найдено");
+		printf("|%30s|\n", "Записей не найдено");
 		outputLineRecotrds(165);
 	}
 	return;
@@ -89,7 +112,7 @@ void Client::ShowClientDataFile(const char* s)
 				FileDataClient(f);
 				outputClientRecotrds();
 			}
-			outputLineRecotrds(165);
+			outputLineRecotrds(32);
 		}
 		else outputNullSRecotrds();
 		fclose(f);

@@ -8,13 +8,9 @@ class DataCenter : public PC, public Services, public Client, public Manager
 {
 private:
 	int dataCenterId;
-	//PC pcData;
 	char rentalDataTime[10];
 	char durationRentalDataTime[10];
-	//Services servicesData{};
-	//Client clientData{};
 	int cost;
-	//Manager managerData{};
 
 public:
 	DataCenter();

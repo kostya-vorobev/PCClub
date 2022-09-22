@@ -9,6 +9,8 @@ private:
 	int tariff;
 
 public:
+	Services(int newID, char newName[], int newTariff);
+	Services(int newID);
 	Services();
 	~Services();
 
@@ -20,7 +22,7 @@ public:
 
 	void setID(int ID);
 
-	void setID(char newName[]);
+	void setName(char newName[]);
 
 	void setTariff(int newTariff);
 
@@ -33,6 +35,8 @@ public:
 	void ShowServiceDataFile(const char* s);
 
 	void SearchService();
+
+	void FileDataServiceDC(FILE* f);
 
 	void FileDataService(FILE* f);
 };
