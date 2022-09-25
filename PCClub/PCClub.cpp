@@ -13,13 +13,21 @@ int main()
 	do {
 		int flag = 0;
 		do {
-			Manager manager[2];
+			OrderTable objOrderTable;
+			Manager *manager = new Manager[2];
 			for (int i = 0; i < 2; i++)
 			{
 				char s[5] = "123";
-				manager[i] = InitManager(i, s, "123", 2);
+				(manager+i)->InitManager(i, s, "123", i+10);
 			}
  			flag = 0;
+			delete[] manager;
+			Client client[2];
+			for (int i = 0; i < 2; i++)
+			{
+				char s[5] = "123";
+				client->InitClient(i, s);
+			}
 			system("cls"); //Главнео меню
 			printf("	Программный модуль учета клиентов компьютерного клуба\n\n");
 			printf("	1 - Ввод данных\n");
@@ -38,26 +46,26 @@ int main()
 				switch (_getch()) {
 				case '1': { //Ввод данных
 					system("cls");
-					FprintfManager(ScanfManager(), "Manager.txt", "\n");
+					objOrderTable.FprintfManager("Manager.txt", "\n");
 					break;
 				}
 				case '2': { //Ввод данных
 					system("cls");
-					FprintfClient(ScanfClient(), "Client.txt", "\n");
+					objOrderTable.FprintfClient("Client.txt", "\n");
 					break;
 				}
 				case '3': { //Ввод данных
 					system("cls");
-					FprintfServices(ScanfService(), "Service.txt", "\n");
+					objOrderTable.FprintfService("Service.txt", "\n");
 					break;
 				}
 				case '4': { //Ввод данных
 					system("cls");
-					FprintfPC(ScanfPC(), "PC.txt", "\n");
+					objOrderTable.FprintfPC("PC.txt", "\n");
 					break;
 				}
 				case '5': { //Ввод данных
-					FprintfOrderTable(ScanfOrderTable(), "OrderTable.txt");
+					objOrderTable.FprintfOrderTable("OrderTable.txt");
 					system("cls");
 					break;
 				}
@@ -82,27 +90,27 @@ int main()
 				switch (_getch()) {
 				case '1': { //Ввод данных
 					system("cls");
-					PrintfFromFileManager("Manager.txt");
+					objOrderTable.PrintfFromFileManager("Manager.txt");
 					break;
 				}
 				case '2': { //Ввод данных
 					system("cls");
-					PrintfFromFileClient("Client.txt");
+					objOrderTable.PrintfFromFileClient("Client.txt");
 					break;
 				}
 				case '3': { //Ввод данных
 					system("cls");
-					PrintfFromFileService("Service.txt");
+					objOrderTable.PrintfFromFileService("Service.txt");
 					break;
 				}
 				case '4': { //Ввод данных
 					system("cls");
-					PrintfFromFilePC("PC.txt");
+					objOrderTable.PrintfFromFilePC("PC.txt");
 					break;
 				}
 				case '5': { //Ввод данных
 					system("cls");
-					PrintfFromFileOrderTable("OrderTable.txt");
+					objOrderTable.PrintfFromFileOrderTable("OrderTable.txt");
 
 					break;
 				}

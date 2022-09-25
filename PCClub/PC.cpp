@@ -1,21 +1,61 @@
 #include "PC.h"
 
-void FprintfPC(PC dataInFilePC, const char* fileName, const char* endString)
+PC::PC(int id, const char* typePC)
+{
+	this->PCId = id;
+	strcpy(this->typePC, typePC);
+}
+
+PC::PC()
+{
+}
+
+PC::~PC()
+{
+}
+
+void PC::CopyPC(PC objPC)
+{
+	this->PCId = objPC.PCId;
+	strcpy(this->typePC, objPC.typePC);
+}
+
+int PC::getIDPC()
+{
+	return this->PCId;
+}
+
+char* PC::getTypePC()
+{
+	return this->typePC;
+}
+
+void PC::setIDPC(int ID)
+{
+	this->PCId = ID;
+}
+
+void PC::setTypePC(char newTypePC[])
+{
+	strcat(this->typePC, newTypePC);
+}
+
+void PC::FprintfPC(const char* fileName, const char* endString)
 {
 	FILE* f;
 	if (!IsFile(fileName)) {
 		CreateFile(fileName);
 	}
-	if (IsFile(fileName) && dataInFilePC.PCId != 0) {
+	if (IsFile(fileName) && this->PCId != 0) {
 		f = fopen(fileName, "a");
-		fprintf(f, "%d |", dataInFilePC.PCId);
-		ReplaceCharacter(&dataInFilePC.typePC[0], ' ', '_');
-		fprintf(f, "%s%s", dataInFilePC.typePC, endString);
+		fprintf(f, "%d |", this->PCId);
+		ReplaceCharacter(&this->typePC[0], ' ', '_');
+		fprintf(f, "%s%s", this->typePC, endString);
 		fclose(f);
 	}
 }
 
-PC ScanfPC()
+PC PC::ScanfPC()
 {
 	PC writingData;
 	writingData.PCId = CountFillFile("PC.txt");
@@ -26,7 +66,7 @@ PC ScanfPC()
 	return writingData;
 }
 
-PC FileDataPC(FILE* f)
+PC PC::FileDataPC(FILE* f)
 {
 	PC fileDataObj{};
 	fscanf(f, "%d |", &fileDataObj.PCId);
@@ -35,11 +75,11 @@ PC FileDataPC(FILE* f)
 	return fileDataObj;
 }
 
-void PrintfPC(PC objPC)//вывод всех записей
+void PC::PrintfPC()//вывод всех записей
 {
-	if (objPC.PCId != 0) {
-		printf("|%3d", objPC.PCId);
-		printf("|%25s|", objPC.typePC);
+	if (this->PCId != 0) {
+		printf("|%3d", this->PCId);
+		printf("|%25s|", this->typePC);
 		printf("\n");
 	}
 	else {
@@ -50,7 +90,7 @@ void PrintfPC(PC objPC)//вывод всех записей
 	return;
 }
 
-void PrintfFromFilePC(const char* s)
+void PC::PrintfFromFilePC(const char* s)
 {
 	FILE* f;
 	PC objPC{};
@@ -62,8 +102,8 @@ void PrintfFromFilePC(const char* s)
 			PrintfTitlePC();
 			while (!feof(f)) {
 				i++;
-				objPC = FileDataPC(f);
-				PrintfPC(objPC);
+				this->FileDataPC(f);
+				this->PrintfPC();
 			}
 			PrintfLine(165);
 		}
@@ -73,7 +113,7 @@ void PrintfFromFilePC(const char* s)
 	_getch();
 }
 
-PC SearchPC()
+PC PC::SearchPC()
 {
 	int searchId = 0;
 	PC findPC;
@@ -81,7 +121,7 @@ PC SearchPC()
 		FILE* findInFile;
 		findInFile = fopen("PC.txt", "r");
 		searchId = get_int("¬ведите id нужного компьютера: ");
-		while (!feof(findInFile)) //—читывание во временный файл
+		while (!feof(findInFile)) 
 		{
 			findPC = FileDataPC(findInFile);
 			if (findPC.PCId == searchId)
@@ -92,31 +132,31 @@ PC SearchPC()
 	} while (findPC.PCId != searchId);
 }
 
-void InitPC(PC* initPC, int id, const char* typePC)
-{
-	initPC->PCId = id;
-	strcpy(initPC->typePC, typePC);
-}
-
-PC InitPC(int id, const char* typePC)
-{
-	PC initPC;
-	initPC.PCId = id;
-	strcpy(initPC.typePC, typePC);
-	return initPC;
-}
-
-int SearchPC(PC Original, const char* find)
+int PC::SearchPC(const char* find)
 {
 	char ch[10];
-	_itoa(Original.PCId, ch, 10);
+	_itoa(this->PCId, ch, 10);
 	if (strstr(ch, find)) return 1;
-	if (strstr(Original.typePC, find)) return 1;
+	if (strstr(this->typePC, find)) return 1;
 	return 0;
 }
 
-void PrintfTitlePC() {
+void PC::PrintfTitlePC() {
 	PrintfLine(165);
 	printf("|%3s|%25s|\n", " є ", "ѕлатформа");
 	PrintfLine(165);
+}
+
+void PC::FscanfPCOT(FILE* f)
+{
+	fscanf(f, "%d |", &this->PCId);
+	fscanf(f, "%s |", this->typePC);
+	ReplaceCharacter(&typePC[0], '_', ' ');
+	return;
+}
+
+void PC::InitPC(int id, const char* typePC)
+{
+	this->PCId = id;
+	strcpy(this->typePC, typePC);
 }

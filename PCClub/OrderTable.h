@@ -5,33 +5,37 @@
 #include "PC.h"
 #include "Service.h"
 
-
-struct OrderTable
+class OrderTable: public Manager, public Client, public PC, public Service
 {
+private:
 	int orderTableId;
-	PC pcData;
 	char startTime[10];
 	char finishTime[10];
-	Services servicesData;
-	Client clientData;
 	int cost;
-	Manager managerData;
+
+public:
+	OrderTable();
+
+	OrderTable (int id, PC pcData, const char* startTime, const char* finishTime, Service servicesData, Client clientData, int cost, Manager managerData);
+
+	~OrderTable();
+
+	void FprintfOrderTable(const char* s);
+
+	void PrintfOrderTable();
+
+	void PrintfFromFileOrderTable(const char* s);
+
+	OrderTable ScanfOrderTable();
+
+	OrderTable FileOrderTable(FILE* f);
+
+	void PrintfTitleOrderTable();
+
+	int SearchOrderTable(const char* find);
+
+	void InitOrderTable(int id, PC pcData, const char* startTime, const char* finishTime, Service servicesData, Client clientData, int cost, Manager managerData);
+
 };
 
-void FprintfOrderTable(OrderTable dataInFileOrderTable, const char* s);
 
-void PrintfOrderTable(OrderTable objOrderTable);
-
-void PrintfFromFileOrderTable(const char* s);
-
-OrderTable ScanfOrderTable();
-
-OrderTable FileOrderTable(FILE* f);
-
-void InitOrderTable(OrderTable* initOrderTable, int id, PC pcData, const char* startTime, const char* finishTime, Services servicesData, Client clientData, int cost, Manager managerData);
-
-OrderTable InitOrderTable(int id, PC pcData, const char* startTime, const char* finishTime, Services servicesData, Client clientData, int cost, Manager managerData);
-
-void PrintfTitleOrderTable();
-
-int SearchOrderTable(OrderTable Original, const char* find);

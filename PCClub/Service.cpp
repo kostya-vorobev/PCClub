@@ -1,24 +1,77 @@
 #include "Service.h"
 
-void FprintfServices(Services dataInFileServices, const char* fileName, const char* endString)
+Service::Service(int id, const char* name, int tariff)
+{
+	this->servicesId = id;
+	strcpy(this->name, name);
+	this->tariff = tariff;
+}
+
+Service::Service()
+{
+
+}
+
+Service::~Service()
+{
+}
+
+void Service::CopyService(Service objService)
+{
+	this->servicesId = objService.servicesId;
+	strcpy(this->name, objService.name);
+	this->tariff = objService.tariff;
+}
+
+int Service::getIDService()
+{
+	return this->servicesId;
+}
+
+char* Service::getName()
+{
+	return this->name;
+}
+
+int Service::getTariff()
+{
+	return this->tariff;
+}
+
+void Service::setIDService(int ID)
+{
+	this->servicesId = ID;
+}
+
+void Service::setName(char newName[])
+{
+	strcat(this->name, newName);
+}
+
+void Service::setTariff(int newTariff)
+{
+	this->tariff = newTariff;
+}
+
+void Service::FprintfService(const char* fileName, const char* endString)
 {
 	FILE* f;
 	if (!IsFile(fileName)) {
 		CreateFile(fileName);
 	}
-	if (IsFile(fileName) && dataInFileServices.servicesId != 0) {
+	if (IsFile(fileName) && this->servicesId != 0) {
 		f = fopen(fileName, "a");
-		fprintf(f, "%d |", dataInFileServices.servicesId);
-		ReplaceCharacter(&dataInFileServices.name[0], ' ', '_');
-		fprintf(f, "%s |", dataInFileServices.name);
-		fprintf(f, "%d%s", dataInFileServices.tariff, endString);
+		fprintf(f, "%d |", this->servicesId);
+		ReplaceCharacter(&this->name[0], ' ', '_');
+		fprintf(f, "%s |", this->name);
+		fprintf(f, "%d%s", this->tariff, endString);
 		fclose(f);
 	}
 }
 
-Services ScanfService() {
+Service Service::ScanfService() {
 
-	Services writingData;
+	Service writingData;
 	writingData.servicesId = CountFillFile("Service.txt");
 	do {
 		InputString(writingData.name, "Введите название услуги: ", 49);
@@ -30,9 +83,9 @@ Services ScanfService() {
 	return writingData;
 }
 
-Services FileDataService(FILE* f)
+Service Service::FileDataService(FILE* f)
 {
-	Services fileDataObj{};
+	Service fileDataObj{};
 	fscanf(f, "%d |", &fileDataObj.servicesId);
 	fscanf(f, "%s |", fileDataObj.name);
 	ReplaceCharacter(&fileDataObj.name[0], '_', ' ');
@@ -40,12 +93,12 @@ Services FileDataService(FILE* f)
 	return fileDataObj;
 }
 
-void PrintfService(Services objService)//вывод всех записей
+void Service::PrintfService()//вывод всех записей
 {
-	if (objService.servicesId != 0) {
-		printf("|%3d", objService.servicesId);
-		printf("|%25s", objService.name);
-		printf("|%10d|", objService.tariff);
+	if (this->servicesId != 0) {
+		printf("|%3d", this->servicesId);
+		printf("|%25s", this->name);
+		printf("|%10d|", this->tariff);
 		printf("\n");
 	}
 	else {
@@ -56,10 +109,10 @@ void PrintfService(Services objService)//вывод всех записей
 	return;
 }
 
-void PrintfFromFileService(const char* s)
+void Service::PrintfFromFileService(const char* s)
 {
 	FILE* f;
-	Services objService{};
+	Service objService{};
 	int i = 0;
 	if (IsFile(s)) {
 		f = fopen(s, "r");
@@ -68,8 +121,8 @@ void PrintfFromFileService(const char* s)
 			PrintfTitleService();
 			while (!feof(f)) {
 				i++;
-				objService = FileDataService(f);
-				PrintfService(objService);
+				this->FileDataService(f);
+				this->PrintfService();
 			}
 			PrintfLine(165);
 		}
@@ -79,10 +132,10 @@ void PrintfFromFileService(const char* s)
 	_getch();
 }
 
-Services SearchService()
+Service Service::SearchService()
 {
 	int searchId = 0;
-	Services findService;
+	Service findService;
 	do {
 		FILE* findInFile;
 		findInFile = fopen("Service.txt", "r");
@@ -97,36 +150,37 @@ Services SearchService()
 		}
 	} while (findService.servicesId != searchId);
 }
-void InitServices(Services* initServices, int id, const char* name, int tariff)
-{
-	initServices->servicesId = id;
-	strcpy(initServices->name, name);
-	initServices->tariff = tariff;
-}
 
-Services InitServices(int id, const char* name, int tariff)
-{
-	Services initServices;
-	initServices.servicesId = id;
-	strcpy(initServices.name, name);
-	initServices.tariff = tariff;
-	return initServices;
-}
-
-int SearchService(Services Original, const char* find)
+int Service::SearchService(const char* find)
 {
 	char ch[10];
-	_itoa(Original.servicesId, ch, 10);
+	_itoa(this->servicesId, ch, 10);
 	if (strstr(ch, find)) return 1;
-	if (strstr(Original.name, find)) return 1;
-	_itoa(Original.tariff, ch, 10);
+	if (strstr(this->name, find)) return 1;
+	_itoa(this->tariff, ch, 10);
 	if (strstr(ch, find)) return 1;
 	return 0;
 
 }
 
-void PrintfTitleService() {
+void Service::PrintfTitleService() {
 	PrintfLine(165);
 	printf("|%3s|%25s|%10s|\n", " № ", "Название", "Тариф");
 	PrintfLine(165);
+}
+
+void Service::FscanfServiceOT(FILE* f)
+{
+	fscanf(f, "%d |", &this->servicesId);
+	fscanf(f, "%s |", this->name);
+	ReplaceCharacter(&this->name[0], '_', ' ');
+	fscanf(f, "%d |", &this->tariff);
+	return;
+}
+
+void Service::InitService(int id, const char* name, int tariff)
+{
+	this->servicesId = id;
+	strcpy(this->name, name);
+	this->tariff = tariff;
 }
