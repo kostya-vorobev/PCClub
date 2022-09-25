@@ -26,7 +26,7 @@ PC ScanfPC()
 	return writingData;
 }
 
-PC FileDataPC(FILE* f)
+PC FscanfPC(FILE* f)
 {
 	PC fileDataObj{};
 	fscanf(f, "%d |", &fileDataObj.PCId);
@@ -43,9 +43,9 @@ void PrintfPC(PC objPC)//вывод всех записей
 		printf("\n");
 	}
 	else {
-		PrintfLine(165);
-		printf("|%163s|\n", "Записей не найдено");
-		PrintfLine(165);
+		PrintfLine(32);
+		printf("|%30s|\n", "Записей не найдено");
+		PrintfLine(32);
 	}
 	return;
 }
@@ -62,10 +62,10 @@ void PrintfFromFilePC(const char* s)
 			PrintfTitlePC();
 			while (!feof(f)) {
 				i++;
-				objPC = FileDataPC(f);
+				objPC = FscanfPC(f);
 				PrintfPC(objPC);
 			}
-			PrintfLine(165);
+			PrintfLine(32);
 		}
 		else PrintfNullS();
 		fclose(f);
@@ -83,7 +83,7 @@ PC SearchPC()
 		searchId = get_int("Введите id нужного компьютера: ");
 		while (!feof(findInFile)) //Считывание во временный файл
 		{
-			findPC = FileDataPC(findInFile);
+			findPC = FscanfPC(findInFile);
 			if (findPC.PCId == searchId)
 			{
 				return findPC;
@@ -116,7 +116,7 @@ int SearchPC(PC Original, const char* find)
 }
 
 void PrintfTitlePC() {
-	PrintfLine(165);
+	PrintfLine(32);
 	printf("|%3s|%25s|\n", " № ", "Платформа");
-	PrintfLine(165);
+	PrintfLine(32);
 }

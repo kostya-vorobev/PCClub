@@ -37,7 +37,7 @@ Manager ScanfManager()
 	return writingData;
 }
 
-Manager FileDataManager(FILE* f)
+Manager FscanfManager(FILE* f)
 {
 	Manager fileDataObj{};
 	fscanf(f, "%d |", &fileDataObj.managerId);
@@ -59,7 +59,7 @@ Manager SearchManager()
 		searchId = get_int("Введите id менеджера: ");
 		while (!feof(findInFile)) //Считывание во временный файл
 		{
-			findManager = FileDataManager(findInFile);
+			findManager = FscanfManager(findInFile);
 			if (findManager.managerId == searchId)
 			{
 				return findManager;
@@ -78,9 +78,9 @@ void PrintfManager(Manager objManager)//вывод всех записей
 		printf("\n");
 	}
 	else {
-		PrintfLine(165);
-		printf("|%163s|\n", "Записей не найдено");
-		PrintfLine(165);
+		PrintfLine(68);
+		printf("|%66s|\n", "Записей не найдено");
+		PrintfLine(68);
 	}
 	return;
 }
@@ -97,10 +97,10 @@ void PrintfFromFileManager(const char* s)
 			PrintfTitleManager();
 			while (!feof(f)) {
 				i++;
-				objManager = FileDataManager(f);
+				objManager = FscanfManager(f);
 				PrintfManager(objManager);
 			}
-			PrintfLine(165);
+			PrintfLine(68);
 		}
 		else PrintfNullS();
 		fclose(f);
@@ -116,7 +116,7 @@ bool checkStringInFile(char s[M / 2][M / 2]) {
 	CreateFile("tempSearch.txt");
 	while (!feof(f))
 	{
-		objManager = FileDataManager(f);
+		objManager = FscanfManager(f);
 		int i = 0;
 		for (i = 0; s[i][0] != NULL; i++) {
 			if (strstr(objManager.fio, s[i]))
@@ -152,9 +152,9 @@ Manager InitManager(int id, const char* fio, const char* adress, int salary)
 }
 
 void PrintfTitleManager() {
-	PrintfLine(165);
+	PrintfLine(68);
 	printf("|%3s|%25s|%25s|%10s|\n", " № ", "ФИО", "Адрес", "Ставка");
-	PrintfLine(165);
+	PrintfLine(68);
 }
 
 int SearchManager(Manager Original, const char* find)

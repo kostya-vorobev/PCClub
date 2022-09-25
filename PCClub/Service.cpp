@@ -30,7 +30,7 @@ Services ScanfService() {
 	return writingData;
 }
 
-Services FileDataService(FILE* f)
+Services FscanfService(FILE* f)
 {
 	Services fileDataObj{};
 	fscanf(f, "%d |", &fileDataObj.servicesId);
@@ -49,9 +49,9 @@ void PrintfService(Services objService)//вывод всех записей
 		printf("\n");
 	}
 	else {
-		PrintfLine(165);
-		printf("|%163s|\n", "Записей не найдено");
-		PrintfLine(165);
+		PrintfLine(42);
+		printf("|%40s|\n", "Записей не найдено");
+		PrintfLine(42);
 	}
 	return;
 }
@@ -68,10 +68,10 @@ void PrintfFromFileService(const char* s)
 			PrintfTitleService();
 			while (!feof(f)) {
 				i++;
-				objService = FileDataService(f);
+				objService = FscanfService(f);
 				PrintfService(objService);
 			}
-			PrintfLine(165);
+			PrintfLine(42);
 		}
 		else PrintfNullS();
 		fclose(f);
@@ -89,7 +89,7 @@ Services SearchService()
 		searchId = get_int("Введите id услуги: ");
 		while (!feof(findInFile)) //Считывание во временный файл
 		{
-			findService = FileDataService(findInFile);
+			findService = FscanfService(findInFile);
 			if (findService.servicesId == searchId)
 			{
 				return findService;
@@ -126,7 +126,7 @@ int SearchService(Services Original, const char* find)
 }
 
 void PrintfTitleService() {
-	PrintfLine(165);
+	PrintfLine(42);
 	printf("|%3s|%25s|%10s|\n", " № ", "Название", "Тариф");
-	PrintfLine(165);
+	PrintfLine(42);
 }

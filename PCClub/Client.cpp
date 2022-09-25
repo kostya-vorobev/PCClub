@@ -27,7 +27,7 @@ Client ScanfClient()
 	return writingData;
 }
 
-Client FileDataClient(FILE* f)
+Client FscanfClient(FILE* f)
 {
 	Client fileDataObj{};
 	fscanf(f, "%d |", &fileDataObj.clientId);
@@ -44,9 +44,9 @@ void PrintfClient(Client objClient)//вывод всех записей
 		printf("\n");
 	}
 	else {
-		PrintfLine(165);
-		printf("|%163s|\n", "Записей не найдено");
-		PrintfLine(165);
+		PrintfLine(32);
+		printf("|%30s|\n", "Записей не найдено");
+		PrintfLine(32);
 	}
 	return;
 }
@@ -61,7 +61,7 @@ Client SearchClient()
 		searchId = get_int("Введите id клиента: ");
 		while (!feof(findInFile)) //Считывание во временный файл
 		{
-			findClient = FileDataClient(findInFile);
+			findClient = FscanfClient(findInFile);
 			if (findClient.clientId == searchId)
 			{
 				return findClient;
@@ -82,10 +82,10 @@ void PrintfFromFileClient(const char* s)
 			PrintfTitleClient();
 			while (!feof(f)) {
 				i++;
-				objClient = FileDataClient(f);
+				objClient = FscanfClient(f);
 				PrintfClient(objClient);
 			}
-			PrintfLine(165);
+			PrintfLine(32);
 		}
 		else PrintfNullS();
 		fclose(f);
@@ -117,7 +117,7 @@ int SearchClient(Client Original, const char* find)
 }
 
 void PrintfTitleClient() {
-	PrintfLine(165);
+	PrintfLine(32);
 	printf("|%3s|%25s|\n", " № ", "ФИО");
-	PrintfLine(165);
+	PrintfLine(32);
 }

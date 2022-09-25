@@ -47,9 +47,9 @@ void PrintfOrderTable(OrderTable objOrderTable)//вывод всех записей
 		printf("\n");
 	}
 	else {
-		PrintfLine(165);
-		printf("|%163s|\n", "Записей не найдено");
-		PrintfLine(165);
+		PrintfLine(144);
+		printf("|%142s|\n", "Записей не найдено");
+		PrintfLine(144);
 	}
 	return;
 }
@@ -69,7 +69,7 @@ void PrintfFromFileOrderTable(const char* s)
 				objOrderTable = FileOrderTable(f);
 				PrintfOrderTable(objOrderTable);
 			}
-			PrintfLine(165);
+			PrintfLine(144);
 		}
 		else PrintfNullS();
 		fclose(f);
@@ -170,9 +170,9 @@ OrderTable InitOrderTable(int id, PC pcData, const char* startTime, const char* 
 }
 
 void PrintfTitleOrderTable() {
-	PrintfLine(165);
+	PrintfLine(144);
 	printf("|%3s|%25s|%25s|%12s|%10s|%10s|%25s|%25s|\n", " № ", "ФИО клиента", "Тип ПК", "Время взятия", "Время сдачи", "Стоимость", "Услуга", "ФИО менеджера");
-	PrintfLine(165);
+	PrintfLine(144);
 }
 
 int SearchOrderTable(OrderTable Original, const char* find)

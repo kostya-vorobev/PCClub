@@ -11,7 +11,7 @@ void FprintfPC(PC dataInFilePC, const char* fileName, const char* endString);
 
 PC ScanfPC();
 
-PC FileDataPC(FILE* f);
+PC FscanfPC(FILE* f);
 
 void PrintfPC(PC objPC);
 

@@ -12,7 +12,7 @@ void FprintfServices(Services dataInFileServices, const char* fileName, const ch
 
 Services ScanfService();
 
-Services FileDataService(FILE* f);
+Services FscanfService(FILE* f);
 
 void PrintfService(Services objService);
 

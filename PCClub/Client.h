@@ -11,7 +11,7 @@ void FprintfClient(Client dataInFileClient, const char* fileName, const char* en
 
 Client ScanfClient();
 
-Client FileDataClient(FILE* f);
+Client FscanfClient(FILE* f);
 
 void PrintfClient(Client objClient);
 

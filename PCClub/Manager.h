@@ -13,7 +13,7 @@ void FprintfManager(Manager dataInFileManager, const char* fileName, const char*
 
 Manager ScanfManager();
 
-Manager FileDataManager(FILE* f);
+Manager FscanfManager(FILE* f);
 
 Manager SearchManager();
 
