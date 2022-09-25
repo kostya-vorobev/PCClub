@@ -1,68 +1,49 @@
 #include "OrderTable.h"
 
-OrderTable::OrderTable()
+void FprintfOrderTable(OrderTable dataInFileOrderTable, const char* s)
 {
-}
-
-OrderTable::OrderTable(int id, PC pcData, const char* startTime, const char* finishTime, Service servicesData, Client clientData, int cost, Manager managerData)
-{
-	this->orderTableId = id;
-	this->CopyPC(pcData);
-	strcpy(this->startTime, startTime);
-	strcpy(this->finishTime, finishTime);
-	this->CopyService(servicesData);
-	this->CopyClient(clientData);
-	this->cost = cost;
-	this->CopyManager(managerData);
-}
-
-OrderTable::~OrderTable()
-{
-}
-
-void OrderTable::FprintfOrderTable(const char* s)
-{
+	OrderTable writingData = dataInFileOrderTable;
 	FILE* f;
 	if (!IsFile(s)) {
 		CreateFile(s);
 	}
-	if (IsFile(s) && this->orderTableId != 0) {
+	if (IsFile(s) && writingData.orderTableId != 0) {
 		f = fopen(s, "a");
-		fprintf(f, "%d |", this->orderTableId);
-		fprintf(f, "%d |", this->getIDPC());
-		ReplaceCharacter(&this->getTypePC()[0], ' ', '_');
-		fprintf(f, "%s |", this->getTypePC());
-		fprintf(f, "%s |", this->startTime);
-		fprintf(f, "%s |", this->finishTime);
-		fprintf(f, "%d |", this->getIDService());
-		ReplaceCharacter(&this->getName()[0], ' ', '_');
-		fprintf(f, "%s |", this->getName());
-		fprintf(f, "%d |", this->getTariff());
-		fprintf(f, "%d |", this->getIDClient());
-		ReplaceCharacter(&this->getFIOClient()[0], ' ', '_');
-		fprintf(f, "%s |", this->getFIOClient());
-		fprintf(f, "%d |", this->cost);
-		fprintf(f, "%d |", this->getIDManager());
-		ReplaceCharacter(&this->getFIOManager()[0], ' ', '_');
-		fprintf(f, "%s |", this->getFIOManager());
-		ReplaceCharacter(&this->getAdress()[0], ' ', '_');
-		fprintf(f, "%s |", this->getAdress());
-		fprintf(f, "%d\n", this->getSalary());
+		fprintf(f, "%d |", writingData.orderTableId);
+		fprintf(f, "%d |", writingData.pcData.PCId);
+		ReplaceCharacter(&writingData.pcData.typePC[0], ' ', '_');
+		fprintf(f, "%s |", writingData.pcData.typePC);
+		fprintf(f, "%s |", writingData.startTime);
+		fprintf(f, "%s |", writingData.finishTime);
+		fprintf(f, "%d |", writingData.servicesData.servicesId);
+		ReplaceCharacter(&writingData.servicesData.name[0], ' ', '_');
+		fprintf(f, "%s |", writingData.servicesData.name);
+		fprintf(f, "%d |", writingData.servicesData.tariff);
+		fprintf(f, "%d |", writingData.clientData.clientId);
+		ReplaceCharacter(&writingData.clientData.fio[0], ' ', '_');
+		fprintf(f, "%s |", writingData.clientData.fio);
+		fprintf(f, "%d |", writingData.cost);
+		fprintf(f, "%d |", writingData.managerData.managerId);
+		ReplaceCharacter(&writingData.managerData.fio[0], ' ', '_');
+		fprintf(f, "%s |", writingData.managerData.fio);
+		ReplaceCharacter(&writingData.managerData.adress[0], ' ', '_');
+		fprintf(f, "%s |", writingData.managerData.adress);
+		fprintf(f, "%d\n", writingData.managerData.salary);
 		fclose(f);
 	}
 }
 
-void OrderTable::PrintfOrderTable()//вывод всех записей
+void PrintfOrderTable(OrderTable objOrderTable)//вывод всех записей
 {
-	if (this->orderTableId != 0) {
-		printf("|%3d", this->orderTableId);
-		printf("|%25s", this->getFIOClient());
-		printf("|%25s", this->getTypePC());
-		printf("|%12s", this->startTime);
-		printf("|%10s", this->finishTime);
-		printf("|%10d", this->cost);
-		printf("|%25s", this->getName());
-		printf("|%25s|", this->getFIOManager());
+	if (objOrderTable.orderTableId != 0) {
+		printf("|%3d", objOrderTable.orderTableId);
+		printf("|%25s", objOrderTable.clientData.fio);
+		printf("|%25s", objOrderTable.pcData.typePC);
+		printf("|%12s", objOrderTable.startTime);
+		printf("|%10s", objOrderTable.finishTime);
+		printf("|%10d", objOrderTable.cost);
+		printf("|%25s", objOrderTable.servicesData.name);
+		printf("|%25s|", objOrderTable.managerData.fio);
 		printf("\n");
 	}
 	else {
@@ -73,9 +54,10 @@ void OrderTable::PrintfOrderTable()//вывод всех записей
 	return;
 }
 
-void OrderTable::PrintfFromFileOrderTable(const char* s)
+void PrintfFromFileOrderTable(const char* s)
 {
 	FILE* f;
+	OrderTable objOrderTable{};
 	int i = 0;
 	if (IsFile(s)) {
 		f = fopen(s, "r");
@@ -84,8 +66,8 @@ void OrderTable::PrintfFromFileOrderTable(const char* s)
 			PrintfTitleOrderTable();
 			while (!feof(f)) {
 				i++;
-				this->FileOrderTable(f);
-				this->PrintfOrderTable();
+				objOrderTable = FileOrderTable(f);
+				PrintfOrderTable(objOrderTable);
 			}
 			PrintfLine(165);
 		}
@@ -95,91 +77,116 @@ void OrderTable::PrintfFromFileOrderTable(const char* s)
 	_getch();
 }
 
-OrderTable OrderTable::ScanfOrderTable() {
+OrderTable ScanfOrderTable() {
 
 	OrderTable writingData;
-	this->orderTableId = CountFillFile("OrderTable.txt");
+	writingData.orderTableId = CountFillFile("OrderTable.txt");
 	PrintfFromFilePC("PC.txt");
 	if (CountFillFile("PC.txt") >= 1)
-		this->SearchPC();
+		writingData.pcData = SearchPC();
 	else {
-		this->ScanfPC();
-		FprintfPC("PC.txt", "\n");
+		writingData.pcData = ScanfPC();
+		FprintfPC(writingData.pcData, "PC.txt", "\n");
 	}
 	const time_t timer = time(NULL);
-	InputString(this->startTime, "Введите время начала аренды: ", 9);
-	InputString(this->finishTime, "Введите время конца аренды: ", 9);
+	InputString(writingData.startTime, "Введите время начала аренды: ", 9);
+	InputString(writingData.finishTime, "Введите время конца аренды: ", 9);
 	PrintfFromFileService("Service.txt");
 	if (CountFillFile("Service.txt") >= 1)
-		this->SearchService();
+		writingData.servicesData = SearchService();
 	else {
-		this->ScanfService();
-		FprintfService("Service.txt", "\n");
+		writingData.servicesData = ScanfService();
+		FprintfServices(writingData.servicesData, "Service.txt", "\n");
 	}
 	PrintfFromFileClient("Client.txt");
 	if (CountFillFile("Client.txt") >= 1)
-		this->SearchClient();
+		writingData.clientData = SearchClient();
 	else {
-		this->ScanfClient();
-		FprintfClient("Client.txt", "\n");
+		writingData.clientData = ScanfClient();
+		FprintfClient(writingData.clientData, "Client.txt", "\n");
 	}
-	this->cost = get_int("Введите стоимость аренды: ");
+	writingData.cost = get_int("Введите стоимость аренды: ");
 	PrintfFromFileManager("Manager.txt");
 	if (CountFillFile("Manager.txt") >= 1)
-		this->SearchManager();
+		writingData.managerData = SearchManager();
 	else {
-		this->ScanfManager();
-		FprintfManager("Manager.txt", "\n");
+		writingData.managerData = ScanfManager();
+		FprintfManager(writingData.managerData, "Manager.txt", "\n");
 	}
 	return writingData;
 }
 
-OrderTable OrderTable::FileOrderTable(FILE* f)
+OrderTable FileOrderTable(FILE* f)
 {
 	OrderTable fileDataObj{};
 
 	fscanf(f, "%d |", &fileDataObj.orderTableId);
-	fileDataObj.FscanfPCOT(f);
+	fscanf(f, "%d |", &fileDataObj.pcData.PCId);
+	fscanf(f, "%s |", fileDataObj.pcData.typePC);
+	ReplaceCharacter(&fileDataObj.pcData.typePC[0], '_', ' ');
 	fscanf(f, "%s |", fileDataObj.startTime);
 	fscanf(f, "%s |", fileDataObj.finishTime);
-	fileDataObj.FscanfServiceOT(f);
-	fileDataObj.FscanfClientOT(f);
+	fscanf(f, "%d |", &fileDataObj.servicesData.servicesId);
+	fscanf(f, "%s |", fileDataObj.servicesData.name);
+	ReplaceCharacter(&fileDataObj.servicesData.name[0], '_', ' ');
+	fscanf(f, "%d |", &fileDataObj.servicesData.tariff);
+	fscanf(f, "%d |", &fileDataObj.clientData.clientId);
+	fscanf(f, "%s |", fileDataObj.clientData.fio);
+	ReplaceCharacter(&fileDataObj.clientData.fio[0], '_', ' ');
 	fscanf(f, "%d |", &fileDataObj.cost);
-	fileDataObj.FscanfManagerOT(f);
+	fscanf(f, "%d |", &fileDataObj.managerData.managerId);
+	fscanf(f, "%s |", fileDataObj.managerData.fio);
+	ReplaceCharacter(&fileDataObj.managerData.fio[0], '_', ' ');
+	fscanf(f, "%s |", fileDataObj.managerData.adress);
+	ReplaceCharacter(&fileDataObj.managerData.adress[0], '_', ' ');
+	fscanf(f, "%d\n", &fileDataObj.managerData.salary);
 	return fileDataObj;
 }
 
-void OrderTable::PrintfTitleOrderTable() {
+void InitOrderTable(OrderTable* initOrderTable, int id, PC pcData, const char* startTime, const char* finishTime, Services servicesData, Client clientData, int cost, Manager managerData)
+{
+	initOrderTable->orderTableId = id;
+	initOrderTable->pcData = pcData;
+	strcpy(initOrderTable->startTime, startTime);
+	strcpy(initOrderTable->finishTime, finishTime);
+	initOrderTable->servicesData = servicesData;
+	initOrderTable->clientData = clientData;
+	initOrderTable->cost = cost;
+	initOrderTable->managerData = managerData;
+}
+
+OrderTable InitOrderTable(int id, PC pcData, const char* startTime, const char* finishTime, Services servicesData, Client clientData, int cost, Manager managerData)
+{
+	OrderTable initOrderTable;
+	initOrderTable.orderTableId = id;
+	initOrderTable.pcData = pcData;
+	strcpy(initOrderTable.startTime, startTime);
+	strcpy(initOrderTable.finishTime, finishTime);
+	initOrderTable.servicesData = servicesData;
+	initOrderTable.clientData = clientData;
+	initOrderTable.cost = cost;
+	initOrderTable.managerData = managerData;
+	return initOrderTable;
+}
+
+void PrintfTitleOrderTable() {
 	PrintfLine(165);
 	printf("|%3s|%25s|%25s|%12s|%10s|%10s|%25s|%25s|\n", " № ", "ФИО клиента", "Тип ПК", "Время взятия", "Время сдачи", "Стоимость", "Услуга", "ФИО менеджера");
 	PrintfLine(165);
 }
 
-int OrderTable::SearchOrderTable(const char* find)
+int SearchOrderTable(OrderTable Original, const char* find)
 {
 	char ch[10];
-	_itoa(this->orderTableId, ch, 10);
+	_itoa(Original.orderTableId, ch, 10);
 	if (strstr(ch, find)) return 1;
-	if (this->SearchPC(find)) return 1;
-	if (strstr(this->startTime, find)) return 1;
-	if (strstr(this->finishTime, find)) return 1;
-	if (this->SearchService(find)) return 1;
-	if (this->SearchClient(find)) return 1;
-	_itoa(this->cost, ch, 10);
+	if (SearchPC(Original.pcData, find)) return 1;
+	if (strstr(Original.startTime, find)) return 1;
+	if (strstr(Original.finishTime, find)) return 1;
+	if (SearchService(Original.servicesData, find)) return 1;
+	if (SearchClient(Original.clientData, find)) return 1;
+	_itoa(Original.cost, ch, 10);
 	if (strstr(ch, find)) return 1;
-	if (this->SearchManager(find)) return 1;
+	if (SearchManager(Original.managerData, find)) return 1;
 	return 0;
-}
-
-
-void OrderTable::InitOrderTable(int id, PC pcData, const char* startTime, const char* finishTime, Service servicesData, Client clientData, int cost, Manager managerData)
-{
-	this->orderTableId = id;
-	this->CopyPC(pcData);
-	strcpy(this->startTime, startTime);
-	strcpy(this->finishTime, finishTime);
-	this->CopyService(servicesData);
-	this->CopyClient(clientData);
-	this->cost = cost;
-	this->CopyManager(managerData);
 }

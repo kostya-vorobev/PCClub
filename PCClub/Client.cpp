@@ -1,62 +1,21 @@
 #include "Client.h"
 
-Client::Client(int id, const char* fio)
-{
-	this->clientId = id;
-	strcpy(this->fio, fio);
-}
-
-Client::Client()
-{
-}
-
-Client::~Client()
-{
-}
-
-void Client::CopyClient(Client objClient)
-{
-	 this->clientId = objClient.clientId;
-	 strcpy(this->fio, objClient.fio);
-}
-
-int Client::getIDClient()
-{
-	return this->clientId;
-}
-
-char* Client::getFIOClient()
-{
-	return this->fio;
-}
-
-void Client::setIDClient(int id)
-{
-	this->clientId = id;
-}
-
-void Client::setFIOClient(char fio[])
-{
-	strcat(this->fio, fio);
-}
-
-
-void Client::FprintfClient(const char* fileName, const char* endString)
+void FprintfClient(Client dataInFileClient, const char* fileName, const char* endString)
 {
 	FILE* f;
 	if (!IsFile(fileName)) {
 		CreateFile(fileName);
 	}
-	if (IsFile(fileName) && this->clientId != 0) {
+	if (IsFile(fileName) && dataInFileClient.clientId != 0) {
 		f = fopen(fileName, "a");
-		fprintf(f, "%d |", this->clientId);
-		ReplaceCharacter(&this->fio[0], ' ', '_');
-		fprintf(f, "%s%s", this->fio, endString);
+		fprintf(f, "%d |", dataInFileClient.clientId);
+		ReplaceCharacter(&dataInFileClient.fio[0], ' ', '_');
+		fprintf(f, "%s%s", dataInFileClient.fio, endString);
 		fclose(f);
 	}
 }
 
-Client Client::ScanfClient()
+Client ScanfClient()
 {
 	Client writingData;
 	writingData.clientId = CountFillFile("Client.txt");
@@ -68,7 +27,7 @@ Client Client::ScanfClient()
 	return writingData;
 }
 
-Client Client::FileDataClient(FILE* f)
+Client FileDataClient(FILE* f)
 {
 	Client fileDataObj{};
 	fscanf(f, "%d |", &fileDataObj.clientId);
@@ -77,11 +36,11 @@ Client Client::FileDataClient(FILE* f)
 	return fileDataObj;
 }
 
-void Client::PrintfClient()//вывод всех записей
+void PrintfClient(Client objClient)//вывод всех записей
 {
-	if (this->clientId != 0) {
-		printf("|%3d", this->clientId);
-		printf("|%25s|", this->fio);
+	if (objClient.clientId != 0) {
+		printf("|%3d", objClient.clientId);
+		printf("|%25s|", objClient.fio);
 		printf("\n");
 	}
 	else {
@@ -92,7 +51,7 @@ void Client::PrintfClient()//вывод всех записей
 	return;
 }
 
-Client Client::SearchClient()
+Client SearchClient()
 {
 	int searchId = 0;
 	Client findClient;
@@ -111,7 +70,7 @@ Client Client::SearchClient()
 	} while (findClient.clientId != searchId);
 };
 
-void Client::PrintfFromFileClient(const char* s)
+void PrintfFromFileClient(const char* s)
 {
 	FILE* f;
 	Client objClient{};
@@ -123,8 +82,8 @@ void Client::PrintfFromFileClient(const char* s)
 			PrintfTitleClient();
 			while (!feof(f)) {
 				i++;
-				this->FileDataClient(f);
-				this->PrintfClient();
+				objClient = FileDataClient(f);
+				PrintfClient(objClient);
 			}
 			PrintfLine(165);
 		}
@@ -134,31 +93,31 @@ void Client::PrintfFromFileClient(const char* s)
 	_getch();
 }
 
-int Client::SearchClient(const char* find)
+void InitClient(Client* initClient, int id, const char* fio)
+{
+	initClient->clientId = id;
+	strcpy(initClient->fio, fio);
+}
+
+Client InitClient(int id, const char* fio)
+{
+	Client initClient;
+	initClient.clientId = id;
+	strcpy(initClient.fio, fio);
+	return initClient;
+}
+
+int SearchClient(Client Original, const char* find)
 {
 	char ch[10];
-	_itoa(this->clientId, ch, 10);
+	_itoa(Original.clientId, ch, 10);
 	if (strstr(ch, find)) return 1;
-	if (strstr(this->fio, find)) return 1;
+	if (strstr(Original.fio, find)) return 1;
 	return 0;
 }
 
-void Client::PrintfTitleClient() {
+void PrintfTitleClient() {
 	PrintfLine(165);
 	printf("|%3s|%25s|\n", " № ", "ФИО");
 	PrintfLine(165);
-}
-
-void Client::FscanfClientOT(FILE* f)
-{
-	fscanf(f, "%d |", &this->clientId);
-	fscanf(f, "%s |", this->fio);
-	ReplaceCharacter(&this->fio[0], '_', ' ');
-	return;
-}
-
-void Client::InitClient(int id, const char* fio)
-{
-	this->clientId = id;
-	strcpy(this->fio, fio);
 }

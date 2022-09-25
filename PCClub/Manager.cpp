@@ -1,88 +1,25 @@
 #include "Manager.h"
 #include <iostream>
 
-Manager::Manager(int id, const char* fio, const char* adress, int salary)
-{
-	this->managerId = id;
-	strcpy(this->fio, fio);
-	strcpy(this->adress, adress);
-	this->salary = salary;
-}
-
-Manager::Manager()
-{
-}
-
-Manager::~Manager()
-{
-}
-
-void Manager::CopyManager(Manager objManager)
-{
-	this->managerId = objManager.managerId;
-	strcpy(this->fio, objManager.fio);
-	strcpy(this->adress, objManager.adress);
-	this->salary = objManager.salary;
-}
-
-int Manager::getIDManager()
-{
-	return this->managerId;
-}
-
-char* Manager::getFIOManager()
-{
-	return this->fio;
-}
-
-char* Manager::getAdress()
-{
-	return this->adress;
-}
-
-int Manager::getSalary()
-{
-	return this->salary;
-}
-
-void Manager::setIDManager(int id)
-{
-	this->managerId = id;
-}
-
-void Manager::setFIOManager(char fio[])
-{
-	strcat(this->fio, fio);
-}
-
-void Manager::setAdress(char Adress[])
-{
-	strcat(this->adress, Adress);
-}
-void Manager::setSalary(int Salary)
-{
-	this->salary = Salary;
-}
-
-void Manager::FprintfManager(const char* fileName, const char* endString)
+void FprintfManager(Manager dataInFileManager, const char* fileName, const char* endString)
 {
 	FILE* f;
 	if (!IsFile(fileName)) {
 		CreateFile(fileName);
 	}
-	if (IsFile(fileName) && this->managerId != 0) {
+	if (IsFile(fileName) && dataInFileManager.managerId != 0) {
 		f = fopen(fileName, "a");
-		fprintf(f, "%d |", this->managerId);
-		ReplaceCharacter(&this->fio[0], ' ', '_');
-		fprintf(f, "%s |", this->fio);
-		ReplaceCharacter(&this->adress[0], ' ', '_');
-		fprintf(f, "%s |", this->adress);
-		fprintf(f, "%d%s", this->salary, endString);
+		fprintf(f, "%d |", dataInFileManager.managerId);
+		ReplaceCharacter(&dataInFileManager.fio[0], ' ', '_');
+		fprintf(f, "%s |", dataInFileManager.fio);
+		ReplaceCharacter(&dataInFileManager.adress[0], ' ', '_');
+		fprintf(f, "%s |", dataInFileManager.adress);
+		fprintf(f, "%d%s", dataInFileManager.salary, endString);
 		fclose(f);
 	}
 }
 
-Manager Manager::ScanfManager()
+Manager ScanfManager()
 {
 	Manager writingData;
 	writingData.managerId = CountFillFile("Manager.txt");
@@ -100,7 +37,7 @@ Manager Manager::ScanfManager()
 	return writingData;
 }
 
-Manager Manager::FileDataManager(FILE* f)
+Manager FileDataManager(FILE* f)
 {
 	Manager fileDataObj{};
 	fscanf(f, "%d |", &fileDataObj.managerId);
@@ -112,7 +49,7 @@ Manager Manager::FileDataManager(FILE* f)
 	return fileDataObj;
 }
 
-Manager Manager::SearchManager()
+Manager SearchManager()
 {
 	int searchId = 0;
 	Manager findManager;
@@ -131,13 +68,13 @@ Manager Manager::SearchManager()
 	} while (findManager.managerId != searchId);
 };
 
-void Manager::PrintfManager()//вывод всех записей
+void PrintfManager(Manager objManager)//вывод всех записей
 {
-	if (this->managerId != 0) {
-		printf("|%3d", this->managerId);
-		printf("|%25s", this->fio);
-		printf("|%25s", this->adress);
-		printf("|%10d|", this->salary);
+	if (objManager.managerId != 0) {
+		printf("|%3d", objManager.managerId);
+		printf("|%25s", objManager.fio);
+		printf("|%25s", objManager.adress);
+		printf("|%10d|", objManager.salary);
 		printf("\n");
 	}
 	else {
@@ -148,7 +85,7 @@ void Manager::PrintfManager()//вывод всех записей
 	return;
 }
 
-void Manager::PrintfFromFileManager(const char* s)
+void PrintfFromFileManager(const char* s)
 {
 	FILE* f;
 	Manager objManager{};
@@ -160,8 +97,8 @@ void Manager::PrintfFromFileManager(const char* s)
 			PrintfTitleManager();
 			while (!feof(f)) {
 				i++;
-				this->FileDataManager(f);
-				this->PrintfManager();
+				objManager = FileDataManager(f);
+				PrintfManager(objManager);
 			}
 			PrintfLine(165);
 		}
@@ -171,39 +108,63 @@ void Manager::PrintfFromFileManager(const char* s)
 	_getch();
 }
 
-void Manager::PrintfTitleManager() {
+bool checkStringInFile(char s[M / 2][M / 2]) {
+	FILE* f;
+	f = fopen("Manager.txt", "r");
+	int flag = 0;
+	Manager objManager{};
+	CreateFile("tempSearch.txt");
+	while (!feof(f))
+	{
+		objManager = FileDataManager(f);
+		int i = 0;
+		for (i = 0; s[i][0] != NULL; i++) {
+			if (strstr(objManager.fio, s[i]))
+				flag++;
+			if (strstr(objManager.adress, s[i]))
+				flag++;
+		}
+		if (flag >= i)
+			FprintfManager(objManager, "tempSearch.txt", "\n");
+		flag = 0;
+	}
+	fclose(f);
+	PrintfFromFileManager("tempSearch.txt");
+	return 0;
+}
+
+void InitManager(Manager* initManager, int id, const char *fio, const char *adress, int salary)
+{
+	initManager->managerId = id;
+	strcpy(initManager->fio, fio);
+	strcpy(initManager->adress, adress);
+	initManager->salary = salary;
+}
+
+Manager InitManager(int id, const char* fio, const char* adress, int salary)
+{
+	Manager initManager;
+	initManager.managerId = id;
+	strcpy(initManager.fio, fio);
+	strcpy(initManager.adress, adress);
+	initManager.salary = salary;
+	return initManager;
+}
+
+void PrintfTitleManager() {
 	PrintfLine(165);
 	printf("|%3s|%25s|%25s|%10s|\n", " № ", "ФИО", "Адрес", "Ставка");
 	PrintfLine(165);
 }
 
-int Manager::SearchManager(const char* find)
+int SearchManager(Manager Original, const char* find)
 {
 	char ch[10];
-	_itoa(this->managerId, ch, 10);
+	_itoa(Original.managerId, ch, 10);
 	if (strstr(ch, find)) return 1;
-	if (strstr(this->fio, find)) return 1;
-	if (strstr(this->adress, find)) return 1;
-	_itoa(this->salary, ch, 10);
+	if (strstr(Original.fio, find)) return 1;
+	if (strstr(Original.adress, find)) return 1;
+	_itoa(Original.salary, ch, 10);
 	if (strstr(ch, find)) return 1;
 	return 0;
-}
-
-void Manager::FscanfManagerOT(FILE* f)
-{
-	fscanf(f, "%d |", &this->managerId);
-	fscanf(f, "%s |", this->fio);
-	ReplaceCharacter(&this->fio[0], '_', ' ');
-	fscanf(f, "%s |", this->adress);
-	ReplaceCharacter(&this->adress[0], '_', ' ');
-	fscanf(f, "%d |", &this->salary);
-	return;
-}
-
-void Manager::InitManager(int id, const char* fio, const char* adress, int salary)
-{
-	this->managerId = id;
-	strcpy(this->fio, fio);
-	strcpy(this->adress, adress);
-	this->salary = salary;
 }
