@@ -66,7 +66,7 @@ PC PC::ScanfPC()
 	return writingData;
 }
 
-PC PC::FileDataPC(FILE* f)
+PC PC::FscanfPC(FILE* f)
 {
 	PC fileDataObj{};
 	fscanf(f, "%d |", &fileDataObj.PCId);
@@ -102,7 +102,7 @@ void PC::PrintfFromFilePC(const char* s)
 			PrintfTitlePC();
 			while (!feof(f)) {
 				i++;
-				this->FileDataPC(f);
+				this->FscanfPC(f);
 				this->PrintfPC();
 			}
 			PrintfLine(165);
@@ -123,7 +123,7 @@ PC PC::SearchPC()
 		searchId = Get_int("¬ведите id нужного компьютера: ");
 		while (!feof(findInFile)) 
 		{
-			findPC = FileDataPC(findInFile);
+			findPC = FscanfPC(findInFile);
 			if (findPC.PCId == searchId)
 			{
 				return findPC;

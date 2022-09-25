@@ -27,7 +27,7 @@ public:
 
 	Client ScanfClient();
 
-	Client FileDataClient(FILE* f);
+	Client FscanfClient(FILE* f);
 
 	void PrintfClient();
 

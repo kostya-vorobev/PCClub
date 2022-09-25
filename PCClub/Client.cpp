@@ -68,7 +68,7 @@ Client Client::ScanfClient()
 	return writingData;
 }
 
-Client Client::FileDataClient(FILE* f)
+Client Client::FscanfClient(FILE* f)
 {
 	Client fileDataObj{};
 	fscanf(f, "%d |", &fileDataObj.clientId);
@@ -102,7 +102,7 @@ Client Client::SearchClient()
 		searchId = Get_int("¬ведите id клиента: ");
 		while (!feof(findInFile)) //—читывание во временный файл
 		{
-			findClient = FileDataClient(findInFile);
+			findClient = FscanfClient(findInFile);
 			if (findClient.clientId == searchId)
 			{
 				return findClient;
@@ -123,7 +123,7 @@ void Client::PrintfFromFileClient(const char* s)
 			PrintfTitleClient();
 			while (!feof(f)) {
 				i++;
-				this->FileDataClient(f);
+				this->FscanfClient(f);
 				this->PrintfClient();
 			}
 			PrintfLine(165);

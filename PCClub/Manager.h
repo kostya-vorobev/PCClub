@@ -38,7 +38,7 @@ public:
 
 	Manager ScanfManager();
 
-	Manager FileDataManager(FILE* f);
+	Manager FscanfManager(FILE* f);
 
 	Manager SearchManager();
 

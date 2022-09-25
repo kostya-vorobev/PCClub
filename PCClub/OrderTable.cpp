@@ -20,6 +20,46 @@ OrderTable::~OrderTable()
 {
 }
 
+int OrderTable::GetIDOrderTable()
+{
+	return this->orderTableId;
+}
+
+char* OrderTable::GetStartTime()
+{
+	return this->startTime;
+}
+
+char* OrderTable::GetFinishTime()
+{
+	return this->finishTime;
+}
+
+char OrderTable::GetCost()
+{
+	return this->cost;
+}
+
+void OrderTable::SetIDOrderTable(int id)
+{
+	this->orderTableId = id;
+}
+
+void OrderTable::SetStartTime(const char* time)
+{
+	strcpy(this->startTime, time);
+}
+
+void OrderTable::SetFinishTime(const char* time)
+{
+	strcpy(this->finishTime, time);
+}
+
+void OrderTable::SetCost(int cost)
+{
+	this->cost = cost;
+}
+
 void OrderTable::FprintfOrderTable(const char* s)
 {
 	FILE* f;
@@ -84,7 +124,7 @@ void OrderTable::PrintfFromFileOrderTable(const char* s)
 			PrintfTitleOrderTable();
 			while (!feof(f)) {
 				i++;
-				this->FileOrderTable(f);
+				this->PrintfFromFileOrderTable(f);
 				this->PrintfOrderTable();
 			}
 			PrintfLine(165);
@@ -134,7 +174,7 @@ OrderTable OrderTable::ScanfOrderTable() {
 	return writingData;
 }
 
-OrderTable OrderTable::FileOrderTable(FILE* f)
+OrderTable OrderTable::PrintfFromFileOrderTable(FILE* f)
 {
 	OrderTable fileDataObj{};
 

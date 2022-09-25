@@ -28,7 +28,7 @@ public:
 
 	PC ScanfPC();
 
-	PC FileDataPC(FILE* f);
+	PC FscanfPC(FILE* f);
 
 	void PrintfPC();
 

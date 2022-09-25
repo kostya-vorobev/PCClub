@@ -5,7 +5,7 @@
 #include "PC.h"
 #include "Service.h"
 
-class OrderTable: public Manager, public Client, public PC, public Service
+class OrderTable : public Manager, public Client, public PC, public Service
 {
 private:
 	int orderTableId;
@@ -16,9 +16,25 @@ private:
 public:
 	OrderTable();
 
-	OrderTable (int id, PC pcData, const char* startTime, const char* finishTime, Service servicesData, Client clientData, int cost, Manager managerData);
+	OrderTable(int id, PC pcData, const char* startTime, const char* finishTime, Service servicesData, Client clientData, int cost, Manager managerData);
 
 	~OrderTable();
+
+	int GetIDOrderTable();
+
+	char* GetStartTime();
+
+	char* GetFinishTime();
+
+	char GetCost();
+
+	void SetIDOrderTable(int id);
+
+	void SetStartTime(const char* time);
+
+	void SetFinishTime(const char* time);
+
+	void SetCost(int cost);
 
 	void FprintfOrderTable(const char* s);
 
@@ -28,7 +44,7 @@ public:
 
 	OrderTable ScanfOrderTable();
 
-	OrderTable FileOrderTable(FILE* f);
+	OrderTable PrintfFromFileOrderTable(FILE* f);
 
 	void PrintfTitleOrderTable();
 

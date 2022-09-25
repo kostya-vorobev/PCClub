@@ -100,7 +100,7 @@ Manager Manager::ScanfManager()
 	return writingData;
 }
 
-Manager Manager::FileDataManager(FILE* f)
+Manager Manager::FscanfManager(FILE* f)
 {
 	Manager fileDataObj{};
 	fscanf(f, "%d |", &fileDataObj.managerId);
@@ -122,7 +122,7 @@ Manager Manager::SearchManager()
 		searchId = Get_int("¬ведите id менеджера: ");
 		while (!feof(findInFile)) //—читывание во временный файл
 		{
-			findManager = FileDataManager(findInFile);
+			findManager = FscanfManager(findInFile);
 			if (findManager.managerId == searchId)
 			{
 				return findManager;
@@ -160,7 +160,7 @@ void Manager::PrintfFromFileManager(const char* s)
 			PrintfTitleManager();
 			while (!feof(f)) {
 				i++;
-				this->FileDataManager(f);
+				this->FscanfManager(f);
 				this->PrintfManager();
 			}
 			PrintfLine(165);

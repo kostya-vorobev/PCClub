@@ -83,7 +83,7 @@ Service Service::ScanfService() {
 	return writingData;
 }
 
-Service Service::FileDataService(FILE* f)
+Service Service::FscanfService(FILE* f)
 {
 	Service fileDataObj{};
 	fscanf(f, "%d |", &fileDataObj.servicesId);
@@ -121,7 +121,7 @@ void Service::PrintfFromFileService(const char* s)
 			PrintfTitleService();
 			while (!feof(f)) {
 				i++;
-				this->FileDataService(f);
+				this->FscanfService(f);
 				this->PrintfService();
 			}
 			PrintfLine(165);
@@ -142,7 +142,7 @@ Service Service::SearchService()
 		searchId = Get_int("¬ведите id услуги: ");
 		while (!feof(findInFile)) //—читывание во временный файл
 		{
-			findService = FileDataService(findInFile);
+			findService = FscanfService(findInFile);
 			if (findService.servicesId == searchId)
 			{
 				return findService;

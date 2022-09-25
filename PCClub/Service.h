@@ -35,7 +35,7 @@ public:
 
 	Service ScanfService();
 
-	Service FileDataService(FILE* f);
+	Service FscanfService(FILE* f);
 
 	void PrintfService();
 
