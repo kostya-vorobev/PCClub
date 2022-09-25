@@ -82,53 +82,48 @@ void Manager::FprintfManager(const char* fileName, const char* endString)
 	}
 }
 
-Manager Manager::ScanfManager()
+void Manager::ScanfManager()
 {
-	Manager writingData;
-	writingData.managerId = CountFillFile("Manager.txt");
+	this->managerId = CountFillFile("Manager.txt");
 	do {
-		InputString(writingData.fio, "Введите ФИО менеджера: ", 49);
-	} while (!IsName(writingData.fio));
-	ReplaceCharacter(&writingData.fio[0], ' ', '_');
+		InputString(this->fio, "Введите ФИО менеджера: ", 49);
+	} while (!IsName(this->fio));
+	ReplaceCharacter(&this->fio[0], ' ', '_');
 	do {
-		InputString(writingData.adress, "Введите адрес менеджера: ", 49);
-	} while (!IsWord(writingData.adress));
-	ReplaceCharacter(&writingData.adress[0], ' ', '_');
+		InputString(this->adress, "Введите адрес менеджера: ", 49);
+	} while (!IsWord(this->adress));
+	ReplaceCharacter(&this->adress[0], ' ', '_');
 	do {
-		writingData.salary = Get_int("Введите ставку мененджера: ");
-	} while (writingData.salary <= 1);
-	return writingData;
+		this->salary = Get_int("Введите ставку мененджера: ");
+	} while (this->salary <= 1);
 }
 
-Manager Manager::FscanfManager(FILE* f)
+void Manager::FscanfManager(FILE* f)
 {
-	Manager fileDataObj{};
-	fscanf(f, "%d |", &fileDataObj.managerId);
-	fscanf(f, "%s |", fileDataObj.fio);
-	ReplaceCharacter(&fileDataObj.fio[0], '_', ' ');
-	fscanf(f, "%s |", fileDataObj.adress);
-	ReplaceCharacter(&fileDataObj.adress[0], '_', ' ');
-	fscanf(f, "%d\n", &fileDataObj.salary);
-	return fileDataObj;
+	fscanf(f, "%d |", &this->managerId);
+	fscanf(f, "%s |", this->fio);
+	ReplaceCharacter(&this->fio[0], '_', ' ');
+	fscanf(f, "%s |", this->adress);
+	ReplaceCharacter(&this->adress[0], '_', ' ');
+	fscanf(f, "%d\n", &this->salary);
 }
 
-Manager Manager::SearchManager()
+void Manager::SearchManager()
 {
 	int searchId = 0;
-	Manager findManager;
 	do {
 		FILE* findInFile;
 		findInFile = fopen("Manager.txt", "r");
 		searchId = Get_int("Введите id менеджера: ");
 		while (!feof(findInFile)) //Считывание во временный файл
 		{
-			findManager = FscanfManager(findInFile);
-			if (findManager.managerId == searchId)
+			this->FscanfManager(findInFile);
+			if (this->managerId == searchId)
 			{
-				return findManager;
+				return;
 			}
 		}
-	} while (findManager.managerId != searchId);
+	} while (this->managerId != searchId);
 };
 
 void Manager::PrintfManager()//вывод всех записей
@@ -141,9 +136,9 @@ void Manager::PrintfManager()//вывод всех записей
 		printf("\n");
 	}
 	else {
-		PrintfLine(165);
-		printf("|%163s|\n", "Записей не найдено");
-		PrintfLine(165);
+		PrintfLine(68);
+		printf("|%66s|\n", "Записей не найдено");
+		PrintfLine(68);
 	}
 	return;
 }
@@ -163,7 +158,7 @@ void Manager::PrintfFromFileManager(const char* s)
 				this->FscanfManager(f);
 				this->PrintfManager();
 			}
-			PrintfLine(165);
+			PrintfLine(68);
 		}
 		else PrintfNullS();
 		fclose(f);
@@ -172,9 +167,9 @@ void Manager::PrintfFromFileManager(const char* s)
 }
 
 void Manager::PrintfTitleManager() {
-	PrintfLine(165);
+	PrintfLine(68);
 	printf("|%3s|%25s|%25s|%10s|\n", " № ", "ФИО", "Адрес", "Ставка");
-	PrintfLine(165);
+	PrintfLine(68);
 }
 
 int Manager::SearchManager(const char* find)

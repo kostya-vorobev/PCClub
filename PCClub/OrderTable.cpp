@@ -106,9 +106,9 @@ void OrderTable::PrintfOrderTable()//вывод всех записей
 		printf("\n");
 	}
 	else {
-		PrintfLine(165);
-		printf("|%163s|\n", "Записей не найдено");
-		PrintfLine(165);
+		PrintfLine(144);
+		printf("|%142s|\n", "Записей не найдено");
+		PrintfLine(144);
 	}
 	return;
 }
@@ -124,10 +124,10 @@ void OrderTable::PrintfFromFileOrderTable(const char* s)
 			PrintfTitleOrderTable();
 			while (!feof(f)) {
 				i++;
-				this->PrintfFromFileOrderTable(f);
+				this->FscanfOrderTable(f);
 				this->PrintfOrderTable();
 			}
-			PrintfLine(165);
+			PrintfLine(144);
 		}
 		else PrintfNullS();
 		fclose(f);
@@ -174,25 +174,22 @@ OrderTable OrderTable::ScanfOrderTable() {
 	return writingData;
 }
 
-OrderTable OrderTable::PrintfFromFileOrderTable(FILE* f)
+void OrderTable::FscanfOrderTable(FILE* f)
 {
-	OrderTable fileDataObj{};
-
-	fscanf(f, "%d |", &fileDataObj.orderTableId);
-	fileDataObj.FscanfPCOT(f);
-	fscanf(f, "%s |", fileDataObj.startTime);
-	fscanf(f, "%s |", fileDataObj.finishTime);
-	fileDataObj.FscanfServiceOT(f);
-	fileDataObj.FscanfClientOT(f);
-	fscanf(f, "%d |", &fileDataObj.cost);
-	fileDataObj.FscanfManagerOT(f);
-	return fileDataObj;
+	fscanf(f, "%d |", &this->orderTableId);
+	this->FscanfPCOT(f);
+	fscanf(f, "%s |", this->startTime);
+	fscanf(f, "%s |", this->finishTime);
+	this->FscanfServiceOT(f);
+	this->FscanfClientOT(f);
+	fscanf(f, "%d |", &this->cost);
+	this->FscanfManagerOT(f);
 }
 
 void OrderTable::PrintfTitleOrderTable() {
-	PrintfLine(165);
+	PrintfLine(144);
 	printf("|%3s|%25s|%25s|%12s|%10s|%10s|%25s|%25s|\n", " № ", "ФИО клиента", "Тип ПК", "Время взятия", "Время сдачи", "Стоимость", "Услуга", "ФИО менеджера");
-	PrintfLine(165);
+	PrintfLine(144);
 }
 
 int OrderTable::SearchOrderTable(const char* find)

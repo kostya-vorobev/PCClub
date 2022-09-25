@@ -25,13 +25,13 @@ public:
 
 	void FprintfClient(const char* fileName, const char* endString);
 
-	Client ScanfClient();
+	void ScanfClient();
 
-	Client FscanfClient(FILE* f);
+	void FscanfClient(FILE* f);
 
 	void PrintfClient();
 
-	Client SearchClient();
+	void SearchClient();
 
 	void PrintfFromFileClient(const char* s);
 

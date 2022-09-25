@@ -44,7 +44,7 @@ public:
 
 	OrderTable ScanfOrderTable();
 
-	OrderTable PrintfFromFileOrderTable(FILE* f);
+	void FscanfOrderTable(FILE* f);
 
 	void PrintfTitleOrderTable();
 

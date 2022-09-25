@@ -26,15 +26,15 @@ public:
 
 	void FprintfPC(const char* fileName, const char* endString);
 
-	PC ScanfPC();
+	void ScanfPC();
 
-	PC FscanfPC(FILE* f);
+	void FscanfPC(FILE* f);
 
 	void PrintfPC();
 
 	void PrintfFromFilePC(const char* s);
 
-	PC SearchPC();
+	void SearchPC();
 
 	int SearchPC(const char* find);
 

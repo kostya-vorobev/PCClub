@@ -7,7 +7,7 @@
 
 int main()
 {
-	Setlocale(LC_ALL, "Russian"); //Включение русского языка
+	//Setlocale(LC_ALL, "Russian"); //Включение русского языка
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
 	do {
@@ -76,7 +76,7 @@ int main()
 					_getch();
 					break;
 				}
-				
+				break;
 			}
 			case '2': {
 				system("cls"); //Главнео меню
@@ -123,7 +123,7 @@ int main()
 				}
 			}
 			case 27: //Выход
-				break;
+				flag = 1;
 			}
 		} while (flag != 1);
 		system("cls");

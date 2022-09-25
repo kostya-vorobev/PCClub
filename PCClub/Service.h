@@ -33,15 +33,15 @@ public:
 
 	void FprintfService(const char* fileName, const char* endString);
 
-	Service ScanfService();
+	void ScanfService();
 
-	Service FscanfService(FILE* f);
+	void FscanfService(FILE* f);
 
 	void PrintfService();
 
 	void PrintfFromFileService(const char* s);
 
-	Service SearchService();
+	void SearchService();
 
 	int SearchService(const char* find);
 

@@ -76,7 +76,7 @@ void InputString(char* s, const char* msg, int size)//ввод записей
 	do {
 		printf("%s", msg);
 		fseek(stdin, 0, SEEK_END);
-		fGets(s, size, stdin);
+		fgets(s, size, stdin);
 		trim(s);
 		s[strlen(s) - 1] = 0;
 		if (strlen(s) < 2)
@@ -110,7 +110,7 @@ int Get_int(const char* msg) {
 	int n = -1; // итоговое целое число
 	do {
 		printf("%s", msg); // выводим приглашение ко вводу
-		fGets(answer, sizeof(answer), stdin); // считываем строку
+		fgets(answer, sizeof(answer), stdin); // считываем строку
 		trim(answer);
 		// пока не будет считано число
 		while (sscanf(answer, "%d", &n) != 1) {
@@ -118,7 +118,7 @@ int Get_int(const char* msg) {
 			_getch();
 			fseek(stdin, 0, SEEK_END);
 			printf("%s", msg); // выводим приглашение ко вводу
-			fGets(answer, sizeof(answer), stdin); // и заново считываем строку
+			fgets(answer, sizeof(answer), stdin); // и заново считываем строку
 		}
 	} while (n < 0);
 	return n; // возвращаем корректное целое число

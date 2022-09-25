@@ -55,24 +55,20 @@ void PC::FprintfPC(const char* fileName, const char* endString)
 	}
 }
 
-PC PC::ScanfPC()
+void PC::ScanfPC()
 {
-	PC writingData;
-	writingData.PCId = CountFillFile("PC.txt");
+	this->PCId = CountFillFile("PC.txt");
 	do {
-		InputString(writingData.typePC, "Введите тип ПК: ", 49);
-	} while (!IsWord(writingData.typePC));
-	ReplaceCharacter(&writingData.typePC[0], ' ', '_');
-	return writingData;
+		InputString(this->typePC, "Введите тип ПК: ", 49);
+	} while (!IsWord(this->typePC));
+	ReplaceCharacter(&this->typePC[0], ' ', '_');
 }
 
-PC PC::FscanfPC(FILE* f)
+void PC::FscanfPC(FILE* f)
 {
-	PC fileDataObj{};
-	fscanf(f, "%d |", &fileDataObj.PCId);
-	fscanf(f, "%s\n", fileDataObj.typePC);
-	ReplaceCharacter(&fileDataObj.typePC[0], '_', ' ');
-	return fileDataObj;
+	fscanf(f, "%d |", &this->PCId);
+	fscanf(f, "%s\n", this->typePC);
+	ReplaceCharacter(&this->typePC[0], '_', ' ');
 }
 
 void PC::PrintfPC()//вывод всех записей
@@ -83,9 +79,9 @@ void PC::PrintfPC()//вывод всех записей
 		printf("\n");
 	}
 	else {
-		PrintfLine(165);
-		printf("|%163s|\n", "Записей не найдено");
-		PrintfLine(165);
+		PrintfLine(32);
+		printf("|%30s|\n", "Записей не найдено");
+		PrintfLine(32);
 	}
 	return;
 }
@@ -105,7 +101,7 @@ void PC::PrintfFromFilePC(const char* s)
 				this->FscanfPC(f);
 				this->PrintfPC();
 			}
-			PrintfLine(165);
+			PrintfLine(32);
 		}
 		else PrintfNullS();
 		fclose(f);
@@ -113,23 +109,22 @@ void PC::PrintfFromFilePC(const char* s)
 	_getch();
 }
 
-PC PC::SearchPC()
+void PC::SearchPC()
 {
 	int searchId = 0;
-	PC findPC;
 	do {
 		FILE* findInFile;
 		findInFile = fopen("PC.txt", "r");
 		searchId = Get_int("Введите id нужного компьютера: ");
 		while (!feof(findInFile)) 
 		{
-			findPC = FscanfPC(findInFile);
-			if (findPC.PCId == searchId)
+			this->FscanfPC(findInFile);
+			if (this->PCId == searchId)
 			{
-				return findPC;
+				return;
 			}
 		}
-	} while (findPC.PCId != searchId);
+	} while (this->PCId != searchId);
 }
 
 int PC::SearchPC(const char* find)
@@ -142,9 +137,9 @@ int PC::SearchPC(const char* find)
 }
 
 void PC::PrintfTitlePC() {
-	PrintfLine(165);
+	PrintfLine(32);
 	printf("|%3s|%25s|\n", " № ", "Платформа");
-	PrintfLine(165);
+	PrintfLine(32);
 }
 
 void PC::FscanfPCOT(FILE* f)

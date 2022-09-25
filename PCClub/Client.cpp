@@ -56,25 +56,20 @@ void Client::FprintfClient(const char* fileName, const char* endString)
 	}
 }
 
-Client Client::ScanfClient()
+void Client::ScanfClient()
 {
-	Client writingData;
-	writingData.clientId = CountFillFile("Client.txt");
+	this->clientId = CountFillFile("Client.txt");
 	do {
-		InputString(writingData.fio, "Введите ФИО клиента: ", 49);
-	} while (!IsName(writingData.fio));
-	ReplaceCharacter(&writingData.fio[0], ' ', '_');
-
-	return writingData;
+		InputString(this->fio, "Введите ФИО клиента: ", 49);
+	} while (!IsName(this->fio));
+	ReplaceCharacter(&this->fio[0], ' ', '_');
 }
 
-Client Client::FscanfClient(FILE* f)
+void Client::FscanfClient(FILE* f)
 {
-	Client fileDataObj{};
-	fscanf(f, "%d |", &fileDataObj.clientId);
-	fscanf(f, "%s\n", fileDataObj.fio);
-	ReplaceCharacter(&fileDataObj.fio[0], '_', ' ');
-	return fileDataObj;
+	fscanf(f, "%d |", &this->clientId);
+	fscanf(f, "%s\n", this->fio);
+	ReplaceCharacter(&this->fio[0], '_', ' ');
 }
 
 void Client::PrintfClient()//вывод всех записей
@@ -85,30 +80,29 @@ void Client::PrintfClient()//вывод всех записей
 		printf("\n");
 	}
 	else {
-		PrintfLine(165);
-		printf("|%163s|\n", "Записей не найдено");
-		PrintfLine(165);
+		PrintfLine(32);
+		printf("|%30s|\n", "Записей не найдено");
+		PrintfLine(32);
 	}
 	return;
 }
 
-Client Client::SearchClient()
+void Client::SearchClient()
 {
 	int searchId = 0;
-	Client findClient;
 	do {
 		FILE* findInFile;
 		findInFile = fopen("Client.txt", "r");
 		searchId = Get_int("Введите id клиента: ");
 		while (!feof(findInFile)) //Считывание во временный файл
 		{
-			findClient = FscanfClient(findInFile);
-			if (findClient.clientId == searchId)
+			this->FscanfClient(findInFile);
+			if (this->clientId == searchId)
 			{
-				return findClient;
+				return;
 			}
 		}
-	} while (findClient.clientId != searchId);
+	} while (this->clientId != searchId);
 };
 
 void Client::PrintfFromFileClient(const char* s)
@@ -126,7 +120,7 @@ void Client::PrintfFromFileClient(const char* s)
 				this->FscanfClient(f);
 				this->PrintfClient();
 			}
-			PrintfLine(165);
+			PrintfLine(32);
 		}
 		else PrintfNullS();
 		fclose(f);
@@ -144,9 +138,9 @@ int Client::SearchClient(const char* find)
 }
 
 void Client::PrintfTitleClient() {
-	PrintfLine(165);
+	PrintfLine(32);
 	printf("|%3s|%25s|\n", " № ", "ФИО");
-	PrintfLine(165);
+	PrintfLine(32);
 }
 
 void Client::FscanfClientOT(FILE* f)

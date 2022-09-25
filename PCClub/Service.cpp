@@ -69,28 +69,25 @@ void Service::FprintfService(const char* fileName, const char* endString)
 	}
 }
 
-Service Service::ScanfService() {
+void Service::ScanfService() {
 
-	Service writingData;
-	writingData.servicesId = CountFillFile("Service.txt");
+
+	this->servicesId = CountFillFile("Service.txt");
 	do {
-		InputString(writingData.name, "Введите название услуги: ", 49);
-	} while (!IsWord(writingData.name));
-	ReplaceCharacter(&writingData.name[0], ' ', '_');
+		InputString(this->name, "Введите название услуги: ", 49);
+	} while (!IsWord(this->name));
+	ReplaceCharacter(&this->name[0], ' ', '_');
 	do {
-		writingData.tariff = Get_int("Введите тариф услуги: ");
-	} while (writingData.tariff <= 1);
-	return writingData;
+		this->tariff = Get_int("Введите тариф услуги: ");
+	} while (this->tariff <= 1);
 }
 
-Service Service::FscanfService(FILE* f)
+void Service::FscanfService(FILE* f)
 {
-	Service fileDataObj{};
-	fscanf(f, "%d |", &fileDataObj.servicesId);
-	fscanf(f, "%s |", fileDataObj.name);
-	ReplaceCharacter(&fileDataObj.name[0], '_', ' ');
-	fscanf(f, "%d\n", &fileDataObj.tariff);
-	return fileDataObj;
+	fscanf(f, "%d |", &this->servicesId);
+	fscanf(f, "%s |", this->name);
+	ReplaceCharacter(&this->name[0], '_', ' ');
+	fscanf(f, "%d\n", &this->tariff);
 }
 
 void Service::PrintfService()//вывод всех записей
@@ -102,9 +99,9 @@ void Service::PrintfService()//вывод всех записей
 		printf("\n");
 	}
 	else {
-		PrintfLine(165);
-		printf("|%163s|\n", "Записей не найдено");
-		PrintfLine(165);
+		PrintfLine(42);
+		printf("|%40s|\n", "Записей не найдено");
+		PrintfLine(42);
 	}
 	return;
 }
@@ -124,7 +121,7 @@ void Service::PrintfFromFileService(const char* s)
 				this->FscanfService(f);
 				this->PrintfService();
 			}
-			PrintfLine(165);
+			PrintfLine(42);
 		}
 		else PrintfNullS();
 		fclose(f);
@@ -132,23 +129,22 @@ void Service::PrintfFromFileService(const char* s)
 	_getch();
 }
 
-Service Service::SearchService()
+void Service::SearchService()
 {
 	int searchId = 0;
-	Service findService;
 	do {
 		FILE* findInFile;
 		findInFile = fopen("Service.txt", "r");
 		searchId = Get_int("Введите id услуги: ");
 		while (!feof(findInFile)) //Считывание во временный файл
 		{
-			findService = FscanfService(findInFile);
-			if (findService.servicesId == searchId)
+			this->FscanfService(findInFile);
+			if (this->servicesId == searchId)
 			{
-				return findService;
+				return;
 			}
 		}
-	} while (findService.servicesId != searchId);
+	} while (this->servicesId != searchId);
 }
 
 int Service::SearchService(const char* find)
@@ -164,9 +160,9 @@ int Service::SearchService(const char* find)
 }
 
 void Service::PrintfTitleService() {
-	PrintfLine(165);
+	PrintfLine(42);
 	printf("|%3s|%25s|%10s|\n", " № ", "Название", "Тариф");
-	PrintfLine(165);
+	PrintfLine(42);
 }
 
 void Service::FscanfServiceOT(FILE* f)

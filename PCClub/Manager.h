@@ -36,11 +36,11 @@ public:
 
 	void FprintfManager(const char* fileName, const char* endString);
 
-	Manager ScanfManager();
+	void ScanfManager();
 
-	Manager FscanfManager(FILE* f);
+	void FscanfManager(FILE* f);
 
-	Manager SearchManager();
+	void SearchManager();
 
 	void PrintfManager();
 
