@@ -68,7 +68,7 @@ int main()
 					_getch();
 					break;
 				}
-				
+				break;
 			}
 			case '2': {
 				system("cls"); //Главнео меню
