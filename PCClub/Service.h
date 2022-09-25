@@ -1,29 +1,54 @@
 #pragma once
 #include "lib.h"
-
-struct Services
+class Service
 {
+
+
+private:
 	int servicesId;
-	char name[M/2];
+	char name[M / 2];
 	int tariff;
+
+public:
+
+	Service(int id, const char* name, int tariff);
+
+	Service();
+
+	~Service();
+
+	void CopyService(Service objService);
+
+	int getIDService();
+
+	char* getName();
+
+	int getTariff();
+
+	void setIDService(int ID);
+
+	void setName(char newName[]);
+
+	void setTariff(int newTariff);
+
+	void FprintfService(const char* fileName, const char* endString);
+
+	Service ScanfService();
+
+	Service FileDataService(FILE* f);
+
+	void PrintfService();
+
+	void PrintfFromFileService(const char* s);
+
+	Service SearchService();
+
+	int SearchService(const char* find);
+
+	void PrintfTitleService();
+	void FscanfServiceOT(FILE* f);
+	void InitService(int id, const char* name, int tariff);
 };
 
-void FprintfServices(Services dataInFileServices, const char* fileName, const char* endString);
 
-Services ScanfService();
 
-Services FileDataService(FILE* f);
-
-void PrintfService(Services objService);
-
-void PrintfFromFileService(const char* s);
-
-Services SearchService();
-
-void InitServices(Services* initServices, int id, const char* name, int tariff);
-
-Services InitServices(int id, const char* name, int tariff);
-
-int SearchService(Services Original, const char* find);
-
-void PrintfTitleService();
