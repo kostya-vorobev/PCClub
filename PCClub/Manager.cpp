@@ -25,41 +25,41 @@ void Manager::CopyManager(Manager objManager)
 	this->salary = objManager.salary;
 }
 
-int Manager::getIDManager()
+int Manager::GetIDManager()
 {
 	return this->managerId;
 }
 
-char* Manager::getFIOManager()
+char* Manager::GetFIOManager()
 {
 	return this->fio;
 }
 
-char* Manager::getAdress()
+char* Manager::GetAdress()
 {
 	return this->adress;
 }
 
-int Manager::getSalary()
+int Manager::GetSalary()
 {
 	return this->salary;
 }
 
-void Manager::setIDManager(int id)
+void Manager::SetIDManager(int id)
 {
 	this->managerId = id;
 }
 
-void Manager::setFIOManager(char fio[])
+void Manager::SetFIOManager(char fio[])
 {
 	strcat(this->fio, fio);
 }
 
-void Manager::setAdress(char Adress[])
+void Manager::SetAdress(char Adress[])
 {
 	strcat(this->adress, Adress);
 }
-void Manager::setSalary(int Salary)
+void Manager::SetSalary(int Salary)
 {
 	this->salary = Salary;
 }
@@ -95,7 +95,7 @@ Manager Manager::ScanfManager()
 	} while (!IsWord(writingData.adress));
 	ReplaceCharacter(&writingData.adress[0], ' ', '_');
 	do {
-		writingData.salary = get_int("Введите ставку мененджера: ");
+		writingData.salary = Get_int("Введите ставку мененджера: ");
 	} while (writingData.salary <= 1);
 	return writingData;
 }
@@ -119,7 +119,7 @@ Manager Manager::SearchManager()
 	do {
 		FILE* findInFile;
 		findInFile = fopen("Manager.txt", "r");
-		searchId = get_int("Введите id менеджера: ");
+		searchId = Get_int("Введите id менеджера: ");
 		while (!feof(findInFile)) //Считывание во временный файл
 		{
 			findManager = FileDataManager(findInFile);
@@ -168,7 +168,7 @@ void Manager::PrintfFromFileManager(const char* s)
 		else PrintfNullS();
 		fclose(f);
 	}
-	_getch();
+	_Getch();
 }
 
 void Manager::PrintfTitleManager() {

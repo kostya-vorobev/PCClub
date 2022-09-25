@@ -19,17 +19,17 @@ public:
 
 	void CopyService(Service objService);
 
-	int getIDService();
+	int GetIDService();
 
-	char* getName();
+	char* GetName();
 
-	int getTariff();
+	int GetTariff();
 
-	void setIDService(int ID);
+	void SetIDService(int ID);
 
-	void setName(char newName[]);
+	void SetName(char newName[]);
 
-	void setTariff(int newTariff);
+	void SetTariff(int newTariff);
 
 	void FprintfService(const char* fileName, const char* endString);
 

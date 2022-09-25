@@ -16,13 +16,13 @@ public:
 
 	void CopyPC(PC objPC);
 
-	int getIDPC();
+	int GetIDPC();
 
-	char* getTypePC();
+	char* GetTypePC();
 
-	void setIDPC(int ID);
+	void SetIDPC(int ID);
 
-	void setTypePC(char newTypePC[]);
+	void SetTypePC(char newTypePC[]);
 
 	void FprintfPC(const char* fileName, const char* endString);
 

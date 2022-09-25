@@ -15,13 +15,13 @@ public:
 
 	void CopyClient(Client objClient);
 
-	int getIDClient();
+	int GetIDClient();
 
-	char* getFIOClient();
+	char* GetFIOClient();
 
-	void setIDClient(int ID);
+	void SetIDClient(int ID);
 
-	void setFIOClient(char fio[]);
+	void SetFIOClient(char fio[]);
 
 	void FprintfClient(const char* fileName, const char* endString);
 

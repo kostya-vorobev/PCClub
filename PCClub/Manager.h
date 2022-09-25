@@ -18,21 +18,21 @@ public:
 
 	void CopyManager(Manager objManager);
 
-	int getIDManager();
+	int GetIDManager();
 
-	char* getFIOManager();
+	char* GetFIOManager();
 
-	char* getAdress();
+	char* GetAdress();
 
-	int getSalary();
+	int GetSalary();
 
-	void setIDManager(int id);
+	void SetIDManager(int id);
 
-	void setFIOManager(char fio[]);
+	void SetFIOManager(char fio[]);
 
-	void setAdress(char Adress[]);
+	void SetAdress(char Adress[]);
 
-	void setSalary(int Salary);
+	void SetSalary(int Salary);
 
 	void FprintfManager(const char* fileName, const char* endString);
 

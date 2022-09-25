@@ -20,22 +20,22 @@ void PC::CopyPC(PC objPC)
 	strcpy(this->typePC, objPC.typePC);
 }
 
-int PC::getIDPC()
+int PC::GetIDPC()
 {
 	return this->PCId;
 }
 
-char* PC::getTypePC()
+char* PC::GetTypePC()
 {
 	return this->typePC;
 }
 
-void PC::setIDPC(int ID)
+void PC::SetIDPC(int ID)
 {
 	this->PCId = ID;
 }
 
-void PC::setTypePC(char newTypePC[])
+void PC::SetTypePC(char newTypePC[])
 {
 	strcat(this->typePC, newTypePC);
 }
@@ -110,7 +110,7 @@ void PC::PrintfFromFilePC(const char* s)
 		else PrintfNullS();
 		fclose(f);
 	}
-	_getch();
+	_Getch();
 }
 
 PC PC::SearchPC()
@@ -120,7 +120,7 @@ PC PC::SearchPC()
 	do {
 		FILE* findInFile;
 		findInFile = fopen("PC.txt", "r");
-		searchId = get_int("¬ведите id нужного компьютера: ");
+		searchId = Get_int("¬ведите id нужного компьютера: ");
 		while (!feof(findInFile)) 
 		{
 			findPC = FileDataPC(findInFile);

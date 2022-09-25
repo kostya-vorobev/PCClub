@@ -23,32 +23,32 @@ void Service::CopyService(Service objService)
 	this->tariff = objService.tariff;
 }
 
-int Service::getIDService()
+int Service::GetIDService()
 {
 	return this->servicesId;
 }
 
-char* Service::getName()
+char* Service::GetName()
 {
 	return this->name;
 }
 
-int Service::getTariff()
+int Service::GetTariff()
 {
 	return this->tariff;
 }
 
-void Service::setIDService(int ID)
+void Service::SetIDService(int ID)
 {
 	this->servicesId = ID;
 }
 
-void Service::setName(char newName[])
+void Service::SetName(char newName[])
 {
 	strcat(this->name, newName);
 }
 
-void Service::setTariff(int newTariff)
+void Service::SetTariff(int newTariff)
 {
 	this->tariff = newTariff;
 }
@@ -78,7 +78,7 @@ Service Service::ScanfService() {
 	} while (!IsWord(writingData.name));
 	ReplaceCharacter(&writingData.name[0], ' ', '_');
 	do {
-		writingData.tariff = get_int("¬ведите тариф услуги: ");
+		writingData.tariff = Get_int("¬ведите тариф услуги: ");
 	} while (writingData.tariff <= 1);
 	return writingData;
 }
@@ -129,7 +129,7 @@ void Service::PrintfFromFileService(const char* s)
 		else PrintfNullS();
 		fclose(f);
 	}
-	_getch();
+	_Getch();
 }
 
 Service Service::SearchService()
@@ -139,7 +139,7 @@ Service Service::SearchService()
 	do {
 		FILE* findInFile;
 		findInFile = fopen("Service.txt", "r");
-		searchId = get_int("¬ведите id услуги: ");
+		searchId = Get_int("¬ведите id услуги: ");
 		while (!feof(findInFile)) //—читывание во временный файл
 		{
 			findService = FileDataService(findInFile);

@@ -27,7 +27,7 @@ void InputString(char* s, const char* msg, int size);
 bool IsName(char* s);
 
 //Функция ввода числа
-int get_int(const char* msg);
+int Get_int(const char* msg);
 
 bool IsWord(char* s);
 

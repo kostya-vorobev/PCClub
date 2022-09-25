@@ -20,22 +20,22 @@ void Client::CopyClient(Client objClient)
 	 strcpy(this->fio, objClient.fio);
 }
 
-int Client::getIDClient()
+int Client::GetIDClient()
 {
 	return this->clientId;
 }
 
-char* Client::getFIOClient()
+char* Client::GetFIOClient()
 {
 	return this->fio;
 }
 
-void Client::setIDClient(int id)
+void Client::SetIDClient(int id)
 {
 	this->clientId = id;
 }
 
-void Client::setFIOClient(char fio[])
+void Client::SetFIOClient(char fio[])
 {
 	strcat(this->fio, fio);
 }
@@ -99,7 +99,7 @@ Client Client::SearchClient()
 	do {
 		FILE* findInFile;
 		findInFile = fopen("Client.txt", "r");
-		searchId = get_int("¬ведите id клиента: ");
+		searchId = Get_int("¬ведите id клиента: ");
 		while (!feof(findInFile)) //—читывание во временный файл
 		{
 			findClient = FileDataClient(findInFile);
@@ -131,7 +131,7 @@ void Client::PrintfFromFileClient(const char* s)
 		else PrintfNullS();
 		fclose(f);
 	}
-	_getch();
+	_Getch();
 }
 
 int Client::SearchClient(const char* find)

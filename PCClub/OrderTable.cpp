@@ -29,25 +29,25 @@ void OrderTable::FprintfOrderTable(const char* s)
 	if (IsFile(s) && this->orderTableId != 0) {
 		f = fopen(s, "a");
 		fprintf(f, "%d |", this->orderTableId);
-		fprintf(f, "%d |", this->getIDPC());
-		ReplaceCharacter(&this->getTypePC()[0], ' ', '_');
-		fprintf(f, "%s |", this->getTypePC());
+		fprintf(f, "%d |", this->GetIDPC());
+		ReplaceCharacter(&this->GetTypePC()[0], ' ', '_');
+		fprintf(f, "%s |", this->GetTypePC());
 		fprintf(f, "%s |", this->startTime);
 		fprintf(f, "%s |", this->finishTime);
-		fprintf(f, "%d |", this->getIDService());
-		ReplaceCharacter(&this->getName()[0], ' ', '_');
-		fprintf(f, "%s |", this->getName());
-		fprintf(f, "%d |", this->getTariff());
-		fprintf(f, "%d |", this->getIDClient());
-		ReplaceCharacter(&this->getFIOClient()[0], ' ', '_');
-		fprintf(f, "%s |", this->getFIOClient());
+		fprintf(f, "%d |", this->GetIDService());
+		ReplaceCharacter(&this->GetName()[0], ' ', '_');
+		fprintf(f, "%s |", this->GetName());
+		fprintf(f, "%d |", this->GetTariff());
+		fprintf(f, "%d |", this->GetIDClient());
+		ReplaceCharacter(&this->GetFIOClient()[0], ' ', '_');
+		fprintf(f, "%s |", this->GetFIOClient());
 		fprintf(f, "%d |", this->cost);
-		fprintf(f, "%d |", this->getIDManager());
-		ReplaceCharacter(&this->getFIOManager()[0], ' ', '_');
-		fprintf(f, "%s |", this->getFIOManager());
-		ReplaceCharacter(&this->getAdress()[0], ' ', '_');
-		fprintf(f, "%s |", this->getAdress());
-		fprintf(f, "%d\n", this->getSalary());
+		fprintf(f, "%d |", this->GetIDManager());
+		ReplaceCharacter(&this->GetFIOManager()[0], ' ', '_');
+		fprintf(f, "%s |", this->GetFIOManager());
+		ReplaceCharacter(&this->GetAdress()[0], ' ', '_');
+		fprintf(f, "%s |", this->GetAdress());
+		fprintf(f, "%d\n", this->GetSalary());
 		fclose(f);
 	}
 }
@@ -56,13 +56,13 @@ void OrderTable::PrintfOrderTable()//вывод всех записей
 {
 	if (this->orderTableId != 0) {
 		printf("|%3d", this->orderTableId);
-		printf("|%25s", this->getFIOClient());
-		printf("|%25s", this->getTypePC());
+		printf("|%25s", this->GetFIOClient());
+		printf("|%25s", this->GetTypePC());
 		printf("|%12s", this->startTime);
 		printf("|%10s", this->finishTime);
 		printf("|%10d", this->cost);
-		printf("|%25s", this->getName());
-		printf("|%25s|", this->getFIOManager());
+		printf("|%25s", this->GetName());
+		printf("|%25s|", this->GetFIOManager());
 		printf("\n");
 	}
 	else {
@@ -92,7 +92,7 @@ void OrderTable::PrintfFromFileOrderTable(const char* s)
 		else PrintfNullS();
 		fclose(f);
 	}
-	_getch();
+	_Getch();
 }
 
 OrderTable OrderTable::ScanfOrderTable() {
@@ -123,7 +123,7 @@ OrderTable OrderTable::ScanfOrderTable() {
 		this->ScanfClient();
 		FprintfClient("Client.txt", "\n");
 	}
-	this->cost = get_int("¬ведите стоимость аренды: ");
+	this->cost = Get_int("¬ведите стоимость аренды: ");
 	PrintfFromFileManager("Manager.txt");
 	if (CountFillFile("Manager.txt") >= 1)
 		this->SearchManager();
