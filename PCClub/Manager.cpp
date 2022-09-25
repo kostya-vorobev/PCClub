@@ -168,7 +168,7 @@ void Manager::PrintfFromFileManager(const char* s)
 		else PrintfNullS();
 		fclose(f);
 	}
-	_Getch();
+	_getch();
 }
 
 void Manager::PrintfTitleManager() {

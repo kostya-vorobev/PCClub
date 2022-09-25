@@ -110,7 +110,7 @@ void PC::PrintfFromFilePC(const char* s)
 		else PrintfNullS();
 		fclose(f);
 	}
-	_Getch();
+	_getch();
 }
 
 PC PC::SearchPC()

@@ -129,7 +129,7 @@ void Service::PrintfFromFileService(const char* s)
 		else PrintfNullS();
 		fclose(f);
 	}
-	_Getch();
+	_getch();
 }
 
 Service Service::SearchService()

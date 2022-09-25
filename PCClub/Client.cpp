@@ -131,7 +131,7 @@ void Client::PrintfFromFileClient(const char* s)
 		else PrintfNullS();
 		fclose(f);
 	}
-	_Getch();
+	_getch();
 }
 
 int Client::SearchClient(const char* find)

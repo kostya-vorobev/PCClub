@@ -92,7 +92,7 @@ void OrderTable::PrintfFromFileOrderTable(const char* s)
 		else PrintfNullS();
 		fclose(f);
 	}
-	_Getch();
+	_getch();
 }
 
 OrderTable OrderTable::ScanfOrderTable() {

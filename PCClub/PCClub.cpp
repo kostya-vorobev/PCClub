@@ -33,7 +33,7 @@ int main()
 			printf("	1 - Ввод данных\n");
 			printf("	2 - Вывод списка\n");
 			printf("	ESC - выход\n");
-			switch (_Getch()) {
+			switch (_getch()) {
 			case '1': {
 				system("cls"); //Главнео меню
 				printf("	Ввод данных\n\n");
@@ -43,7 +43,7 @@ int main()
 				printf("	4 - ввод данных о компьютерах\n");
 				printf("	5 - ввод данных дата центра\n");
 				printf("	ESC - выход\n");
-				switch (_Getch()) {
+				switch (_getch()) {
 				case '1': { //Ввод данных
 					system("cls");
 					objOrderTable.FprintfManager("Manager.txt", "\n");
@@ -73,7 +73,7 @@ int main()
 					break;
 				default:
 					printf("\nНе понимаю, что вы хотите сделать\n");
-					_Getch();
+					_getch();
 					break;
 				}
 				
@@ -87,7 +87,7 @@ int main()
 				printf("	4 - Вывод данных о компьютерах\n");
 				printf("	5 - Вывод данных дата центра\n");
 				printf("	ESC - выход\n");
-				switch (_Getch()) {
+				switch (_getch()) {
 				case '1': { //Ввод данных
 					system("cls");
 					objOrderTable.PrintfFromFileManager("Manager.txt");
@@ -118,7 +118,7 @@ int main()
 					break;
 				default:
 					printf("\nНе понимаю, что вы хотите сделать\n");
-					_Getch();
+					_getch();
 					break;
 				}
 			}
@@ -131,7 +131,7 @@ int main()
 		
 		// вывод результата
 		printf("Для завершения ввода слов нажмите ESC\n Для повторного ввода нажмите любую клавишу... \n");
-	} while (_Getch() != 27);
+	} while (_getch() != 27);
 	remove("tempSearch.txt"); //Удаление временных файлов
 	remove("tempSearch1.txt");
 	remove("tempSearch2.txt");

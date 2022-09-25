@@ -115,7 +115,7 @@ int Get_int(const char* msg) {
 		// пока не будет считано число
 		while (sscanf(answer, "%d", &n) != 1) {
 			printf("Ошибка ввода, попробуйте еще раз...\n"); // выводим сообщение об ошибке
-			_Getch();
+			_getch();
 			fseek(stdin, 0, SEEK_END);
 			printf("%s", msg); // выводим приглашение ко вводу
 			fGets(answer, sizeof(answer), stdin); // и заново считываем строку
