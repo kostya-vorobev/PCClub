@@ -1,19 +1,20 @@
+#include <iostream>
 #include "lib.h"
 
-void CreateFile(const char* s) {
+void Lib::CreateFile(const string fileName) {
 	FILE* f;
 	int k = 0;
-	char c;
-	f = fopen(s, "w");
+	string c;
+	f = fopen(fileName.c_str(), "w");
 	if (f == NULL) {
 		printf("Ошибка при создании файла");
 	}
 }
 
-bool IsFile(const char* s)
+bool Lib::IsFile(const string fileName)
 {
 	FILE* f;
-	f = fopen(s, "r");
+	f = fopen(fileName.c_str(), "r");
 	if (f == NULL) {
 		return false;
 	}
@@ -21,11 +22,11 @@ bool IsFile(const char* s)
 	return true;
 }
 
-int CountFillFile(const char* s)
+int Lib::CountFillFile(const string fileName)
 {
-	if (IsFile(s)) {
+	if (IsFile(fileName)) {
 		FILE* f;
-		f = fopen(s, "r");
+		f = fopen(fileName.c_str(), "r");
 		int i = 0;
 		while (!feof(f))
 		{
@@ -42,60 +43,50 @@ int CountFillFile(const char* s)
 
 }
 
-void trim(char* s)
-{
-	// удаляем пробелы и табы с начала строки:
-	int i = 0, j;
-	while ((s[i] == ' ') || (s[i] == '\t'))
-	{
-		i++;
-	}
-	if (i > 0)
-	{
-		for (j = 0; j < strlen(s); j++)
-		{
-			s[j] = s[j + i];
-		}
-		s[j] = '\0';
-	}
 
-	// удаляем пробелы и табы с конца строки:
-	i = strlen(s) - 1;
-	while ((s[i] == ' ') || (s[i] == '\t'))
-	{
-		i--;
-	}
-	if (i < (strlen(s) - 1))
-	{
-		s[i + 1] = '\0';
-	}
+
+string Lib::ltrim(const string& s)
+{
+	size_t start = s.find_first_not_of(WHITESPACE);
+	return (start == string::npos) ? "" : s.substr(start);
 }
 
-void InputString(char* s, const char* msg, int size)//ввод записей
+string Lib::rtrim(const string& s)
+{
+	size_t end = s.find_last_not_of(WHITESPACE);
+	return (end == string::npos) ? "" : s.substr(0, end + 1);
+}
+
+void Lib::trim(const string &str)
+{
+		rtrim(ltrim(str));
+}
+
+void Lib::InputString(string *str, const string msg, int size)//ввод записей
 {
 	do {
-		printf("%s", msg);
+		printf("%s", msg.c_str());
 		fseek(stdin, 0, SEEK_END);
-		fgets(s, size, stdin);
-		trim(s);
-		s[strlen(s) - 1] = 0;
-		if (strlen(s) < 2)
+		getline(cin, *str);
+		trim(*str);
+		//str[str.length() - 1] = 0;
+		if ((*str).length() < 2)
 			printf("Ошибка ввода, попробуйте еще раз...\n"); // выводим сообщение об ошибке
-	} while (strlen(s) < 2);
+	} while ((*str).length() < 2);
 	return;
 }
 
 
 
 //Проверка ввода ФИО
-bool IsName(char* s) {
+bool Lib::IsName(string str) {
 	int flag = 0;
-	for (int i = 0; i < strlen(s); i++)
+	for (int i = 0; i < str.length(); i++)
 	{
-		if (s[i] == ' ') flag = 1;
-		if (s[i] != '.' && s[i] != ' ')
-			if (!(s[i] < 'А' || s[i] > 'Я')) {}
-			else if ((s[i] < 'а' || s[i] > 'я')) {
+		if (str.c_str()[i] == ' ') flag = 1;
+		if (str.c_str()[i] != '.' && str.c_str()[i] != ' ')
+			if (!(str.c_str()[i] < 'А' || str.c_str()[i] > 'Я')) {}
+			else if ((str.c_str()[i] < 'а' || str.c_str()[i] > 'я')) {
 				printf("Ошибка ввода, попробуйте еще раз...\n"); // выводим сообщение об ошибке
 				return false;
 			}
@@ -105,31 +96,31 @@ bool IsName(char* s) {
 }
 
 //Функция ввода числа
-int Get_int(const char* msg) {
-	char answer[256]; // строка для чтения
+int Lib::Get_int(const string msg) {
+	string answer; // строка для чтения
 	int n = -1; // итоговое целое число
 	do {
-		printf("%s", msg); // выводим приглашение ко вводу
-		fgets(answer, sizeof(answer), stdin); // считываем строку
+		printf("%s", msg.c_str()); // выводим приглашение ко вводу
+		getline(cin, answer);// считываем строку
 		trim(answer);
 		// пока не будет считано число
-		while (sscanf(answer, "%d", &n) != 1) {
+		while (sscanf(answer.c_str(), "%d", &n) != 1) {
 			printf("Ошибка ввода, попробуйте еще раз...\n"); // выводим сообщение об ошибке
 			_getch();
 			fseek(stdin, 0, SEEK_END);
 			printf("%s", msg); // выводим приглашение ко вводу
-			fgets(answer, sizeof(answer), stdin); // и заново считываем строку
+			getline(cin, answer); // и заново считываем строку
 		}
 	} while (n < 0);
 	return n; // возвращаем корректное целое число
 }
 
-bool IsWord(char* s) {
-	for (int i = 0; i < strlen(s); i++)
+bool Lib::IsWord(string str) {
+	for (int i = 0; i < str.length(); i++)
 	{
-		if (s[i] != '.' && s[i] != ' ')
-			if (!(s[i] < 'А' || s[i] > 'Я')) {}
-			else if ((s[i] < 'а' || s[i] > 'я')) {
+		if (str.c_str()[i] != '.' && str.c_str()[i] != ' ')
+			if (!(str.c_str()[i] < 'А' || str.c_str()[i] > 'Я')) {}
+			else if ((str.c_str()[i] < 'а' || str.c_str()[i] > 'я')) {
 				printf("Ошибка ввода, попробуйте еще раз...\n"); // выводим сообщение об ошибке
 				return false;
 			}
@@ -137,20 +128,10 @@ bool IsWord(char* s) {
 	return true;
 }
 
-void ReplaceCharacter(char* str, char findChar, char rezChar)
-{
-	int sizeM = strlen(str);
-	for (int i = 0; i < sizeM; i++)
-	{
-		if (*str == findChar) *str = rezChar;
-		*str++;
-	}
-}
-
-bool IsFillFile(const char* s)
+bool Lib::IsFillFile(const string fileName)
 {
 	FILE* f;
-	f = fopen(s, "r");
+	f = fopen(fileName.c_str(), "r");
 	int i = 0;
 	while (!feof(f))
 	{
@@ -158,7 +139,7 @@ bool IsFillFile(const char* s)
 		i++;
 	}
 	if (i == 0) {
-		//printf("Файл пустой\n");
+		//printf('Файл пустой\n');
 		fclose(f);
 		return false;
 	}
@@ -166,13 +147,13 @@ bool IsFillFile(const char* s)
 	return true;
 }
 
-void PrintfLine(int count) {
+void Lib::PrintfLine(int count) {
 	for (int i = 0; i < count; i++)
 		printf("-");
 	printf("\n");
 }
 
-void PrintfNullS() {
+void Lib::PrintfNullS() {
 	PrintfLine(165);
 	//PrintfUPS();
 	PrintfLine(165);

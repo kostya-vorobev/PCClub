@@ -5,14 +5,14 @@ class Manager
 {
 private:
 	int managerId;
-	char fio[M / 2];
-	char adress[M / 2];
+	string fio;
+	string adress;
 	int salary;
 
 public:
 	Manager();
 
-	Manager(int id, const char* fio, const char* adress, int salary);
+	Manager(int id, const string fio, const string adress, int salary);
 
 	~Manager();
 
@@ -20,21 +20,21 @@ public:
 
 	int GetIDManager();
 
-	char* GetFIOManager();
+	string GetFIOManager();
 
-	char* GetAdress();
+	string GetAdress();
 
 	int GetSalary();
 
 	void SetIDManager(int id);
 
-	void SetFIOManager(char fio[]);
+	void SetFIOManager(string fio[]);
 
-	void SetAdress(char Adress[]);
+	void SetAdress(string Adress[]);
 
 	void SetSalary(int Salary);
 
-	void FprintfManager(const char* fileName, const char* endString);
+	void FprintfManager(const string fileName, const string endString);
 
 	void ScanfManager();
 
@@ -44,13 +44,13 @@ public:
 
 	void PrintfManager();
 
-	void PrintfFromFileManager(const char* s);
+	void PrintfFromFileManager(const string s);
 
 	void PrintfTitleManager();
 
-	int SearchManager(const char* find);
+	int SearchManager(const string find);
 	void FscanfManagerOT(FILE* f);
-	void InitManager(int id, const char* fio, const char* adress, int salary);
+	void InitManager(int id, const string fio, const string adress, int salary);
 };
 
 

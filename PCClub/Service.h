@@ -6,32 +6,38 @@ class Service
 
 private:
 	int servicesId;
-	char name[M / 2];
+	string name;
 	int tariff;
 
 public:
 
-	Service(int id, const char* name, int tariff);
+	Service(int id, const string name, int tariff);
 
 	Service();
 
 	~Service();
 
+	Service operator+(const Service& r);
+
+	Service& operator++();
+
+	const Service& operator++(int);
+
 	void CopyService(Service objService);
 
 	int GetIDService();
 
-	char* GetName();
+	string GetName();
 
 	int GetTariff();
 
 	void SetIDService(int ID);
 
-	void SetName(char newName[]);
+	void SetName(string newName[]);
 
 	void SetTariff(int newTariff);
 
-	void FprintfService(const char* fileName, const char* endString);
+	void FprintfService(const string fileName, const string endString);
 
 	void ScanfService();
 
@@ -39,15 +45,17 @@ public:
 
 	void PrintfService();
 
-	void PrintfFromFileService(const char* s);
+	void PrintfFromFileService(const string s);
 
 	void SearchService();
 
-	int SearchService(const char* find);
+	int SearchService(const string find);
 
 	void PrintfTitleService();
+
 	void FscanfServiceOT(FILE* f);
-	void InitService(int id, const char* name, int tariff);
+
+	void InitService(int id, const string name, int tariff);
 };
 
 

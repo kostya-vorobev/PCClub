@@ -9,38 +9,38 @@ class OrderTable : public Manager, public Client, public PC, public Service
 {
 private:
 	int orderTableId;
-	char startTime[10];
-	char finishTime[10];
+	string startTime;
+	string finishTime;
 	int cost;
 
 public:
 	OrderTable();
 
-	OrderTable(int id, PC pcData, const char* startTime, const char* finishTime, Service servicesData, Client clientData, int cost, Manager managerData);
+	OrderTable(int id, PC pcData, string startTime, string finishTime, Service servicesData, Client clientData, int cost, Manager managerData);
 
 	~OrderTable();
 
 	int GetIDOrderTable();
 
-	char* GetStartTime();
+	string GetStartTime();
 
-	char* GetFinishTime();
+	string GetFinishTime();
 
-	char GetCost();
+	int GetCost();
 
 	void SetIDOrderTable(int id);
 
-	void SetStartTime(const char* time);
+	void SetStartTime(string time);
 
-	void SetFinishTime(const char* time);
+	void SetFinishTime(string time);
 
 	void SetCost(int cost);
 
-	void FprintfOrderTable(const char* s);
+	void FprintfOrderTable(string fileName);
 
 	void PrintfOrderTable();
 
-	void PrintfFromFileOrderTable(const char* s);
+	void PrintfFromFileOrderTable(string fileName);
 
 	OrderTable ScanfOrderTable();
 
@@ -48,9 +48,9 @@ public:
 
 	void PrintfTitleOrderTable();
 
-	int SearchOrderTable(const char* find);
+	int SearchOrderTable(string find);
 
-	void InitOrderTable(int id, PC pcData, const char* startTime, const char* finishTime, Service servicesData, Client clientData, int cost, Manager managerData);
+	void InitOrderTable(int id, PC pcData, const string startTime, const string finishTime, Service servicesData, Client clientData, int cost, Manager managerData);
 
 };
 

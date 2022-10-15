@@ -2,22 +2,28 @@
 //
 
 #include <iostream>
+#include <locale.h>
 #include "lib.h"
 #include "OrderTable.h"
 
 int main()
 {
-	//Setlocale(LC_ALL, "Russian"); //Включение русского языка
+	system("chcp 1251 >> null");
+	setlocale(LC_ALL, "Russian"); //Включение русского языка
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
 	do {
 		int flag = 0;
 		do {
+			Service service[2];
+			service[0]++;
+			service[0] = service[0] + service[1]++;
+			service[0] = service[0] + ++service[1];
 			OrderTable objOrderTable;
 			Manager *manager = new Manager[2];
 			for (int i = 0; i < 2; i++)
 			{
-				char s[5] = "123";
+				string s = "123";
 				(manager+i)->InitManager(i, s, "123", i+10);
 			}
  			flag = 0;
@@ -25,7 +31,7 @@ int main()
 			Client client[2];
 			for (int i = 0; i < 2; i++)
 			{
-				char s[5] = "123";
+				string s = "123";
 				client->InitClient(i, s);
 			}
 			system("cls"); //Главнео меню

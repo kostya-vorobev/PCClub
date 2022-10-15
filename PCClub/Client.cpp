@@ -1,9 +1,9 @@
 #include "Client.h"
 
-Client::Client(int id, const char* fio)
+Client::Client(int id, const string fio)
 {
 	this->clientId = id;
-	strcpy(this->fio, fio);
+	this->fio = fio;
 }
 
 Client::Client()
@@ -17,7 +17,7 @@ Client::~Client()
 void Client::CopyClient(Client objClient)
 {
 	 this->clientId = objClient.clientId;
-	 strcpy(this->fio, objClient.fio);
+	 this->fio = objClient.fio;
 }
 
 int Client::GetIDClient()
@@ -25,7 +25,7 @@ int Client::GetIDClient()
 	return this->clientId;
 }
 
-char* Client::GetFIOClient()
+string Client::GetFIOClient()
 {
 	return this->fio;
 }
@@ -35,54 +35,56 @@ void Client::SetIDClient(int id)
 	this->clientId = id;
 }
 
-void Client::SetFIOClient(char fio[])
+void Client::SetFIOClient(string fio[])
 {
-	strcat(this->fio, fio);
+	this->fio += fio->c_str();
 }
 
 
-void Client::FprintfClient(const char* fileName, const char* endString)
+void Client::FprintfClient(const string fileName, const string endString)
 {
+	ScanfClient();
 	FILE* f;
-	if (!IsFile(fileName)) {
-		CreateFile(fileName);
+	if (!Lib::IsFile(fileName)) {
+		Lib::CreateFile(fileName);
 	}
-	if (IsFile(fileName) && this->clientId != 0) {
-		f = fopen(fileName, "a");
+	if (Lib::IsFile(fileName) && this->clientId != 0) {
+		f = fopen(fileName.c_str(), "a");
 		fprintf(f, "%d |", this->clientId);
-		ReplaceCharacter(&this->fio[0], ' ', '_');
-		fprintf(f, "%s%s", this->fio, endString);
+		replace(fio.begin(), fio.end(), ' ', '_');
+		fprintf(f, "%s%s", this->fio.c_str(), endString.c_str());
 		fclose(f);
 	}
 }
 
 void Client::ScanfClient()
 {
-	this->clientId = CountFillFile("Client.txt");
+	this->clientId = Lib::CountFillFile("Client.txt");
 	do {
-		InputString(this->fio, "Введите ФИО клиента: ", 49);
-	} while (!IsName(this->fio));
-	ReplaceCharacter(&this->fio[0], ' ', '_');
+		Lib::InputString(&this->fio, "Введите ФИО клиента: ", 49);
+	} while (!Lib::IsName(this->fio));
+	replace(fio.begin(), fio.end(), ' ', '_');
 }
 
 void Client::FscanfClient(FILE* f)
 {
 	fscanf(f, "%d |", &this->clientId);
-	fscanf(f, "%s\n", this->fio);
-	ReplaceCharacter(&this->fio[0], '_', ' ');
+	fscanf(f, "%s\n", this->fio.c_str());
+	this->fio = this->fio.c_str();
+	replace(fio.begin(), fio.end(), '_', ' ');
 }
 
 void Client::PrintfClient()//вывод всех записей
 {
 	if (this->clientId != 0) {
 		printf("|%3d", this->clientId);
-		printf("|%25s|", this->fio);
+		printf("|%25s|", this->fio.c_str());
 		printf("\n");
 	}
 	else {
-		PrintfLine(32);
+		Lib::PrintfLine(32);
 		printf("|%30s|\n", "Записей не найдено");
-		PrintfLine(32);
+		Lib::PrintfLine(32);
 	}
 	return;
 }
@@ -93,7 +95,7 @@ void Client::SearchClient()
 	do {
 		FILE* findInFile;
 		findInFile = fopen("Client.txt", "r");
-		searchId = Get_int("Введите id клиента: ");
+		searchId = Lib::Get_int("Введите id клиента: ");
 		while (!feof(findInFile)) //Считывание во временный файл
 		{
 			this->FscanfClient(findInFile);
@@ -105,14 +107,14 @@ void Client::SearchClient()
 	} while (this->clientId != searchId);
 };
 
-void Client::PrintfFromFileClient(const char* s)
+void Client::PrintfFromFileClient(const string fileName)
 {
 	FILE* f;
 	Client objClient{};
 	int i = 0;
-	if (IsFile(s)) {
-		f = fopen(s, "r");
-		if (IsFillFile(s)) {
+	if (Lib::IsFile(fileName)) {
+		f = fopen(fileName.c_str(), "r");
+		if (Lib::IsFillFile(fileName)) {
 			fseek(f, 0, SEEK_SET);
 			PrintfTitleClient();
 			while (!feof(f)) {
@@ -120,39 +122,40 @@ void Client::PrintfFromFileClient(const char* s)
 				this->FscanfClient(f);
 				this->PrintfClient();
 			}
-			PrintfLine(32);
+			Lib::PrintfLine(32);
 		}
-		else PrintfNullS();
+		else Lib::PrintfNullS();
 		fclose(f);
 	}
 	_getch();
 }
 
-int Client::SearchClient(const char* find)
+int Client::SearchClient(const string find)
 {
-	char ch[10];
-	_itoa(this->clientId, ch, 10);
-	if (strstr(ch, find)) return 1;
-	if (strstr(this->fio, find)) return 1;
+	string ch;
+	ch = to_string(this->clientId);
+	if (ch.find(find)) return 1;
+	if (this->fio.find(find)) return 1;
 	return 0;
 }
 
 void Client::PrintfTitleClient() {
-	PrintfLine(32);
+	Lib::PrintfLine(32);
 	printf("|%3s|%25s|\n", " № ", "ФИО");
-	PrintfLine(32);
+	Lib::PrintfLine(32);
 }
 
 void Client::FscanfClientOT(FILE* f)
 {
 	fscanf(f, "%d |", &this->clientId);
-	fscanf(f, "%s |", this->fio);
-	ReplaceCharacter(&this->fio[0], '_', ' ');
+	fscanf(f, "%s |", this->fio.c_str());
+	this->fio = this->fio.c_str();
+	replace(fio.begin(), fio.end(), '_', ' ');
 	return;
 }
 
-void Client::InitClient(int id, const char* fio)
+void Client::InitClient(int id, const string fio)
 {
 	this->clientId = id;
-	strcpy(this->fio, fio);
+	this->fio = fio;
 }

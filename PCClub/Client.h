@@ -6,7 +6,7 @@ class Client
 
 private:
 	int clientId;
-	char fio[M / 2];
+	string fio;
 public:
 
 	Client();
@@ -17,13 +17,13 @@ public:
 
 	int GetIDClient();
 
-	char* GetFIOClient();
+	string GetFIOClient();
 
 	void SetIDClient(int ID);
 
-	void SetFIOClient(char fio[]);
+	void SetFIOClient(string fio[]);
 
-	void FprintfClient(const char* fileName, const char* endString);
+	void FprintfClient(const string fileName, const string endString);
 
 	void ScanfClient();
 
@@ -33,16 +33,16 @@ public:
 
 	void SearchClient();
 
-	void PrintfFromFileClient(const char* s);
+	void PrintfFromFileClient(const string s);
 
-	int SearchClient(const char* find);
+	int SearchClient(const string find);
 
-	Client(int id, const char* fio);
+	Client(int id, const string fio);
 
 	void PrintfTitleClient();
 
 	void FscanfClientOT(FILE* f);
-	void InitClient(int id, const char* fio);
+	void InitClient(int id, const string fio);
 };
 
 

@@ -5,12 +5,12 @@ class PC
 {
 private:
 	int PCId;
-	char typePC[M / 2];
+	string typePC;
 
 public:
 	PC();
 
-	PC(int id, const char* typePC);
+	PC(int id, const string typePC);
 
 	~PC();
 
@@ -18,13 +18,13 @@ public:
 
 	int GetIDPC();
 
-	char* GetTypePC();
+	string GetTypePC();
 
 	void SetIDPC(int ID);
 
-	void SetTypePC(char newTypePC[]);
+	void SetTypePC(string newTypePC[]);
 
-	void FprintfPC(const char* fileName, const char* endString);
+	void FprintfPC(const string fileName, const string endString);
 
 	void ScanfPC();
 
@@ -32,17 +32,17 @@ public:
 
 	void PrintfPC();
 
-	void PrintfFromFilePC(const char* s);
+	void PrintfFromFilePC(const string fileName);
 
 	void SearchPC();
 
-	int SearchPC(const char* find);
+	int SearchPC(const string find);
 
 	void PrintfTitlePC();
 
 	void FscanfPCOT(FILE* f);
 
-	void InitPC(int id, const char* typePC);
+	void InitPC(int id, const string typePC);
 
 };
 
