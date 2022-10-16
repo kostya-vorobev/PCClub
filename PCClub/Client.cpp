@@ -8,6 +8,9 @@ Client::Client(int id, const string fio)
 
 Client::Client()
 {
+	this->clientId = 0;
+	this->fio = "";
+
 }
 
 Client::~Client()
@@ -61,7 +64,7 @@ void Client::ScanfClient()
 {
 	this->clientId = Lib::CountFillFile("Client.txt");
 	do {
-		Lib::InputString(&this->fio, "Введите ФИО клиента: ", 49);
+		Lib::InputString(&this->fio, "Введите ФИО клиента: ");
 	} while (!Lib::IsName(this->fio));
 	replace(fio.begin(), fio.end(), ' ', '_');
 }

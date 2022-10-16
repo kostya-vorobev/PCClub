@@ -21,6 +21,7 @@ int main()
 			service[0] = service[0] + ++service[1];
 			OrderTable objOrderTable;
 			Manager *manager = new Manager[2];
+			Lib::sizeString = 48;
 			for (int i = 0; i < 2; i++)
 			{
 				string s = "123";

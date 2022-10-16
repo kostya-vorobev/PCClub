@@ -46,9 +46,9 @@ void Service::CopyService(Service objService)
 
 
 
-int Service::GetIDService()
+int* Service::GetIDService()
 {
-	return this->servicesId;
+	return &this->servicesId;
 }
 
 string Service::GetName()
@@ -98,7 +98,7 @@ void Service::ScanfService() {
 
 	this->servicesId = Lib::CountFillFile("Service.txt");
 	do {
-		Lib::InputString(&this->name, "¬ведите название услуги: ", 49);
+		Lib::InputString(&this->name, "¬ведите название услуги: ");
 	} while (!Lib::IsWord(this->name));
 	replace(name.begin(), name.end(), ' ', '_');
 	do {

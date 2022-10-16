@@ -25,7 +25,7 @@ public:
 
 	void CopyService(Service objService);
 
-	int GetIDService();
+	int* GetIDService();
 
 	string GetName();
 

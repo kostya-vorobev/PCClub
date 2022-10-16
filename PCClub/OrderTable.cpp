@@ -147,8 +147,8 @@ OrderTable OrderTable::ScanfOrderTable() {
 		FprintfPC("PC.txt", "\n");
 	}
 	const time_t timer = time(NULL);
-	Lib::InputString(&this->startTime, "Введите время начала аренды: ", 9);
-	Lib::InputString(&this->finishTime, "Введите время конца аренды: ", 9);
+	Lib::InputString(&this->startTime, "Введите время начала аренды: ");
+	Lib::InputString(&this->finishTime, "Введите время конца аренды: ");
 	PrintfFromFileService("Service.txt");
 	if (Lib::CountFillFile("Service.txt") >= 1)
 		this->SearchService();
@@ -189,7 +189,7 @@ void OrderTable::FscanfOrderTable(FILE* f)
 
 void OrderTable::PrintfTitleOrderTable() {
 	Lib::PrintfLine(144);
-	printf("|%3s|%25s|%25s|%12s|%10s|%10s|%25s|%25s|\n", " № ", "ФИО клиента", "Тип ПК", "Время взятия", "Время сдачи", "Стоимость", "Услуга", "ФИО менеджера");
+	printf("|%3s|%25s|%25s|%12s|%10s|%10s|%25s|%25s|\n", " № ", "ФИО клиента", "Тип ПК", "Начало", "Конец", "Стоимость", "Услуга", "ФИО менеджера");
 	Lib::PrintfLine(144);
 }
 

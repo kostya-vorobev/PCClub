@@ -10,15 +10,22 @@ private:
 	int salary;
 
 public:
+
+
+
 	Manager();
 
 	Manager(int id, const string fio, const string adress, int salary);
+
+	Manager(int id, const string fio, const string adress, int salary, int size);
 
 	~Manager();
 
 	void CopyManager(Manager objManager);
 
 	int GetIDManager();
+
+	int GetSizeStingManager();
 
 	string GetFIOManager();
 
@@ -49,7 +56,9 @@ public:
 	void PrintfTitleManager();
 
 	int SearchManager(const string find);
+
 	void FscanfManagerOT(FILE* f);
+
 	void InitManager(int id, const string fio, const string adress, int salary);
 };
 

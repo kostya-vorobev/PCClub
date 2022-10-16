@@ -1,6 +1,18 @@
 #include <iostream>
 #include "lib.h"
 
+int Lib::sizeString = 49;
+
+Lib::Lib()
+{
+
+};
+
+Lib::~Lib()
+{
+
+};
+
 void Lib::CreateFile(const string fileName) {
 	FILE* f;
 	int k = 0;
@@ -43,26 +55,7 @@ int Lib::CountFillFile(const string fileName)
 
 }
 
-
-
-string Lib::ltrim(const string& s)
-{
-	size_t start = s.find_first_not_of(WHITESPACE);
-	return (start == string::npos) ? "" : s.substr(start);
-}
-
-string Lib::rtrim(const string& s)
-{
-	size_t end = s.find_last_not_of(WHITESPACE);
-	return (end == string::npos) ? "" : s.substr(0, end + 1);
-}
-
-void Lib::trim(const string &str)
-{
-		rtrim(ltrim(str));
-}
-
-void Lib::InputString(string *str, const string msg, int size)//ввод записей
+void Lib::InputString(string *str, const string msg)//ввод записей
 {
 	do {
 		printf("%s", msg.c_str());
@@ -70,9 +63,9 @@ void Lib::InputString(string *str, const string msg, int size)//ввод записей
 		getline(cin, *str);
 		trim(*str);
 		//str[str.length() - 1] = 0;
-		if ((*str).length() < 2)
+		if ((*str).length() < 2 || (*str).length() > Lib::sizeString)
 			printf("Ошибка ввода, попробуйте еще раз...\n"); // выводим сообщение об ошибке
-	} while ((*str).length() < 2);
+	} while ((*str).length() < 2 || (*str).length() > Lib::sizeString);
 	return;
 }
 

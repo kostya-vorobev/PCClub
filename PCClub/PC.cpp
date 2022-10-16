@@ -8,6 +8,8 @@ PC::PC(int id, const string typePC)
 
 PC::PC()
 {
+	this->PCId = 0;
+	this->typePC = "";
 }
 
 PC::~PC()
@@ -50,6 +52,7 @@ void PC::FprintfPC(const string fileName, const string endString)
 	if (Lib::IsFile(fileName) && this->PCId != 0) {
 		f = fopen(fileName.c_str(), "a");
 		fprintf(f, "%d |", this->PCId);
+		trim(this->typePC);
 		replace(typePC.begin(), typePC.end(), ' ', '_');
 		fprintf(f, "%s%s", this->typePC.c_str(), endString.c_str());
 		fclose(f);
@@ -60,7 +63,7 @@ void PC::ScanfPC()
 {
 	this->PCId = Lib::CountFillFile("PC.txt");
 	do {
-		Lib::InputString(&this->typePC, "Введите тип ПК: ", 49);
+		Lib::InputString(&this->typePC, "Введите тип ПК: ");
 	} while (!Lib::IsWord(this->typePC));
 	replace(typePC.begin(), typePC.end(), ' ', '_');
 }

@@ -11,6 +11,10 @@ Manager::Manager(int id, const string fio, const string adress, int salary)
 
 Manager::Manager()
 {
+	this->managerId = 0;
+	this->fio = "";
+	this->adress = "";
+	this->salary = 0;
 }
 
 Manager::~Manager()
@@ -52,12 +56,12 @@ void Manager::SetIDManager(int id)
 
 void Manager::SetFIOManager(string fio[])
 {
-	this->fio += fio->c_str();
+	this->fio = fio->c_str();
 }
 
 void Manager::SetAdress(string Adress[])
 {
-	this->adress += Adress->c_str();
+	this->adress = Adress->c_str();
 }
 void Manager::SetSalary(int Salary)
 {
@@ -74,8 +78,10 @@ void Manager::FprintfManager(const string fileName, const string endString)
 	if (Lib::IsFile(fileName) && this->managerId != 0) {
 		f = fopen(fileName.c_str(), "a");
 		fprintf(f, "%d |", this->managerId);
+		trim(this->fio);
 		replace(fio.begin(), fio.end(), ' ', '_');
 		fprintf(f, "%s |", this->fio.c_str());
+		trim(this->adress);
 		replace(adress.begin(), adress.end(), ' ', '_');
 		fprintf(f, "%s |", this->adress.c_str());
 		fprintf(f, "%d%s", this->salary, endString.c_str());
@@ -87,11 +93,11 @@ void Manager::ScanfManager()
 {
 	this->managerId = Lib::CountFillFile("Manager.txt");
 	do {
-		Lib::InputString(&this->fio, "Введите ФИО менеджера: ", 49);
+		Lib::InputString(&this->fio, "Введите ФИО менеджера: ");
 	} while (!Lib::IsName(this->fio));
 	replace(fio.begin(), fio.end(), ' ', '_');
 	do {
-		Lib::InputString(&this->adress, "Введите адрес менеджера: ", 49);
+		Lib::InputString(&this->adress, "Введите адрес менеджера: ");
 	} while (!Lib::IsWord(this->adress));
 	replace(adress.begin(), adress.end(), ' ', '_');
 	do {

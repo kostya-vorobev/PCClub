@@ -17,7 +17,15 @@ const static string WHITESPACE = " \n\r\t\f\v";
 
 class Lib
 {
+	
 public:
+
+	static int sizeString;
+
+	Lib();
+
+	~Lib();
+
 	//Создание файла
 	void static CreateFile(const string s);
 
@@ -28,16 +36,16 @@ public:
 	int static CountFillFile(const string fileName);
 
 	//Удаление пробелов в начале строки
-	string static ltrim(const string& s);
+	friend string static ltrim(const string& s);
 
 	//Удаление пробелов в конце строки
-	string static rtrim(const string& s);
+	friend string static rtrim(const string& s);
 
 	//Удаление пробелов в начале и в конце строки
-	void static trim(const string& str);
+	friend void static trim(const string& str);
 
 	//Функция ввода строки
-	void static InputString(string *str, const string msg, int size);
+	void static InputString(string *str, const string msg);
 
 	//Проверка ввода ФИО
 	bool static IsName(string str);
@@ -47,9 +55,6 @@ public:
 
 	//Проверка ввода слов
 	bool static IsWord(string str);
-
-	//Функция замены символов в строке
-	void static ReplaceCharacter(string str, string findSymb, string rezSymb);
 
 	//Проврека наличия записей в файле
 	bool static IsFillFile(const string fileName);
@@ -61,3 +66,20 @@ public:
 	void static PrintfNullS();
 
 };
+
+string ltrim(const string& s)
+{
+	size_t start = s.find_first_not_of(WHITESPACE);
+	return (start == string::npos) ? "" : s.substr(start);
+}
+
+string rtrim(const string& s)
+{
+	size_t end = s.find_last_not_of(WHITESPACE);
+	return (end == string::npos) ? "" : s.substr(0, end + 1);
+}
+
+void trim(const string& str)
+{
+	rtrim(ltrim(str));
+}
