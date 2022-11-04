@@ -10,7 +10,8 @@ OrderTable::OrderTable(int id, PC pcData, string startTime, string finishTime, S
 	this->CopyPC(pcData);
 	this->startTime = startTime;
 	this->finishTime = finishTime;
-	this->CopyService(servicesData);
+	this->operator=(servicesData);
+	//this->CopyService(servicesData);
 	this->CopyClient(clientData);
 	this->cost = cost;
 	this->CopyManager(managerData);
@@ -23,6 +24,13 @@ OrderTable::~OrderTable()
 int OrderTable::GetIDOrderTable()
 {
 	return this->orderTableId;
+}
+
+void OrderTable::operator=(Service& objService)
+{
+	this->SetIDService(*objService.GetIDService());
+	this->SetName(objService.GetName());
+	this->SetTariff(objService.GetTariff());
 }
 
 string OrderTable::GetStartTime()

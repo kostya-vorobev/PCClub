@@ -22,6 +22,8 @@ public:
 
 	int GetIDOrderTable();
 
+	void operator=(Service& objService);
+
 	string GetStartTime();
 
 	string GetFinishTime();

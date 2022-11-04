@@ -36,22 +36,29 @@ bool Lib::IsFile(const string fileName)
 
 int Lib::CountFillFile(const string fileName)
 {
-	if (IsFile(fileName)) {
-		FILE* f;
-		f = fopen(fileName.c_str(), "r");
-		int i = 0;
-		while (!feof(f))
-		{
-			fscanf(f, "%*[^\n]%*c");
-			i++;
-		}
-		if (i <= 1) {
+	try {
+		if (IsFile(fileName)) {
+			FILE* f;
+			f = fopen(fileName.c_str(), "r");
+			int i = 0;
+			while (!feof(f))
+			{
+				fscanf(f, "%*[^\n]%*c");
+				i++;
+			}
+			if (i <= 1) {
+				fclose(f);
+				return 1;
+			}
 			fclose(f);
-			return 1;
-		}
-		fclose(f);
-		return i;
-	} return 1;
+			return i;
+		} else throw ("Файл не найден!");
+		return 1;
+	}
+	catch (string err)
+	{
+		cout << err;
+	}
 
 }
 

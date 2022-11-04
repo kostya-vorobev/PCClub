@@ -37,6 +37,13 @@ const Service& Service::operator++(int)
 	return temp;
 }
 
+void Service::operator=(const Service& objService)
+{
+	this->servicesId = objService.servicesId;
+	this->name = objService.name;
+	this->tariff = objService.tariff;
+}
+
 void Service::CopyService(Service objService)
 {
 	this->servicesId = objService.servicesId;
@@ -66,9 +73,9 @@ void Service::SetIDService(int ID)
 	this->servicesId = ID;
 }
 
-void Service::SetName(string newName[])
+void Service::SetName(string newName)
 {
-	this->name += newName->c_str();
+	this->name = newName;
 }
 
 void Service::SetTariff(int newTariff)

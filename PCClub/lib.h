@@ -11,6 +11,7 @@
 #include <stdbool.h>
 #include <algorithm>
 #include <string>
+#include <iostream>
 #define M 100 // Длина массива для исходной строки
 using namespace std;
 const static string WHITESPACE = " \n\r\t\f\v";

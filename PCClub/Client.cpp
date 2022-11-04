@@ -1,5 +1,6 @@
 #include "Client.h"
 
+
 Client::Client(int id, const string fio)
 {
 	this->clientId = id;
@@ -67,6 +68,7 @@ void Client::ScanfClient()
 		Lib::InputString(&this->fio, "¬ведите ‘»ќ клиента: ");
 	} while (!Lib::IsName(this->fio));
 	replace(fio.begin(), fio.end(), ' ', '_');
+
 }
 
 void Client::FscanfClient(FILE* f)
@@ -95,40 +97,53 @@ void Client::PrintfClient()//вывод всех записей
 void Client::SearchClient()
 {
 	int searchId = 0;
-	do {
-		FILE* findInFile;
-		findInFile = fopen("Client.txt", "r");
-		searchId = Lib::Get_int("¬ведите id клиента: ");
-		while (!feof(findInFile)) //—читывание во временный файл
-		{
-			this->FscanfClient(findInFile);
-			if (this->clientId == searchId)
+	try {
+		do {
+			FILE* findInFile;
+			findInFile = fopen("Client.txt", "r");
+			searchId = Lib::Get_int("¬ведите id клиента: ");
+			while (!feof(findInFile)) //—читывание во временный файл
 			{
-				return;
+				this->FscanfClient(findInFile);
+				if (this->clientId == searchId)
+				{
+					return;
+				}
 			}
-		}
-	} while (this->clientId != searchId);
-};
+		} while (this->clientId != searchId);
+	}
+	catch (const exception& e)
+	{
+		cerr << e.what();
+	}
+
+}
 
 void Client::PrintfFromFileClient(const string fileName)
 {
 	FILE* f;
-	Client objClient{};
 	int i = 0;
-	if (Lib::IsFile(fileName)) {
-		f = fopen(fileName.c_str(), "r");
-		if (Lib::IsFillFile(fileName)) {
-			fseek(f, 0, SEEK_SET);
-			PrintfTitleClient();
-			while (!feof(f)) {
-				i++;
-				this->FscanfClient(f);
-				this->PrintfClient();
+	try {
+		if (Lib::IsFile(fileName)) {
+			f = fopen(fileName.c_str(), "r");
+			if (Lib::IsFillFile(fileName)) {
+				fseek(f, 0, SEEK_SET);
+				PrintfTitleClient();
+				while (!feof(f)) {
+					i++;
+					this->FscanfClient(f);
+					this->PrintfClient();
+				}
+				Lib::PrintfLine(32);
 			}
-			Lib::PrintfLine(32);
+			else Lib::PrintfNullS();
+			fclose(f);
 		}
-		else Lib::PrintfNullS();
-		fclose(f);
+		else throw ("‘айл не найден!");
+	}
+	catch (string err)
+	{
+		cout << err;
 	}
 	_getch();
 }

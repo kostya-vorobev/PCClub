@@ -19,6 +19,8 @@ public:
 
 	Service operator+(const Service& r);
 
+	void operator=(const Service& objService);
+
 	Service& operator++();
 
 	const Service& operator++(int);
@@ -33,7 +35,7 @@ public:
 
 	void SetIDService(int ID);
 
-	void SetName(string newName[]);
+	void SetName(string newName);
 
 	void SetTariff(int newTariff);
 
