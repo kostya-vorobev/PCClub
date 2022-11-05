@@ -102,15 +102,21 @@ void Service::FprintfService(const string fileName, const string endString)
 
 void Service::ScanfService() {
 
-
-	this->servicesId = Lib::CountFillFile("Service.txt");
-	do {
-		Lib::InputString(&this->name, "Введите название услуги: ");
-	} while (!Lib::IsWord(this->name));
-	replace(name.begin(), name.end(), ' ', '_');
-	do {
-		this->tariff = Lib::Get_int("Введите тариф услуги: ");
-	} while (this->tariff <= 1);
+	try {
+		this->servicesId = Lib::CountFillFile("Service.txt");
+		do {
+			Lib::InputString(&this->name, "Введите название услуги: ");
+		} while (!Lib::IsWord(this->name));
+		replace(name.begin(), name.end(), ' ', '_');
+		do {
+			this->tariff = Lib::Get_int("Введите тариф услуги: ");
+		} while (this->tariff <= 1);
+	}
+	catch (const string ex)
+	{
+		cout << ex;
+		_getch();
+	}
 }
 
 void Service::FscanfService(FILE* f)

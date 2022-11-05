@@ -63,11 +63,18 @@ void Client::FprintfClient(const string fileName, const string endString)
 
 void Client::ScanfClient()
 {
-	this->clientId = Lib::CountFillFile("Client.txt");
-	do {
-		Lib::InputString(&this->fio, "Введите ФИО клиента: ");
-	} while (!Lib::IsName(this->fio));
-	replace(fio.begin(), fio.end(), ' ', '_');
+	try {
+		this->clientId = Lib::CountFillFile("Client.txt");
+		do {
+			Lib::InputString(&this->fio, "Введите ФИО клиента: ");
+		} while (!Lib::IsName(this->fio));
+		replace(fio.begin(), fio.end(), ' ', '_');
+	}
+	catch (const string ex)
+	{
+		cout << ex;
+		_getch();
+	}
 
 }
 
@@ -139,9 +146,9 @@ void Client::PrintfFromFileClient(const string fileName)
 			else Lib::PrintfNullS();
 			fclose(f);
 		}
-		else throw ("Файл не найден!");
+		else throw "Файл не найден!";
 	}
-	catch (string err)
+	catch (const string err)
 	{
 		cout << err;
 	}

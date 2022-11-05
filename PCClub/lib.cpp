@@ -36,7 +36,6 @@ bool Lib::IsFile(const string fileName)
 
 int Lib::CountFillFile(const string fileName)
 {
-	try {
 		if (IsFile(fileName)) {
 			FILE* f;
 			f = fopen(fileName.c_str(), "r");
@@ -52,13 +51,8 @@ int Lib::CountFillFile(const string fileName)
 			}
 			fclose(f);
 			return i;
-		} else throw ("Файл не найден!");
+		} else throw string("Файл не был найден");
 		return 1;
-	}
-	catch (string err)
-	{
-		cout << err;
-	}
 
 }
 

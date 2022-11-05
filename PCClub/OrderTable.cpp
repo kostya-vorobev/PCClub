@@ -144,42 +144,48 @@ void OrderTable::PrintfFromFileOrderTable(string fileName)
 }
 
 OrderTable OrderTable::ScanfOrderTable() {
-
-	OrderTable writingData;
-	this->orderTableId = Lib::CountFillFile("OrderTable.txt");
-	PrintfFromFilePC("PC.txt");
-	if (Lib::CountFillFile("PC.txt") >= 1)
-		this->SearchPC();
-	else {
-		this->ScanfPC();
-		FprintfPC("PC.txt", "\n");
+	try {
+		OrderTable writingData;
+		this->orderTableId = Lib::CountFillFile("OrderTable.txt");
+		PrintfFromFilePC("PC.txt");
+		if (Lib::CountFillFile("PC.txt") >= 1)
+			this->SearchPC();
+		else {
+			this->ScanfPC();
+			FprintfPC("PC.txt", "\n");
+		}
+		const time_t timer = time(NULL);
+		Lib::InputString(&this->startTime, "¬ведите врем€ начала аренды: ");
+		Lib::InputString(&this->finishTime, "¬ведите врем€ конца аренды: ");
+		PrintfFromFileService("Service.txt");
+		if (Lib::CountFillFile("Service.txt") >= 1)
+			this->SearchService();
+		else {
+			this->ScanfService();
+			FprintfService("Service.txt", "\n");
+		}
+		PrintfFromFileClient("Client.txt");
+		if (Lib::CountFillFile("Client.txt") >= 1)
+			this->SearchClient();
+		else {
+			this->ScanfClient();
+			FprintfClient("Client.txt", "\n");
+		}
+		this->cost = Lib::Get_int("¬ведите стоимость аренды: ");
+		PrintfFromFileManager("Manager.txt");
+		if (Lib::CountFillFile("Manager.txt") >= 1)
+			this->SearchManager();
+		else {
+			this->ScanfManager();
+			FprintfManager("Manager.txt", "\n");
+		}
+		return writingData;
 	}
-	const time_t timer = time(NULL);
-	Lib::InputString(&this->startTime, "¬ведите врем€ начала аренды: ");
-	Lib::InputString(&this->finishTime, "¬ведите врем€ конца аренды: ");
-	PrintfFromFileService("Service.txt");
-	if (Lib::CountFillFile("Service.txt") >= 1)
-		this->SearchService();
-	else {
-		this->ScanfService();
-		FprintfService("Service.txt", "\n");
+	catch (const string ex)
+	{
+		cout << ex;
+		_getch();
 	}
-	PrintfFromFileClient("Client.txt");
-	if (Lib::CountFillFile("Client.txt") >= 1)
-		this->SearchClient();
-	else {
-		this->ScanfClient();
-		FprintfClient("Client.txt", "\n");
-	}
-	this->cost = Lib::Get_int("¬ведите стоимость аренды: ");
-	PrintfFromFileManager("Manager.txt");
-	if (Lib::CountFillFile("Manager.txt") >= 1)
-		this->SearchManager();
-	else {
-		this->ScanfManager();
-		FprintfManager("Manager.txt", "\n");
-	}
-	return writingData;
 }
 
 void OrderTable::FscanfOrderTable(FILE* f)

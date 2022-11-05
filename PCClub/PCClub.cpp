@@ -15,10 +15,10 @@ int main()
 	do {
 		int flag = 0;
 		do {
-			Service service[2];
-			service[0]++;
-			service[0] = service[0] + service[1]++;
-			service[0] = service[0] + ++service[1];
+			Service service[2][2];
+			service[0][0]++;
+			service[0][0] = service[0][0] + service[1][0]++;
+			service[0][1] = service[0][1] + ++service[1][0];
 			OrderTable objOrderTable;
 			Manager *manager = new Manager[2];
 			Lib::sizeString = 48;

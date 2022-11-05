@@ -91,18 +91,25 @@ void Manager::FprintfManager(const string fileName, const string endString)
 
 void Manager::ScanfManager()
 {
-	this->managerId = Lib::CountFillFile("Manager.txt");
-	do {
-		Lib::InputString(&this->fio, "Введите ФИО менеджера: ");
-	} while (!Lib::IsName(this->fio));
-	replace(fio.begin(), fio.end(), ' ', '_');
-	do {
-		Lib::InputString(&this->adress, "Введите адрес менеджера: ");
-	} while (!Lib::IsWord(this->adress));
-	replace(adress.begin(), adress.end(), ' ', '_');
-	do {
-		this->salary = Lib::Get_int("Введите ставку мененджера: ");
-	} while (this->salary <= 1);
+	try {
+		this->managerId = Lib::CountFillFile("Manager.txt");
+		do {
+			Lib::InputString(&this->fio, "Введите ФИО менеджера: ");
+		} while (!Lib::IsName(this->fio));
+		replace(fio.begin(), fio.end(), ' ', '_');
+		do {
+			Lib::InputString(&this->adress, "Введите адрес менеджера: ");
+		} while (!Lib::IsWord(this->adress));
+		replace(adress.begin(), adress.end(), ' ', '_');
+		do {
+			this->salary = Lib::Get_int("Введите ставку мененджера: ");
+		} while (this->salary <= 1);
+	}
+	catch (const string ex)
+	{
+		cout << ex;
+		_getch();
+	}
 }
 
 void Manager::FscanfManager(FILE* f)

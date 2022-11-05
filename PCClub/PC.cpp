@@ -61,11 +61,18 @@ void PC::FprintfPC(const string fileName, const string endString)
 
 void PC::ScanfPC()
 {
-	this->PCId = Lib::CountFillFile("PC.txt");
-	do {
-		Lib::InputString(&this->typePC, "Введите тип ПК: ");
-	} while (!Lib::IsWord(this->typePC));
-	replace(typePC.begin(), typePC.end(), ' ', '_');
+	try {
+		this->PCId = Lib::CountFillFile("PC.txt");
+		do {
+			Lib::InputString(&this->typePC, "Введите тип ПК: ");
+		} while (!Lib::IsWord(this->typePC));
+		replace(typePC.begin(), typePC.end(), ' ', '_');
+	}
+	catch (const string ex)
+	{
+		cout << ex;
+		_getch();
+	}
 }
 
 void PC::FscanfPC(FILE* f)
