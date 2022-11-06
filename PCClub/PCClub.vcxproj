@@ -139,7 +139,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Account.cpp" />
     <ClCompile Include="Client.cpp" />
+    <ClCompile Include="ClientHuman.cpp" />
+    <ClCompile Include="IBase.cpp" />
     <ClCompile Include="lib.cpp" />
     <ClCompile Include="Manager.cpp" />
     <ClCompile Include="OrderTable.cpp" />
@@ -148,7 +151,10 @@
     <ClCompile Include="Service.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Account.h" />
     <ClInclude Include="Client.h" />
+    <ClInclude Include="ClientHuman.h" />
+    <ClInclude Include="IBase.h" />
     <ClInclude Include="lib.h" />
     <ClInclude Include="Manager.h" />
     <ClInclude Include="PC.h" />

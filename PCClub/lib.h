@@ -12,6 +12,11 @@
 #include <algorithm>
 #include <string>
 #include <iostream>
+#include <iomanip>
+#include <io.h>
+#include <fstream>
+#include <map>
+#include <vector>
 #define M 100 // Длина массива для исходной строки
 using namespace std;
 const static string WHITESPACE = " \n\r\t\f\v";

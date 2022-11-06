@@ -5,13 +5,14 @@ Client::Client(int id, const string fio)
 {
 	this->clientId = id;
 	this->fio = fio;
+	this->sizeLine = 31;
 }
 
 Client::Client()
 {
 	this->clientId = 0;
 	this->fio = "";
-
+	this->sizeLine = 31;
 }
 
 Client::~Client()
@@ -23,13 +24,20 @@ void Client::CopyClient(Client objClient)
 	 this->clientId = objClient.clientId;
 	 this->fio = objClient.fio;
 }
-
+/*
+Client Client::operator=(const Client& objClient)
+{
+	this->clientId = objClient.clientId;
+	this->fio = objClient.fio;
+	return *this;
+}
+*/
 int Client::GetIDClient()
 {
 	return this->clientId;
 }
 
-string Client::GetFIOClient()
+string Client::GetFio()
 {
 	return this->fio;
 }
@@ -39,26 +47,26 @@ void Client::SetIDClient(int id)
 	this->clientId = id;
 }
 
-void Client::SetFIOClient(string fio[])
+void Client::SetFio(string fio)
 {
-	this->fio += fio->c_str();
+	this->fio = fio;
 }
 
 
 void Client::FprintfClient(const string fileName, const string endString)
 {
 	ScanfClient();
-	FILE* f;
-	if (!Lib::IsFile(fileName)) {
+	ofstream f("Client.txt", ios_base::app);
+	if (!f.is_open()) {
 		Lib::CreateFile(fileName);
 	}
 	if (Lib::IsFile(fileName) && this->clientId != 0) {
-		f = fopen(fileName.c_str(), "a");
-		fprintf(f, "%d |", this->clientId);
-		replace(fio.begin(), fio.end(), ' ', '_');
-		fprintf(f, "%s%s", this->fio.c_str(), endString.c_str());
-		fclose(f);
+		f << this->clientId;
+		f << " |";
+		f << this->fio;
+		f << endl;
 	}
+	f.close();
 }
 
 void Client::ScanfClient()
@@ -89,14 +97,20 @@ void Client::FscanfClient(FILE* f)
 void Client::PrintfClient()//вывод всех записей
 {
 	if (this->clientId != 0) {
-		printf("|%3d", this->clientId);
-		printf("|%25s|", this->fio.c_str());
-		printf("\n");
+		cout << "|";
+		cout.width(3);
+		cout << left << this->clientId;
+		cout << "|";
+		cout.width(25);
+		cout << left << this->fio;
+		cout << "|" << endl;
 	}
 	else {
-		Lib::PrintfLine(32);
-		printf("|%30s|\n", "Записей не найдено");
-		Lib::PrintfLine(32);
+		Lib::PrintfLine(this->sizeLine);
+		cout << "|";
+		cout.width(30);
+		cout << "Записей не найдено" << "|" << endl;
+		Lib::PrintfLine(this->sizeLine);
 	}
 	return;
 }
@@ -135,7 +149,7 @@ void Client::PrintfFromFileClient(const string fileName)
 			f = fopen(fileName.c_str(), "r");
 			if (Lib::IsFillFile(fileName)) {
 				fseek(f, 0, SEEK_SET);
-				PrintfTitleClient();
+				PrintTitle();
 				while (!feof(f)) {
 					i++;
 					this->FscanfClient(f);
@@ -164,9 +178,19 @@ int Client::SearchClient(const string find)
 	return 0;
 }
 
-void Client::PrintfTitleClient() {
+void Client::PrintTitle() {
 	Lib::PrintfLine(32);
-	printf("|%3s|%25s|\n", " № ", "ФИО");
+	map <string, int> title = { {"№",3 },
+								{"ФИО", 25} };
+	map <string, int>::iterator it;
+	for (it = title.begin(); it != title.end(); it++)
+	{
+		cout << "|";
+		cout.width(it->second);
+		cout << left << it->first;
+
+	}
+	cout << "|" << endl;
 	Lib::PrintfLine(32);
 }
 

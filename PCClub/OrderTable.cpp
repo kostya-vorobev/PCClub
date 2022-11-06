@@ -87,8 +87,8 @@ void OrderTable::FprintfOrderTable(string fileName)
 		fprintf(f, "%s |", this->GetName().c_str());
 		fprintf(f, "%d |", this->GetTariff());
 		fprintf(f, "%d |", this->GetIDClient());
-		GetFIOClient().replace(GetFIOClient().begin(), GetFIOClient().end(), ' ', '_');
-		fprintf(f, "%s |", this->GetFIOClient().c_str());
+		GetFio().replace(GetFio().begin(), GetFio().end(), ' ', '_');
+		fprintf(f, "%s |", this->GetFio().c_str());
 		fprintf(f, "%d |", this->cost);
 		fprintf(f, "%d |", this->GetIDManager());
 		GetFIOManager().replace(GetFIOManager().begin(), GetFIOManager().end(), ' ', '_');
@@ -104,7 +104,7 @@ void OrderTable::PrintfOrderTable()//вывод всех записей
 {
 	if (this->orderTableId != 0) {
 		printf("|%3d", this->orderTableId);
-		printf("|%25s", this->GetFIOClient().c_str());
+		printf("|%25s", this->GetFio().c_str());
 		printf("|%25s", this->GetTypePC().c_str());
 		printf("|%12s", this->startTime.c_str());
 		printf("|%10s", this->finishTime.c_str());

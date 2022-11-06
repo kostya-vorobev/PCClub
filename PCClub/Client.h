@@ -1,12 +1,15 @@
 #pragma once
-#include "lib.h"
-class Client
+#include "IBase.h"
+
+class Client: 
+	public IBase
 {
 
-
-private:
+protected:
 	int clientId;
-	string fio;
+	//string fio;
+	int sizeLine;
+
 public:
 
 	Client();
@@ -17,11 +20,11 @@ public:
 
 	int GetIDClient();
 
-	string GetFIOClient();
+	string GetFio();
 
 	void SetIDClient(int ID);
 
-	void SetFIOClient(string fio[]);
+	void SetFio(string fio);
 
 	void FprintfClient(const string fileName, const string endString);
 
@@ -29,7 +32,7 @@ public:
 
 	void FscanfClient(FILE* f);
 
-	void PrintfClient();
+	virtual void PrintfClient();
 
 	void SearchClient();
 
@@ -39,9 +42,10 @@ public:
 
 	Client(int id, const string fio);
 
-	void PrintfTitleClient();
+	void PrintTitle();
 
 	void FscanfClientOT(FILE* f);
+
 	void InitClient(int id, const string fio);
 };
 
