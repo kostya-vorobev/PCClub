@@ -13,6 +13,12 @@ Lib::~Lib()
 
 };
 
+string atrim(const string& str)
+{
+	rtrim(ltrim(str));
+	return str;
+}
+
 void Lib::CreateFile(const string fileName) {
 	FILE* f;
 	int k = 0;
@@ -51,7 +57,7 @@ int Lib::CountFillFile(const string fileName)
 			}
 			fclose(f);
 			return i;
-		} else throw string("Файл не был найден");
+		} else throw exception("Файл не был найден");
 		return 1;
 
 }

@@ -33,6 +33,10 @@
 
 int main()
 {
+	int a[2][3] = { {1,3,3},{3,2,1} };
+	int *b = *(a);
+	b = *a;
+	cout << (*((b)+4));
 	system("chcp 1251 >> null");
 	setlocale(LC_ALL, "Russian"); //Включение русского языка
 	SetConsoleCP(1251);
@@ -47,7 +51,8 @@ int main()
 			clientBase = clientDeriv;
 
 			clientDeriv = ClientHuman(1, "Child", 1, 15, "123Ac");
-			
+			cout << clientDeriv;
+			_getch();
 			Client* px = &clientBase;
 			clientDeriv.PrintTitle();
 			clientDeriv.PrintfClient();
@@ -142,7 +147,8 @@ int main()
 				}
 				case '2': { //Ввод данных
 					system("cls");
-					objOrderTable.PrintfFromFileClient("Client.txt");
+					client->PrintfFromFileClient("Client.txt");
+					//objOrderTable.PrintfFromFileClient("Client.txt");
 					break;
 				}
 				case '3': { //Ввод данных

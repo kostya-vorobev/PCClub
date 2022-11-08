@@ -30,7 +30,7 @@ public:
 
 	void ScanfClient();
 
-	void FscanfClient(FILE* f);
+	void FscanfClient(string fileLine);
 
 	virtual void PrintfClient();
 
@@ -44,7 +44,7 @@ public:
 
 	void PrintTitle();
 
-	void FscanfClientOT(FILE* f);
+	void FscanfClientOT(vector<string> words);
 
 	void InitClient(int id, const string fio);
 };

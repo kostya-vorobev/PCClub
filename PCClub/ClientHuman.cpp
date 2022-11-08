@@ -106,4 +106,11 @@ void ClientHuman::PrintTitle() {
 	Lib::PrintfLine(this->sizeLine);
 }
 
-
+ostream& operator<<(ostream& out, const ClientHuman& client)
+{
+	out << "id = " << client.clientId << endl;
+	out << "ФИО = " << client.fio << endl;
+	out << "Пол = " << client.gender << endl;
+	out << "Возраст = " << client.age << endl;
+	return out;
+}

@@ -154,11 +154,11 @@ void PC::PrintfTitlePC() {
 	Lib::PrintfLine(32);
 }
 
-void PC::FscanfPCOT(FILE* f)
+void PC::FscanfPCOT(vector<string> words)
 {
-	fscanf(f, "%d |", &this->PCId);
-	fscanf(f, "%s |", this->typePC.c_str());
-	this->typePC = this->typePC.c_str();
+	trim(words[1]);
+	this->PCId = atoi(words[1].c_str());
+	this->typePC = words[2];
 	replace(typePC.begin(), typePC.end(), '_', ' ');
 	return;
 }

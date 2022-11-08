@@ -55,7 +55,7 @@ public:
 
 	void PrintfTitleService();
 
-	void FscanfServiceOT(FILE* f);
+	void FscanfServiceOT(vector<string> words);
 
 	void InitService(int id, const string name, int tariff);
 };

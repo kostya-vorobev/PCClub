@@ -17,6 +17,7 @@
 #include <fstream>
 #include <map>
 #include <vector>
+#include <sstream>
 #define M 100 // Длина массива для исходной строки
 using namespace std;
 const static string WHITESPACE = " \n\r\t\f\v";
@@ -49,6 +50,9 @@ public:
 
 	//Удаление пробелов в начале и в конце строки
 	friend void static trim(const string& str);
+
+	//Удаление пробелов в начале и в конце строки
+	string static atrim(const string& str);
 
 	//Функция ввода строки
 	void static InputString(string *str, const string msg);
@@ -89,3 +93,4 @@ void trim(const string& str)
 {
 	rtrim(ltrim(str));
 }
+

@@ -1,6 +1,7 @@
 #pragma once
 #include "Client.h"
 #include "Account.h"
+#include <xkeycheck.h>
 
 class ClientHuman :
     public Client
@@ -27,10 +28,11 @@ public:
 
     ClientHuman operator=(const Client& objClient);
 
+    friend ostream& operator<< (ostream& out, const ClientHuman& client);
+
     void ScanfClient();
 
     void PrintfClient();
 
     void PrintTitle();
 };
-

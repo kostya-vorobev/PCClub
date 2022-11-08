@@ -40,7 +40,7 @@ public:
 
 	void PrintfTitlePC();
 
-	void FscanfPCOT(FILE* f);
+	void FscanfPCOT(vector<string> words);
 
 	void InitPC(int id, const string typePC);
 

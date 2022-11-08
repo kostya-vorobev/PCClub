@@ -203,13 +203,14 @@ void Service::PrintfTitleService() {
 	Lib::PrintfLine(42);
 }
 
-void Service::FscanfServiceOT(FILE* f)
+void Service::FscanfServiceOT(vector<string> words)
 {
-	fscanf(f, "%d |", &this->servicesId);
-	fscanf(f, "%s |", this->name.c_str());
-	this->name = this->name.c_str();
+	trim(words[5]);
+	this->servicesId = atoi(words[5].c_str());
+	this->name = words[6];
 	replace(name.begin(), name.end(), '_', ' ');
-	fscanf(f, "%d |", &this->tariff);
+	trim(words[7]);
+	this->tariff = atoi(words[7].c_str());
 	return;
 }
 

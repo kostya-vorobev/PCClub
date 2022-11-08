@@ -57,7 +57,7 @@ public:
 
 	int SearchManager(const string find);
 
-	void FscanfManagerOT(FILE* f);
+	void FscanfManagerOT(vector<string> words);
 
 	void InitManager(int id, const string fio, const string adress, int salary);
 };

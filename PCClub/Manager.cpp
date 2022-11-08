@@ -200,16 +200,16 @@ int Manager::SearchManager(const string find)
 	return 0;
 }
 
-void Manager::FscanfManagerOT(FILE* f)
+void Manager::FscanfManagerOT(vector<string> words)
 {
-	fscanf(f, "%d |", &this->managerId);
-	fscanf(f, "%s |", this->fio.c_str());
-	this->fio = this->fio.c_str();
+	trim(words[11]);
+	this->managerId = atoi(words[11].c_str());
+	this->fio = words[12];
 	replace(fio.begin(), fio.end(), '_', ' ');
-	fscanf(f, "%s |", this->adress.c_str());
-	this->adress = this->adress.c_str();
+	this->adress = words[13];
 	replace(adress.begin(), adress.end(), '_', ' ');
-	fscanf(f, "%d |", &this->salary);
+	trim(words[14]);
+	this->salary = atoi(words[14].c_str());
 	return;
 }
 

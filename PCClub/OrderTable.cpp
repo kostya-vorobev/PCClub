@@ -123,24 +123,31 @@ void OrderTable::PrintfOrderTable()//вывод всех записей
 
 void OrderTable::PrintfFromFileOrderTable(string fileName)
 {
-	FILE* f;
-	int i = 0;
-	if (Lib::IsFile(fileName)) {
-		f = fopen(fileName.c_str(), "r");
-		if (Lib::IsFillFile(fileName)) {
-			fseek(f, 0, SEEK_SET);
-			PrintfTitleOrderTable();
-			while (!feof(f)) {
-				i++;
-				this->FscanfOrderTable(f);
-				this->PrintfOrderTable();
+	try {
+		int i = 0;
+		if (Lib::IsFile(fileName)) {
+			ifstream fout("OrderTable.txt", ios::in);
+			if (Lib::IsFillFile(fileName)) {
+				fout.seekg(0, ios::beg);
+				PrintfTitleOrderTable();
+				string fileLine;
+				while (getline(fout, fileLine)) {
+					i++;
+					this->FscanfOrderTable(fileLine);
+					this->PrintfOrderTable();
+				}
+				Lib::PrintfLine(144);
 			}
-			Lib::PrintfLine(144);
+			else Lib::PrintfNullS();
+			fout.close();
 		}
-		else Lib::PrintfNullS();
-		fclose(f);
 	}
-	_getch();
+	catch (const exception& e)
+	{
+		cout << e.what();
+	}
+		_getch();
+	
 }
 
 OrderTable OrderTable::ScanfOrderTable() {
@@ -188,17 +195,25 @@ OrderTable OrderTable::ScanfOrderTable() {
 	}
 }
 
-void OrderTable::FscanfOrderTable(FILE* f)
+void OrderTable::FscanfOrderTable(string fileLine)
 {
-
-	fscanf(f, "%d |", &this->orderTableId);
-	this->FscanfPCOT(f);
-	fscanf(f, "%s |", this->startTime.c_str());
-	fscanf(f, "%s |", this->finishTime.c_str());
-	this->FscanfServiceOT(f);
-	this->FscanfClientOT(f);
-	fscanf(f, "%d |", &this->cost);
-	this->FscanfManagerOT(f);
+	istringstream split(fileLine);
+	vector<string> words;
+	char split_char = '|';
+	for (string each; getline(split, each, split_char); words.push_back(each));
+	if (words.size() != 15) throw exception("Файл был поврежден, программа может работать некорректно");
+	trim(words[0]);
+	this->orderTableId = atoi(words[0].c_str());
+	this->FscanfPCOT(words);
+	this->startTime = words[3];
+	replace(startTime.begin(), startTime.end(), '_', ' ');
+	this->finishTime = words[4];
+	replace(finishTime.begin(), finishTime.end(), '_', ' ');
+	this->FscanfServiceOT(words);
+	this->FscanfClientOT(words);
+	trim(words[10]);
+	this->cost = atoi(words[10].c_str());
+	this->FscanfManagerOT(words);
 }
 
 void OrderTable::PrintfTitleOrderTable() {

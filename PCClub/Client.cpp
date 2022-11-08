@@ -78,19 +78,24 @@ void Client::ScanfClient()
 		} while (!Lib::IsName(this->fio));
 		replace(fio.begin(), fio.end(), ' ', '_');
 	}
-	catch (const string ex)
+	catch (const exception& e)
 	{
-		cout << ex;
+		cout << e.what();
 		_getch();
 	}
 
 }
 
-void Client::FscanfClient(FILE* f)
+void Client::FscanfClient(string fileLine)
 {
-	fscanf(f, "%d |", &this->clientId);
-	fscanf(f, "%s\n", this->fio.c_str());
-	this->fio = this->fio.c_str();
+	istringstream split(fileLine);
+	vector<string> words;
+	char split_char = '|';
+	for (string each; getline(split, each, split_char); words.push_back(each));
+	if (words.size() > 2) throw exception("Файл был поврежден, программа может работать некорректно");
+	trim(words[0]);
+	this->clientId = atoi(words[0].c_str());
+	this->fio = words[1];
 	replace(fio.begin(), fio.end(), '_', ' ');
 }
 
@@ -120,12 +125,12 @@ void Client::SearchClient()
 	int searchId = 0;
 	try {
 		do {
-			FILE* findInFile;
-			findInFile = fopen("Client.txt", "r");
+			ifstream fout("Client.txt", ios::in);
 			searchId = Lib::Get_int("Введите id клиента: ");
-			while (!feof(findInFile)) //Считывание во временный файл
+			string fileLine;
+			while (getline(fout, fileLine)) //Считывание во временный файл
 			{
-				this->FscanfClient(findInFile);
+				this->FscanfClient(fileLine);
 				if (this->clientId == searchId)
 				{
 					return;
@@ -142,29 +147,29 @@ void Client::SearchClient()
 
 void Client::PrintfFromFileClient(const string fileName)
 {
-	FILE* f;
 	int i = 0;
 	try {
 		if (Lib::IsFile(fileName)) {
-			f = fopen(fileName.c_str(), "r");
+			ifstream fout("Client.txt", ios::in);
 			if (Lib::IsFillFile(fileName)) {
-				fseek(f, 0, SEEK_SET);
+				fout.seekg(0, ios::beg);
+				string fileLine;
 				PrintTitle();
-				while (!feof(f)) {
+				while (getline(fout,fileLine)) {
 					i++;
-					this->FscanfClient(f);
+					this->FscanfClient(fileLine);
 					this->PrintfClient();
 				}
 				Lib::PrintfLine(32);
 			}
 			else Lib::PrintfNullS();
-			fclose(f);
+			fout.close();
 		}
-		else throw "Файл не найден!";
+		else throw exception("Файл не найден!");
 	}
-	catch (const string err)
+	catch (const exception& e)
 	{
-		cout << err;
+		cout << e.what();
 	}
 	_getch();
 }
@@ -179,7 +184,7 @@ int Client::SearchClient(const string find)
 }
 
 void Client::PrintTitle() {
-	Lib::PrintfLine(32);
+	Lib::PrintfLine(this->sizeLine);
 	map <string, int> title = { {"№",3 },
 								{"ФИО", 25} };
 	map <string, int>::iterator it;
@@ -191,14 +196,14 @@ void Client::PrintTitle() {
 
 	}
 	cout << "|" << endl;
-	Lib::PrintfLine(32);
+	Lib::PrintfLine(this->sizeLine);
 }
 
-void Client::FscanfClientOT(FILE* f)
+void Client::FscanfClientOT(vector<string> words)
 {
-	fscanf(f, "%d |", &this->clientId);
-	fscanf(f, "%s |", this->fio.c_str());
-	this->fio = this->fio.c_str();
+	trim(words[8]);
+	this->clientId = atoi(words[8].c_str());
+	this->fio = words[9];
 	replace(fio.begin(), fio.end(), '_', ' ');
 	return;
 }
