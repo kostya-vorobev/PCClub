@@ -22,6 +22,7 @@
 using namespace std;
 const static string WHITESPACE = " \n\r\t\f\v";
 
+
 class Lib
 {
 	

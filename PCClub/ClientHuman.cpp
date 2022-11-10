@@ -24,6 +24,23 @@ string ClientHuman::GetAcc() {
 	return acc.GetId();
 }
 
+void ClientHuman::FscanfClient(string fileLine)
+{
+	istringstream split(fileLine);
+	vector<string> words;
+	char split_char = '|';
+	for (string each; getline(split, each, split_char); words.push_back(each));
+	if (words.size() > 4) throw exception("Файл был поврежден, программа может работать некорректно");
+	trim(words[0]);
+	this->clientId = atoi(words[0].c_str());
+	this->fio = words[1];
+	replace(fio.begin(), fio.end(), '_', ' ');
+	trim(words[2]);
+	this->gender = atoi(words[2].c_str());
+	trim(words[3]);
+	this->age = atoi(words[3].c_str());
+}
+
 ClientHuman ClientHuman::operator=(const Client& objClient) {
 	Client::operator=(objClient);
 	this->age = 0;
@@ -114,3 +131,28 @@ ostream& operator<<(ostream& out, const ClientHuman& client)
 	out << "Возраст = " << client.age << endl;
 	return out;
 }
+
+/*void ClientHuman::FscanfFile(vector<ClientHuman>* client, string fileName)
+{
+	int i = 0;
+	try {
+		if (Lib::IsFile(fileName)) {
+			ifstream fout(fileName, ios::in);
+			if (Lib::IsFillFile(fileName)) {
+				fout.seekg(0, ios::beg);
+				string fileLine;
+				while (getline(fout, fileLine)) {
+					i++;
+					clientBuffer.FscanfClient(fileLine);
+					client->push_back(clientBuffer);
+				}
+			}
+			fout.close();
+		}
+		else throw exception("Файл не найден!");
+	}
+	catch (const exception& e)
+	{
+		cout << e.what();
+	}
+}*/

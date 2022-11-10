@@ -26,6 +26,10 @@ public:
 
     void SetGender(int Gender);
 
+    void FscanfClient(string fileLine);
+
+    //void FscanfFile(vector<ClientHuman>* client, string fileName);
+
     ClientHuman operator=(const Client& objClient);
 
     friend ostream& operator<< (ostream& out, const ClientHuman& client);

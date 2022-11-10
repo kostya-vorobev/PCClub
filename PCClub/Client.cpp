@@ -1,6 +1,5 @@
 #include "Client.h"
 
-
 Client::Client(int id, const string fio)
 {
 	this->clientId = id;
@@ -47,16 +46,49 @@ void Client::SetIDClient(int id)
 	this->clientId = id;
 }
 
+Client Client::operator=(const Client& objClient)
+{
+	this->clientId = objClient.clientId;
+	this->fio = objClient.fio;
+	return *this;
+}
+
 void Client::SetFio(string fio)
 {
 	this->fio = fio;
+}
+
+void FscanfFile(vector<Client>* client, string fileName)
+{
+	int i = 0;
+	Client clientBuffer;
+	try {
+		if (Lib::IsFile(fileName)) {
+			ifstream fout(fileName, ios::in);
+			if (Lib::IsFillFile(fileName)) {
+				fout.seekg(0, ios::beg);
+				string fileLine;
+				while (getline(fout, fileLine)) {
+					i++;
+					clientBuffer.FscanfClient(fileLine);
+					client->push_back(clientBuffer);
+				}
+			}
+			fout.close();
+		}
+		else throw exception("Ôאיכ םו םאיהום!");
+	}
+	catch (const exception& e)
+	{
+		cout << e.what();
+	}
 }
 
 
 void Client::FprintfClient(const string fileName, const string endString)
 {
 	ScanfClient();
-	ofstream f("Client.txt", ios_base::app);
+	ofstream f(fileName, ios_base::app);
 	if (!f.is_open()) {
 		Lib::CreateFile(fileName);
 	}
@@ -150,7 +182,7 @@ void Client::PrintfFromFileClient(const string fileName)
 	int i = 0;
 	try {
 		if (Lib::IsFile(fileName)) {
-			ifstream fout("Client.txt", ios::in);
+			ifstream fout(fileName, ios::in);
 			if (Lib::IsFillFile(fileName)) {
 				fout.seekg(0, ios::beg);
 				string fileLine;
@@ -213,3 +245,21 @@ void Client::InitClient(int id, const string fio)
 	this->clientId = id;
 	this->fio = fio;
 }
+
+bool operator<(const Client& left, const Client& right)
+{
+	return left.clientId < right.clientId;
+}
+
+bool operator>(const Client& left, const Client& right)
+{
+	return left.clientId > right.clientId;
+}
+
+ostream& operator<<(ostream& out, const Client& client)
+{
+	out << "id = " << client.clientId << endl;
+	out << "ÔÈÎ = " << client.fio << endl;
+	return out;
+}
+

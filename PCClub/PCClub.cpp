@@ -33,14 +33,37 @@
 
 int main()
 {
+	vector<Client> clientTest;
+	vector<Client*> clientTest2;
+	FscanfFile(&clientTest, "Client.txt");
+	clientTest2.push_back(new ClientHuman(1, "dor", 1, 1, "123"));
+	clientTest2.push_back(&clientTest[0]);
+	sort(clientTest.begin(), clientTest.end(),
+		[](Client const& lhs, Client const& rhs)->bool {
+			return lhs > rhs;
+		});
+	//find(clientTest.begin(), clientTest.end(), 1);
 	int a[2][3] = { {1,3,3},{3,2,1} };
-	int *b = *(a);
+	int *b;
 	b = *a;
 	cout << (*((b)+4));
+
+
+
 	system("chcp 1251 >> null");
 	setlocale(LC_ALL, "Russian"); //Включение русского языка
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
+
+	Client client1[2][2];
+	client1[0][0].InitClient(1, "tass");
+	client1[0][1].InitClient(2, "tass");
+	client1[1][0].InitClient(3, "tass");
+	client1[0][1].InitClient(4, "tass");
+	Client* client2;
+	client2 = *client1;
+	cout << *(client2 + 2);
+
 	do {
 		int flag = 0;
 		do {
@@ -60,10 +83,7 @@ int main()
 			clientBase.PrintfClient();
 			px = &clientDeriv;
 			px->PrintfClient();
-			Service service[2][2];
-			service[0][0]++;
-			service[0][0] = service[0][0] + service[1][0]++;
-			service[0][1] = service[0][1] + ++service[1][0];
+
 			OrderTable objOrderTable;
 			Manager *manager = new Manager[2];
 			Lib::sizeString = 48;

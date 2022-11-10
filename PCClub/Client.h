@@ -1,6 +1,7 @@
 #pragma once
 #include "IBase.h"
 
+
 class Client: 
 	public IBase
 {
@@ -24,7 +25,17 @@ public:
 
 	void SetIDClient(int ID);
 
+	friend bool operator< (const Client& left, const Client& right);
+
+	friend bool operator> (const Client& left, const Client& right);
+
+	friend ostream& operator<< (ostream& out, const Client& client);
+
+	Client operator=(const Client& objClient);
+
 	void SetFio(string fio);
+
+	friend void FscanfFile(vector<Client>* client, string fileName);
 
 	void FprintfClient(const string fileName, const string endString);
 
@@ -39,6 +50,8 @@ public:
 	void PrintfFromFileClient(const string s);
 
 	int SearchClient(const string find);
+
+	int SearchClient(Client find);
 
 	Client(int id, const string fio);
 
