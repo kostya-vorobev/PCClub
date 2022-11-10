@@ -131,28 +131,3 @@ ostream& operator<<(ostream& out, const ClientHuman& client)
 	out << "Возраст = " << client.age << endl;
 	return out;
 }
-
-/*void ClientHuman::FscanfFile(vector<ClientHuman>* client, string fileName)
-{
-	int i = 0;
-	try {
-		if (Lib::IsFile(fileName)) {
-			ifstream fout(fileName, ios::in);
-			if (Lib::IsFillFile(fileName)) {
-				fout.seekg(0, ios::beg);
-				string fileLine;
-				while (getline(fout, fileLine)) {
-					i++;
-					clientBuffer.FscanfClient(fileLine);
-					client->push_back(clientBuffer);
-				}
-			}
-			fout.close();
-		}
-		else throw exception("Файл не найден!");
-	}
-	catch (const exception& e)
-	{
-		cout << e.what();
-	}
-}*/

@@ -42,7 +42,7 @@ int main()
 		[](Client const& lhs, Client const& rhs)->bool {
 			return lhs > rhs;
 		});
-	//find(clientTest.begin(), clientTest.end(), 1);
+	
 	int a[2][3] = { {1,3,3},{3,2,1} };
 	int *b;
 	b = *a;
@@ -54,6 +54,15 @@ int main()
 	setlocale(LC_ALL, "Russian"); //Включение русского языка
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
+
+	vector<Client>::iterator it = find_if(clientTest.begin(), clientTest.end(), [](Client& clientFind)
+		{
+			return (clientFind.GetIDClient() == 2) ? true : false;
+		});
+	if (it != clientTest.end())
+		cout << (*it);
+	else
+		std::cout << "Нет совпадений\n";
 
 	Client client1[2][2];
 	client1[0][0].InitClient(1, "tass");
